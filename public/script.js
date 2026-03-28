@@ -3,8 +3,10 @@ let graficoLucroProdutos
 let graficoRegioes
 let graficoAno
 let graficoCategoria
+let graficoCorrelacao
 
 document.getElementById("csvFile").addEventListener("change", enviarCSV)
+carregarDados()
 
 function enviarCSV(){
 
@@ -35,6 +37,7 @@ let lucroProdutos={}
 let regioes={}
 let anos={}
 let categorias={}
+let paresCorrelacao=[]
 
 let totalVendas=0
 let totalLucro=0
@@ -66,6 +69,7 @@ totalVendas+=vendas
 totalLucro+=lucro
 
 listaVendas.push(vendas)   // <<< NOVO
+paresCorrelacao.push({x:vendas,y:lucro})
 
 })
 
@@ -124,6 +128,10 @@ graficoPizza(regioes,"graficoRegioes")
 graficoLinha(anos,"graficoAno")
 
 graficoBar(categorias,"graficoCategoria")
+
+graficoDispersaoCorrelacao(paresCorrelacao)
+
+interpretarCorrelacao(paresCorrelacao)
 
 ranking(regioes)
 
@@ -285,5 +293,93 @@ document.getElementById("alertas").innerHTML=
 "⚠ Produto com menos saída: "+produtoMenos[0]+" ("+produtoMenos[1]+")"+
 " | ⚠ Região com menos vendas: "+regiaoMenos[0]+
 " | 🏆 Categoria mais lucrativa: "+categoriaMais[0]
+
+}
+
+function graficoDispersaoCorrelacao(pontos){
+
+if(graficoCorrelacao){
+graficoCorrelacao.destroy()
+}
+
+graficoCorrelacao=new Chart(document.getElementById("graficoCorrelacao"),{
+
+type:"scatter",
+
+data:{
+datasets:[{
+label:"Sales x Profit",
+data:pontos,
+backgroundColor:"rgba(44,123,229,0.65)",
+borderColor:"#2c7be5",
+pointRadius:4
+}]
+},
+
+options:{
+plugins:{
+legend:{display:false}
+},
+scales:{
+x:{
+title:{
+display:true,
+text:"Sales"
+}
+},
+y:{
+title:{
+display:true,
+text:"Profit"
+}
+}
+}
+}
+
+})
+
+}
+
+function interpretarCorrelacao(pontos){
+
+let correlacao=calcularCorrelacaoPearson(pontos)
+let tendencia="Tendência nula ou fraca"
+
+if(correlacao>0.3){
+tendencia="Tendência positiva"
+}else if(correlacao<-0.3){
+tendencia="Tendência negativa"
+}
+
+document.getElementById("tendenciaCorrelacao").innerText=tendencia
+document.getElementById("valorCorrelacao").innerText="Correlação (Sales x Profit): "+correlacao.toFixed(2)
+
+}
+
+function calcularCorrelacaoPearson(pontos){
+
+if(pontos.length<2) return 0
+
+let somaX=0
+let somaY=0
+let somaXY=0
+let somaX2=0
+let somaY2=0
+
+pontos.forEach(ponto=>{
+somaX+=ponto.x
+somaY+=ponto.y
+somaXY+=ponto.x*ponto.y
+somaX2+=ponto.x*ponto.x
+somaY2+=ponto.y*ponto.y
+})
+
+let n=pontos.length
+let numerador=(n*somaXY)-(somaX*somaY)
+let denominador=Math.sqrt(((n*somaX2)-(somaX*somaX))*((n*somaY2)-(somaY*somaY)))
+
+if(!denominador) return 0
+
+return numerador/denominador
 
 }

@@ -13,26 +13,80 @@ let dados=[]
 
 const upload=multer({dest:"uploads/"})
 
-app.post("/upload",upload.single("file"),(req,res)=>{
+function carregarCSVDoArquivo(caminho,removerAoFinal=false){
 
-dados=[]
+return new Promise((resolve,reject)=>{
 
-fs.createReadStream(req.file.path)
+const dadosLidos=[]
+
+fs.createReadStream(caminho)
 
 .pipe(csv())
 
 .on("data",(row)=>{
 
-dados.push(row)
+dadosLidos.push(row)
 
 })
 
 .on("end",()=>{
 
-fs.unlinkSync(req.file.path)
+dados=dadosLidos
 
-res.json({message:"CSV carregado",dados})
+if(removerAoFinal){
+fs.unlinkSync(caminho)
+}
 
+resolve(dados)
+
+})
+
+.on("error",(erro)=>{
+reject(erro)
+})
+
+})
+
+}
+
+function carregarCSVInicial(){
+
+const pastaUploads="uploads"
+
+if(!fs.existsSync(pastaUploads)) return
+
+const arquivosCSV=fs.readdirSync(pastaUploads)
+.filter(nome=>nome.toLowerCase().endsWith(".csv"))
+.map(nome=>{
+const caminho=`${pastaUploads}/${nome}`
+return {
+nome,
+ caminho,
+tempo:fs.statSync(caminho).mtimeMs
+}
+})
+.sort((a,b)=>b.tempo-a.tempo)
+
+if(!arquivosCSV.length) return
+
+carregarCSVDoArquivo(arquivosCSV[0].caminho)
+.then(()=>{
+console.log(`CSV inicial carregado: ${arquivosCSV[0].nome}`)
+})
+.catch((erro)=>{
+console.error("Erro ao carregar CSV inicial:",erro)
+})
+
+}
+
+app.post("/upload",upload.single("file"),(req,res)=>{
+
+carregarCSVDoArquivo(req.file.path,true)
+.then((dadosCarregados)=>{
+res.json({message:"CSV carregado",dados:dadosCarregados})
+})
+.catch(()=>{
+res.status(500).json({message:"Erro ao carregar CSV"})
 })
 
 })
@@ -48,3 +102,5 @@ app.listen(3000,()=>{
 console.log("Servidor rodando em http://localhost:3000")
 
 })
+
+carregarCSVInicial()
