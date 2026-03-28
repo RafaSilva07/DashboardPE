@@ -343,7 +343,11 @@ text:"Profit"
 function interpretarCorrelacao(pontos){
 
 let correlacao=calcularCorrelacaoPearson(pontos)
+let r2=correlacao**2
 let tendencia="Tendência nula ou fraca"
+let r2Formatado=r2.toFixed(2).replace(".",",")
+let percentualExplicado=Math.round(r2*100)
+let percentualRestante=100-percentualExplicado
 
 if(correlacao>0.3){
 tendencia="Tendência positiva"
@@ -353,6 +357,13 @@ tendencia="Tendência negativa"
 
 document.getElementById("tendenciaCorrelacao").innerText=tendencia
 document.getElementById("valorCorrelacao").innerText="Correlação (Sales x Profit): "+correlacao.toFixed(2)
+document.getElementById("valorR2").innerText=
+"R² (coeficiente de determinação): "+r2Formatado+
+". Isso indica quanto da variação de Profit pode ser explicada por Sales. "+
+"R² = "+r2Formatado+
+", indicando que cerca de "+percentualExplicado+
+"% da variação do lucro pode ser explicada pelas vendas. Os demais "+percentualRestante+
+"% podem estar associados a outros fatores do sistema."
 
 }
 

@@ -88,6 +88,7 @@ margin-bottom:12px;
 .correlacaoTexto p{
 margin:0 0 12px;
 line-height:1.5;
+color:#000;
 }
 
 .correlacaoTexto p:last-child{
