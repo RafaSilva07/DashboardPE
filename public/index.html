@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+<meta charset="UTF-8">
+<title>Dashboard de Vendas Ecommerce</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<h1>Dashboard de Análise de Vendas</h1>
+
+<div class="upload">
+
+<label class="botaoUpload">
+Importar Dataset CSV
+<input type="file" id="csvFile" hidden>
+</label>
+
+</div>
+
+<div class="cards">
+
+<div class="card">
+<h3>Total de Vendas</h3>
+<p id="totalVendas">0</p>
+</div>
+
+<div class="card">
+<h3>Total de Lucro</h3>
+<p id="totalLucro">0</p>
+</div>
+
+<div class="card">
+<h3>Total de Pedidos</h3>
+<p id="totalPedidos">0</p>
+</div>
+
+<div class="card">
+<h3>Ticket Médio</h3>
+<p id="ticketMedio">0</p>
+</div>
+
+<!-- NOVOS CARDS PEDIDOS PELO PROFESSOR -->
+
+<div class="card">
+<h3>Média das Vendas</h3>
+<p id="mediaVendas">0</p>
+</div>
+
+<div class="card">
+<h3>Mediana das Vendas</h3>
+<p id="medianaVendas">0</p>
+</div>
+
+<div class="card">
+<h3>Moda das Vendas</h3>
+<p id="modaVendas">0</p>
+</div>
+
+</div>
+
+<div id="alertas"></div>
+
+<div class="grid">
+
+<div class="grafico">
+<h3>Top Produtos Mais Vendidos</h3>
+<canvas id="graficoProdutos"></canvas>
+</div>
+
+<div class="grafico">
+<h3>Produtos Mais Lucrativos</h3>
+<canvas id="graficoLucroProdutos"></canvas>
+</div>
+
+<div class="grafico">
+<h3>Distribuição de Vendas por Região</h3>
+<canvas id="graficoRegioes"></canvas>
+</div>
+
+<div class="grafico">
+<h3>Evolução de Vendas por Ano</h3>
+<canvas id="graficoAno"></canvas>
+</div>
+
+<div class="grafico">
+<h3>Lucro por Categoria</h3>
+<canvas id="graficoCategoria"></canvas>
+</div>
+
+</div>
+
+<div class="ranking">
+
+<h3>Ranking de Regiões por Faturamento</h3>
+
+<ul id="rankingRegioes"></ul>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
