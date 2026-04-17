@@ -1,104 +1,108 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-
+<html lang="pt-BR">
 <head>
-
 <meta charset="UTF-8">
-<title>Dashboard de Vendas Ecommerce</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard de Vendas E-commerce</title>
 <link rel="stylesheet" href="style.css">
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 </head>
-
 <body>
-
 <h1>Dashboard de Análise de Vendas</h1>
 
 <div class="upload">
-
 <label class="botaoUpload">
-Importar Dataset CSV
+Importar base CSV
 <input type="file" id="csvFile" hidden>
 </label>
-
 </div>
 
 <div class="cards">
-
 <div class="card">
-<h3>Total de Vendas</h3>
+<h3>Total de vendas</h3>
 <p id="totalVendas">0</p>
 </div>
 
 <div class="card">
-<h3>Total de Lucro</h3>
+<h3>Total de lucro</h3>
 <p id="totalLucro">0</p>
 </div>
 
 <div class="card">
-<h3>Total de Pedidos</h3>
+<h3>Total de pedidos</h3>
 <p id="totalPedidos">0</p>
 </div>
 
 <div class="card">
-<h3>Ticket Médio</h3>
+<h3>Ticket médio</h3>
 <p id="ticketMedio">0</p>
 </div>
 
-<!-- NOVOS CARDS PEDIDOS PELO PROFESSOR -->
-
 <div class="card">
-<h3>Média das Vendas</h3>
+<h3>Média das vendas</h3>
 <p id="mediaVendas">0</p>
 </div>
 
 <div class="card">
-<h3>Mediana das Vendas</h3>
+<h3>Mediana das vendas</h3>
 <p id="medianaVendas">0</p>
 </div>
 
 <div class="card">
-<h3>Moda das Vendas</h3>
+<h3>Moda das vendas</h3>
 <p id="modaVendas">0</p>
 </div>
-
 </div>
 
 <div id="alertas"></div>
 
 <div class="grid">
-
 <div class="grafico">
-<h3>Top Produtos Mais Vendidos</h3>
+<div class="cabecalhoGrafico">
+<h3 id="tituloGraficoProdutos">Produtos mais vendidos</h3>
+<div class="alternadorGrafico" data-target="produtos">
+<button type="button" class="ativo" data-mode="top">Mais vendidos</button>
+<button type="button" data-mode="bottom">Menos vendidos</button>
+</div>
+</div>
 <canvas id="graficoProdutos"></canvas>
 </div>
 
 <div class="grafico">
-<h3>Produtos Mais Lucrativos</h3>
+<div class="cabecalhoGrafico">
+<h3 id="tituloGraficoLucroProdutos">Produtos mais lucrativos</h3>
+<div class="alternadorGrafico" data-target="lucroProdutos">
+<button type="button" class="ativo" data-mode="top">Maior lucro</button>
+<button type="button" data-mode="bottom">Menor lucro</button>
+</div>
+</div>
 <canvas id="graficoLucroProdutos"></canvas>
 </div>
 
 <div class="grafico">
-<h3>Distribuição de Vendas por Região</h3>
+<h3 id="tituloGraficoRegioes">Distribuição de vendas por região</h3>
 <canvas id="graficoRegioes"></canvas>
 </div>
 
 <div class="grafico">
-<h3>Evolução de Vendas por Ano</h3>
+<h3>Evolução das vendas por ano</h3>
 <canvas id="graficoAno"></canvas>
 </div>
 
 <div class="grafico">
-<h3>Lucro por Categoria</h3>
+<div class="cabecalhoGrafico">
+<h3 id="tituloGraficoCategoria">Categorias mais lucrativas</h3>
+<div class="alternadorGrafico" data-target="categorias">
+<button type="button" class="ativo" data-mode="top">Maior lucro</button>
+<button type="button" data-mode="bottom">Menor lucro</button>
+</div>
+</div>
 <canvas id="graficoCategoria"></canvas>
 </div>
-
 </div>
 
 <div class="grafico correlacao">
-<h3>Análise de Correlação: Vendas x Lucro</h3>
+<h3>Análise de correlação: vendas x lucro</h3>
 
 <div class="correlacaoConteudo">
 <div class="correlacaoGrafico">
@@ -106,25 +110,20 @@ Importar Dataset CSV
 </div>
 
 <div class="correlacaoTexto">
-<h4>Interpretação Visual</h4>
+<h4>Interpretação visual</h4>
 <p id="tendenciaCorrelacao">Tendência nula ou fraca</p>
-<p id="valorCorrelacao">Correlação (Sales x Profit): 0.00</p>
-<p id="valorR2">R² (coeficiente de determinação): 0,00. Isso indica quanto da variação de Profit pode ser explicada por Sales.</p>
-<p class="avisoCorrelacao">A relação entre Sales e Profit apresenta tendência positiva, pois, em geral, conforme o valor das vendas aumenta, o lucro também cresce. A correlação de 0,83 indica uma associação forte entre as duas variáveis. Mesmo assim, essa relação não prova causa direta, já que outros fatores, como quantidade vendida, categoria dos produtos e margem de lucro, também podem influenciar os resultados.</p>
+<p id="valorCorrelacao">Correlação (Vendas x Lucro): 0,00</p>
+<p id="valorR2">R² (coeficiente de determinação): 0,00. Isso indica quanto da variação do lucro pode ser explicada pelas vendas.</p>
+<p class="avisoCorrelacao">A relação entre vendas e lucro pode mostrar uma tendência positiva, mas isso não prova causa direta. Outros fatores, como quantidade vendida, categoria dos produtos e margem de lucro, também influenciam os resultados.</p>
 </div>
 </div>
-
 </div>
 
 <div class="ranking">
-
-<h3>Ranking de Regiões por Faturamento</h3>
-
+<h3>Ranking de regiões por faturamento</h3>
 <ul id="rankingRegioes"></ul>
-
 </div>
 
 <script src="script.js"></script>
-
 </body>
 </html>

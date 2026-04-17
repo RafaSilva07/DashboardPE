@@ -1,8 +1,9 @@
 body{
-font-family:Arial;
+font-family:Arial,sans-serif;
 background:#eef1f5;
 margin:0;
 padding:20px;
+color:#1f2937;
 }
 
 h1{
@@ -17,11 +18,12 @@ margin-bottom:25px;
 
 .botaoUpload{
 background:#2c7be5;
-color:white;
+color:#fff;
 padding:12px 25px;
 border-radius:8px;
 font-weight:bold;
 cursor:pointer;
+display:inline-block;
 }
 
 .cards{
@@ -33,7 +35,7 @@ margin-bottom:20px;
 }
 
 .card{
-background:white;
+background:#fff;
 padding:20px;
 width:200px;
 border-radius:10px;
@@ -53,10 +55,47 @@ gap:20px;
 }
 
 .grafico{
-background:white;
+background:#fff;
 padding:20px;
 border-radius:10px;
 box-shadow:0 3px 8px rgba(0,0,0,0.1);
+}
+
+.cabecalhoGrafico{
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
+gap:16px;
+margin-bottom:14px;
+}
+
+.cabecalhoGrafico h3{
+margin:0;
+}
+
+.alternadorGrafico{
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+justify-content:flex-end;
+}
+
+.alternadorGrafico button{
+border:1px solid #cbd5e1;
+background:#f8fafc;
+color:#334155;
+padding:8px 12px;
+border-radius:999px;
+cursor:pointer;
+font-size:13px;
+font-weight:700;
+transition:all 0.2s ease;
+}
+
+.alternadorGrafico button.ativo{
+background:#2c7be5;
+border-color:#2c7be5;
+color:#fff;
 }
 
 .correlacao{
@@ -99,12 +138,6 @@ margin-bottom:0;
 color:#000;
 }
 
-@media (max-width: 900px){
-.correlacaoConteudo{
-grid-template-columns:1fr;
-}
-}
-
 #alertas{
 text-align:center;
 background:#ffeaa7;
@@ -116,7 +149,7 @@ margin-bottom:20px;
 
 .ranking{
 margin-top:25px;
-background:white;
+background:#fff;
 padding:20px;
 border-radius:10px;
 box-shadow:0 3px 8px rgba(0,0,0,0.1);
@@ -142,6 +175,7 @@ display:flex;
 justify-content:space-between;
 font-weight:bold;
 margin-bottom:6px;
+gap:12px;
 }
 
 .barraRanking{
@@ -155,4 +189,34 @@ overflow:hidden;
 height:100%;
 background:linear-gradient(90deg,#2c7be5,#00b894);
 border-radius:6px;
+}
+
+@media (max-width: 900px){
+.correlacaoConteudo{
+grid-template-columns:1fr;
+}
+}
+
+@media (max-width: 640px){
+body{
+padding:14px;
+}
+
+.grid{
+grid-template-columns:1fr;
+}
+
+.card{
+width:100%;
+max-width:280px;
+}
+
+.cabecalhoGrafico{
+flex-direction:column;
+align-items:stretch;
+}
+
+.alternadorGrafico{
+justify-content:flex-start;
+}
 }
