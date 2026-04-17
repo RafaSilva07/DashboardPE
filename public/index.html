@@ -5,10 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard de Vendas E-commerce</title>
 <link rel="stylesheet" href="style.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@sgratzl/chartjs-chart-boxplot@4.4.5/build/index.umd.min.js"></script>
 </head>
 <body>
-<h1>Dashboard de Análise de Vendas</h1>
+<h1>Dashboard de Analise de Vendas</h1>
 
 <div class="upload">
 <label class="botaoUpload">
@@ -34,12 +35,12 @@ Importar base CSV
 </div>
 
 <div class="card">
-<h3>Ticket médio</h3>
+<h3>Ticket medio</h3>
 <p id="ticketMedio">0</p>
 </div>
 
 <div class="card">
-<h3>Média das vendas</h3>
+<h3>Media das vendas</h3>
 <p id="mediaVendas">0</p>
 </div>
 
@@ -51,6 +52,18 @@ Importar base CSV
 <div class="card">
 <h3>Moda das vendas</h3>
 <p id="modaVendas">0</p>
+</div>
+
+<div class="card">
+<h3>Desvio padrao</h3>
+<p id="desvioPadraoVendas">0</p>
+<span class="cardLegenda">Mostra o quanto as vendas costumam se afastar da media.</span>
+</div>
+
+<div class="card">
+<h3>Variancia</h3>
+<p id="varianciaVendas">0</p>
+<span class="cardLegenda">Representa a dispersao dos valores em relacao a media.</span>
 </div>
 </div>
 
@@ -80,12 +93,12 @@ Importar base CSV
 </div>
 
 <div class="grafico">
-<h3 id="tituloGraficoRegioes">Distribuição de vendas por região</h3>
+<h3 id="tituloGraficoRegioes">Distribuicao de vendas por regiao</h3>
 <canvas id="graficoRegioes"></canvas>
 </div>
 
 <div class="grafico">
-<h3>Evolução das vendas por ano</h3>
+<h3>Evolucao das vendas por ano</h3>
 <canvas id="graficoAno"></canvas>
 </div>
 
@@ -99,10 +112,37 @@ Importar base CSV
 </div>
 <canvas id="graficoCategoria"></canvas>
 </div>
+
+<div class="grafico boxplot">
+<h3>Distribuicao das vendas por categoria</h3>
+<div class="boxplotConteudo">
+<div class="boxplotGrafico">
+<canvas id="graficoBoxplotCategoria"></canvas>
+<div class="legendaExplicativa">
+<p><strong>O boxplot</strong> (ou diagrama de caixa) é um gráfico usado para resumir a distribuição dos dados e mostrar, de forma visual, como os valores estão espalhados. Ele ajuda a identificar a posição central dos dados, a dispersão e a presença de possíveis valores atípicos.</p>
+<p>
+  <strong>Partes do boxplot:</strong><br>
+  <strong>Mínimo:</strong> menor valor observado dentro do limite esperado dos dados.<br>
+  <strong>Q1 (primeiro quartil):</strong> separa os 25% menores valores do restante dos dados.<br>
+  <strong>Mediana:</strong> linha central da caixa, representa o valor que divide os dados ao meio.<br>
+  <strong>Q3 (terceiro quartil):</strong> separa os 75% menores valores dos 25% maiores.<br>
+  <strong>Caixa (Q1 até Q3):</strong> representa a faixa interquartil, onde está a metade central dos dados.<br>
+  <strong>Outliers:</strong> pontos isolados fora do padrão geral, indicando valores muito distantes dos demais.
+</p>
+</div>
+</div>
+
+<div class="boxplotTexto">
+<h4>Leitura estatistica</h4>
+<p id="resumoBoxplot">Importe um arquivo CSV para visualizar a dispersao das vendas por categoria.</p>
+<p class="avisoBoxplot">Cada caixa resume a distribuicao dos valores de venda de uma categoria. A linha central indica a mediana, a altura da caixa representa a faixa interquartil e os pontos fora dos limites indicam possiveis outliers.</p>
+</div>
+</div>
+</div>
 </div>
 
 <div class="grafico correlacao">
-<h3>Análise de correlação: vendas x lucro</h3>
+<h3>Analise de correlacao: vendas x lucro</h3>
 
 <div class="correlacaoConteudo">
 <div class="correlacaoGrafico">
@@ -110,17 +150,17 @@ Importar base CSV
 </div>
 
 <div class="correlacaoTexto">
-<h4>Interpretação visual</h4>
-<p id="tendenciaCorrelacao">Tendência nula ou fraca</p>
-<p id="valorCorrelacao">Correlação (Vendas x Lucro): 0,00</p>
-<p id="valorR2">R² (coeficiente de determinação): 0,00. Isso indica quanto da variação do lucro pode ser explicada pelas vendas.</p>
-<p class="avisoCorrelacao">A relação entre vendas e lucro pode mostrar uma tendência positiva, mas isso não prova causa direta. Outros fatores, como quantidade vendida, categoria dos produtos e margem de lucro, também influenciam os resultados.</p>
+<h4>Interpretacao visual</h4>
+<p id="tendenciaCorrelacao">Tendencia nula ou fraca</p>
+<p id="valorCorrelacao">Correlacao (Vendas x Lucro): 0,00</p>
+<p id="valorR2">R� (coeficiente de determinacao): 0,00. Isso indica quanto da variacao do lucro pode ser explicada pelas vendas.</p>
+<p class="avisoCorrelacao">A relacao entre vendas e lucro pode mostrar uma tendencia positiva, mas isso nao prova causa direta. Outros fatores, como quantidade vendida, categoria dos produtos e margem de lucro, tambem influenciam os resultados.</p>
 </div>
 </div>
 </div>
 
 <div class="ranking">
-<h3>Ranking de regiões por faturamento</h3>
+<h3>Ranking de regioes por faturamento</h3>
 <ul id="rankingRegioes"></ul>
 </div>
 

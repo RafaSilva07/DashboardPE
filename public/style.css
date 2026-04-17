@@ -48,6 +48,14 @@ font-size:24px;
 font-weight:bold;
 }
 
+.cardLegenda{
+display:block;
+margin-top:8px;
+font-size:12px;
+line-height:1.45;
+color:#64748b;
+}
+
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(420px,1fr));
@@ -59,6 +67,14 @@ background:#fff;
 padding:20px;
 border-radius:10px;
 box-shadow:0 3px 8px rgba(0,0,0,0.1);
+}
+
+.grafico canvas{
+margin-bottom:14px;
+}
+
+.boxplot{
+grid-column:1 / -1;
 }
 
 .cabecalhoGrafico{
@@ -100,6 +116,74 @@ color:#fff;
 
 .correlacao{
 margin-top:20px;
+}
+
+.boxplotConteudo{
+display:grid;
+grid-template-columns:minmax(0,3fr) minmax(280px,1fr);
+gap:24px;
+align-items:stretch;
+}
+
+.boxplotGrafico{
+position:relative;
+min-height:420px;
+padding:12px 8px 0 0;
+}
+
+.boxplotGrafico canvas{
+width:100% !important;
+height:420px !important;
+}
+
+.boxplotTexto{
+background:#f8f9fc;
+border-radius:8px;
+padding:20px;
+font-size:18px;
+}
+
+.boxplotTexto h4{
+margin-top:0;
+margin-bottom:12px;
+font-size:28px;
+}
+
+.boxplotTexto p{
+margin:0 0 12px;
+line-height:1.6;
+color:#000;
+}
+
+.boxplotTexto p:last-child{
+margin-bottom:0;
+}
+
+.avisoBoxplot{
+color:#000;
+}
+
+.legendaExplicativa{
+margin-top:4px;
+padding:14px 16px;
+border-radius:10px;
+background:#f8fafc;
+border-left:4px solid #2c7be5;
+}
+
+.legendaExplicativa p{
+margin:0 0 8px;
+line-height:1.55;
+font-size:14px;
+color:#334155;
+}
+
+.legendaExplicativa p:last-child{
+margin-bottom:0;
+}
+
+.legendaExplicativa strong{
+color:#0f172a;
 }
 
 .correlacaoConteudo{
@@ -192,6 +276,19 @@ border-radius:6px;
 }
 
 @media (max-width: 900px){
+.boxplotConteudo{
+grid-template-columns:1fr;
+}
+
+.boxplotGrafico{
+min-height:360px;
+padding-right:0;
+}
+
+.boxplotGrafico canvas{
+height:360px !important;
+}
+
 .correlacaoConteudo{
 grid-template-columns:1fr;
 }

@@ -4,11 +4,17 @@ let graficoRegioes
 let graficoAno
 let graficoCategoria
 let graficoCorrelacao
+let graficoBoxplot
 let dadosProcessados = null
 
 const formatadorMoeda = new Intl.NumberFormat("pt-BR", {
 style: "currency",
 currency: "BRL"
+})
+
+const formatadorNumero = new Intl.NumberFormat("pt-BR", {
+minimumFractionDigits: 2,
+maximumFractionDigits: 2
 })
 
 const traducoesRegioes = {
@@ -104,6 +110,7 @@ const lucroProdutos = {}
 const regioes = {}
 const anos = {}
 const categorias = {}
+const distribuicaoVendasCategorias = {}
 const paresCorrelacao = []
 
 let totalVendas = 0
@@ -134,6 +141,12 @@ regioes[regiao] = (regioes[regiao] || 0) + vendas
 anos[ano] = (anos[ano] || 0) + vendas
 categorias[categoria] = (categorias[categoria] || 0) + lucro
 
+if(!distribuicaoVendasCategorias[categoria]){
+distribuicaoVendasCategorias[categoria] = []
+}
+
+distribuicaoVendasCategorias[categoria].push(vendas)
+
 totalVendas += vendas
 totalLucro += lucro
 listaVendas.push(vendas)
@@ -143,6 +156,10 @@ paresCorrelacao.push({ x: vendas, y: lucro })
 const totalPedidos = listaVendas.length
 const ticket = totalPedidos ? totalVendas / totalPedidos : 0
 const media = totalPedidos ? listaVendas.reduce((a, b) => a + b, 0) / totalPedidos : 0
+const variancia = totalPedidos
+? listaVendas.reduce((acumulador, venda) => acumulador + ((venda - media) ** 2), 0) / totalPedidos
+: 0
+const desvioPadrao = Math.sqrt(variancia)
 
 const ordenado = [...listaVendas].sort((a, b) => a - b)
 const meio = Math.floor(ordenado.length / 2)
@@ -175,6 +192,8 @@ document.getElementById("ticketMedio").innerText = formatadorMoeda.format(ticket
 document.getElementById("mediaVendas").innerText = formatadorMoeda.format(media)
 document.getElementById("medianaVendas").innerText = formatadorMoeda.format(mediana)
 document.getElementById("modaVendas").innerText = formatadorMoeda.format(moda)
+document.getElementById("desvioPadraoVendas").innerText = formatadorMoeda.format(desvioPadrao)
+document.getElementById("varianciaVendas").innerText = formatadorNumero.format(variancia)
 
 dadosProcessados = {
 produtos,
@@ -182,6 +201,7 @@ lucroProdutos,
 regioes,
 anos,
 categorias,
+distribuicaoVendasCategorias,
 paresCorrelacao
 }
 
@@ -196,11 +216,13 @@ if(!dadosProcessados){
 return
 }
 
-renderizarGraficoOrdenado("produtos", dadosProcessados.produtos)
-renderizarGraficoOrdenado("lucroProdutos", dadosProcessados.lucroProdutos)
+renderizarGraficoAlternavel("produtos")
+renderizarGraficoAlternavel("lucroProdutos")
 graficoPizza(dadosProcessados.regioes, "graficoRegioes")
 graficoLinha(dadosProcessados.anos, "graficoAno")
-renderizarGraficoOrdenado("categorias", dadosProcessados.categorias)
+renderizarGraficoAlternavel("categorias")
+graficoBoxplotCategorias(dadosProcessados.distribuicaoVendasCategorias)
+interpretarBoxplotCategorias(dadosProcessados.distribuicaoVendasCategorias)
 graficoDispersaoCorrelacao(dadosProcessados.paresCorrelacao)
 interpretarCorrelacao(dadosProcessados.paresCorrelacao)
 }
@@ -223,9 +245,27 @@ alternador.querySelectorAll("button").forEach(item => {
 item.classList.toggle("ativo", item === botao)
 })
 
-renderizarGraficos()
+renderizarGraficoAlternavel(target)
 })
 })
+}
+
+function renderizarGraficoAlternavel(chave){
+if(!dadosProcessados){
+return
+}
+
+const mapasDados = {
+produtos: dadosProcessados.produtos,
+lucroProdutos: dadosProcessados.lucroProdutos,
+categorias: dadosProcessados.categorias
+}
+
+if(!mapasDados[chave]){
+return
+}
+
+renderizarGraficoOrdenado(chave, mapasDados[chave])
 }
 
 function renderizarGraficoOrdenado(chave, data){
@@ -452,6 +492,207 @@ text: "Lucro"
 }
 }
 })
+}
+
+function graficoBoxplotCategorias(distribuicoes){
+if(graficoBoxplot){
+graficoBoxplot.destroy()
+}
+
+const categoriasValidas = Object.entries(distribuicoes)
+.filter(([, valores]) => Array.isArray(valores) && valores.length)
+.sort((a, b) => traduzirRotulo(a[0]).localeCompare(traduzirRotulo(b[0]), "pt-BR"))
+
+if(!categoriasValidas.length){
+return
+}
+
+graficoBoxplot = new Chart(document.getElementById("graficoBoxplotCategoria"), {
+type: "boxplot",
+data: {
+labels: categoriasValidas.map(([categoria]) => traduzirRotulo(categoria)),
+datasets: [{
+label: "Distribuicao de vendas",
+data: categoriasValidas.map(([, valores]) => valores),
+backgroundColor: "rgba(44,123,229,0.35)",
+borderColor: "#2c7be5",
+borderWidth: 1.5,
+outlierBackgroundColor: "#e74c3c",
+outlierBorderColor: "#c0392b",
+itemBackgroundColor: "#1f2937",
+itemBorderColor: "#1f2937"
+}]
+},
+options: {
+responsive: true,
+maintainAspectRatio: false,
+layout: {
+padding: {
+top: 12,
+right: 12,
+bottom: 0,
+left: 8
+}
+},
+plugins: {
+legend: {
+display: false
+},
+tooltip: {
+callbacks: {
+title: itens => itens.length ? `Categoria: ${itens[0].label}` : "",
+label: contexto => traduzirLinhasTooltipBoxplot(contexto.formattedValue)
+}
+}
+},
+scales: {
+y: {
+title: {
+display: true,
+text: "Vendas"
+},
+ticks: {
+font: {
+size: 13
+},
+callback: valor => formatadorMoeda.format(valor)
+}
+},
+x: {
+ticks: {
+font: {
+size: 13
+},
+maxRotation: 0,
+minRotation: 0,
+autoSkip: false
+}
+}
+}
+}
+})
+}
+
+function interpretarBoxplotCategorias(distribuicoes){
+const resumo = document.getElementById("resumoBoxplot")
+const categoriasValidas = Object.entries(distribuicoes)
+.filter(([, valores]) => Array.isArray(valores) && valores.length)
+.map(([categoria, valores]) => ({
+categoria,
+...calcularResumoDistribuicao(valores)
+}))
+
+if(!categoriasValidas.length){
+resumo.innerText = "Importe um arquivo CSV para visualizar a dispersao das vendas por categoria."
+return
+}
+
+const maiorIqr = categoriasValidas.reduce((maior, atual) => atual.iqr > maior.iqr ? atual : maior, categoriasValidas[0])
+const maiorAmplitude = categoriasValidas.reduce((maior, atual) => atual.amplitude > maior.amplitude ? atual : maior, categoriasValidas[0])
+const categoriasComOutliers = categoriasValidas
+.filter(item => item.outliers.length)
+.sort((a, b) => b.outliers.length - a.outliers.length)
+
+let textoOutliers = "Nenhuma categoria apresentou outliers pelo criterio de 1,5 x IQR."
+
+if(categoriasComOutliers.length){
+const destaqueOutlier = categoriasComOutliers[0]
+textoOutliers =
+`Mais outliers: ${traduzirRotulo(destaqueOutlier.categoria)} (${destaqueOutlier.outliers.length})`
+}
+
+resumo.innerText =
+`Maior faixa interquartil: ${traduzirRotulo(maiorIqr.categoria)} (${formatadorMoeda.format(maiorIqr.iqr)}). ` +
+`Maior amplitude total: ${traduzirRotulo(maiorAmplitude.categoria)} (${formatadorMoeda.format(maiorAmplitude.amplitude)}). ` +
+textoOutliers
+}
+
+function calcularResumoDistribuicao(valores){
+const ordenado = [...valores]
+.filter(valor => Number.isFinite(valor))
+.sort((a, b) => a - b)
+
+if(!ordenado.length){
+return {
+min: 0,
+max: 0,
+q1: 0,
+median: 0,
+q3: 0,
+iqr: 0,
+amplitude: 0,
+outliers: []
+}
+}
+
+const q1 = calcularQuantil(ordenado, 0.25)
+const median = calcularQuantil(ordenado, 0.5)
+const q3 = calcularQuantil(ordenado, 0.75)
+const iqr = q3 - q1
+const lowerFence = q1 - (1.5 * iqr)
+const upperFence = q3 + (1.5 * iqr)
+
+return {
+min: ordenado[0],
+max: ordenado[ordenado.length - 1],
+q1,
+median,
+q3,
+iqr,
+amplitude: ordenado[ordenado.length - 1] - ordenado[0],
+outliers: ordenado.filter(valor => valor < lowerFence || valor > upperFence)
+}
+}
+
+function calcularQuantil(valoresOrdenados, percentual){
+if(!valoresOrdenados.length){
+return 0
+}
+
+const posicao = (valoresOrdenados.length - 1) * percentual
+const indiceBase = Math.floor(posicao)
+const peso = posicao - indiceBase
+const valorBase = valoresOrdenados[indiceBase]
+const proximoValor = valoresOrdenados[Math.min(indiceBase + 1, valoresOrdenados.length - 1)]
+
+return valorBase + ((proximoValor - valorBase) * peso)
+}
+
+function traduzirLinhasTooltipBoxplot(valorFormatado){
+if(!valorFormatado){
+return "Distribuicao das vendas"
+}
+
+if(typeof valorFormatado === "object"){
+const linhas = [
+`Minimo: ${valorFormatado.min}`,
+`Q1: ${valorFormatado.q1}`,
+`Mediana: ${valorFormatado.median}`,
+`Q3: ${valorFormatado.q3}`,
+`Maximo: ${valorFormatado.max}`
+]
+
+if(valorFormatado.mean != null){
+linhas.splice(3, 0, `Media: ${valorFormatado.mean}`)
+}
+
+return linhas
+}
+
+if(typeof valorFormatado === "string"){
+return valorFormatado
+.split(", ")
+.map(parte => parte
+.replace(/^min:/i, "Minimo:")
+.replace(/^25% quantile:/i, "Q1:")
+.replace(/^median:/i, "Mediana:")
+.replace(/^mean:/i, "Media:")
+.replace(/^75% quantile:/i, "Q3:")
+.replace(/^max:/i, "Maximo:")
+)
+}
+
+return "Distribuicao das vendas"
 }
 
 function interpretarCorrelacao(pontos){
