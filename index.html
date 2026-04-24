@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard de Analise de Vendas</title>
+    <title>Dashboard de Análise de Vendas</title>
   </head>
   <body>
-    <h1>Dashboard de Analise de Vendas</h1>
+    <h1>Dashboard de Análise de Vendas</h1>
 
     <div class="upload">
       <label class="botaoUpload">
@@ -17,12 +17,12 @@
         <summary>Regras do dataset <span class="setaResumo">▼</span></summary>
         <div class="avisoDataset">
           <strong>Formato esperado do dataset:</strong>
-          <p>Envie um arquivo no formato <strong>CSV</strong> com cabecalho na primeira linha.</p>
-          <p><strong>Colunas obrigatorias:</strong> <code>Order Date</code>, <code>Product Name</code>, <code>Category</code>, <code>Region</code>, <code>Quantity</code>, <code>Sales</code> e <code>Profit</code>.</p>
-          <p><strong>Regras importantes:</strong> datas validas em <code>Order Date</code> e valores numericos em <code>Quantity</code>, <code>Sales</code> e <code>Profit</code>.</p>
-          <p><strong>Exemplo de cabecalho:</strong></p>
+          <p>Envie um arquivo no formato <strong>CSV</strong> com cabeçalho na primeira linha.</p>
+          <p><strong>Colunas obrigatórias:</strong> <code>Order Date</code>, <code>Product Name</code>, <code>Category</code>, <code>Region</code>, <code>Quantity</code>, <code>Sales</code> e <code>Profit</code>.</p>
+          <p><strong>Regras importantes:</strong> datas válidas em <code>Order Date</code> e valores numéricos em <code>Quantity</code>, <code>Sales</code> e <code>Profit</code>.</p>
+          <p><strong>Exemplo de cabeçalho:</strong></p>
           <p><code>Order Date,Product Name,Category,Region,Quantity,Sales,Profit</code></p>
-          <p><strong>Exemplo de linha valida:</strong></p>
+          <p><strong>Exemplo de linha válida:</strong></p>
           <p><code>2024-12-31,Printer,Office,North,4,3640,348.93</code></p>
           <p><strong>Exemplo do formato dos dados:</strong> <code>Order Date</code> como <code>2024-12-31</code>, <code>Region</code> como <code>North</code>, <code>Quantity</code> como <code>4</code> e <code>Profit</code> como <code>348.93</code>.</p>
         </div>
@@ -46,12 +46,12 @@
       </div>
 
       <div class="card">
-        <h3>Ticket medio</h3>
+        <h3>Ticket médio</h3>
         <p id="ticketMedio">0</p>
       </div>
 
       <div class="card">
-        <h3>Media das vendas</h3>
+        <h3>Média das vendas</h3>
         <p id="mediaVendas">0</p>
       </div>
 
@@ -66,19 +66,19 @@
       </div>
 
       <div class="card">
-        <h3>Desvio padrao</h3>
+        <h3>Desvio padrão</h3>
         <p id="desvioPadraoVendas">0</p>
-        <span class="cardLegenda">Mostra o quanto as vendas costumam se afastar da media.</span>
+        <span class="cardLegenda">Mostra o quanto as vendas costumam se afastar da média.</span>
       </div>
 
       <div class="card">
-        <h3>Variancia</h3>
+        <h3>Variância</h3>
         <p id="varianciaVendas">0</p>
-        <span class="cardLegenda">Representa a dispersao dos valores em relacao a media.</span>
+        <span class="cardLegenda">Representa a dispersão dos valores em relação à média.</span>
       </div>
     </div>
 
-    <div id="alertas">Carregando base padrao...</div>
+    <div id="alertas">Carregando base padrão...</div>
 
     <div class="grid">
       <div class="grafico">
@@ -104,12 +104,12 @@
       </div>
 
       <div class="grafico">
-        <h3 id="tituloGraficoRegioes">Distribuicao de vendas por regiao</h3>
+        <h3 id="tituloGraficoRegioes">Distribuição de vendas por região</h3>
         <canvas id="graficoRegioes"></canvas>
       </div>
 
       <div class="grafico">
-        <h3>Evolucao das vendas por ano</h3>
+        <h3>Evolução das vendas por ano</h3>
         <canvas id="graficoAno"></canvas>
       </div>
 
@@ -125,27 +125,27 @@
       </div>
 
       <div class="grafico boxplot">
-        <h3>Distribuicao das vendas por categoria</h3>
+        <h3>Distribuição das vendas por categoria</h3>
         <div class="boxplotConteudo">
           <div class="boxplotGrafico">
             <canvas id="graficoBoxplotCategoria"></canvas>
             <div class="legendaExplicativa">
-              <p><strong>O boxplot</strong> (ou diagrama de caixa) e um grafico usado para resumir a distribuicao dos dados e mostrar, de forma visual, como os valores estao espalhados.</p>
-              <p><strong>Partes do boxplot:</strong> minimo, Q1, mediana, Q3, caixa central e outliers. Elas ajudam a identificar posicao central, dispersao e possiveis valores atipicos.</p>
+              <p><strong>O boxplot</strong> (ou diagrama de caixa) é um gráfico usado para resumir a distribuição dos dados e mostrar, de forma visual, como os valores estão espalhados.</p>
+              <p><strong>Partes do boxplot:</strong> mínimo, Q1, mediana, Q3, caixa central e outliers. Elas ajudam a identificar posição central, dispersão e possíveis valores atípicos.</p>
             </div>
           </div>
 
           <div class="boxplotTexto">
-            <h4>Leitura estatistica</h4>
-            <p id="resumoBoxplot">Importe um arquivo CSV para visualizar a dispersao das vendas por categoria.</p>
-            <p class="avisoBoxplot">Cada caixa resume a distribuicao dos valores de venda de uma categoria. A linha central indica a mediana, a altura da caixa representa a faixa interquartil e os pontos fora dos limites indicam possiveis outliers.</p>
+            <h4>Leitura estatística</h4>
+            <p id="resumoBoxplot">Importe um arquivo CSV para visualizar a dispersão das vendas por categoria.</p>
+            <p class="avisoBoxplot">Cada caixa resume a distribuição dos valores de venda de uma categoria. A linha central indica a mediana, a altura da caixa representa a faixa interquartil e os pontos fora dos limites indicam possíveis outliers.</p>
           </div>
         </div>
       </div>
     </div>
 
     <div class="grafico correlacao">
-      <h3>Analise de correlacao e regressao linear: vendas x lucro</h3>
+      <h3>Análise de correlação e regressão linear: vendas x lucro</h3>
 
       <div class="correlacaoConteudo">
         <div class="correlacaoGrafico">
@@ -154,26 +154,26 @@
 
         <div class="correlacaoPainel">
           <div class="correlacaoTexto">
-            <h4>Interpretacao da correlacao</h4>
-            <p id="tendenciaCorrelacao">Tendencia nula ou fraca</p>
-            <p id="valorCorrelacao">Correlacao (Vendas x Lucro): 0,00</p>
-            <p id="valorR2">R² (coeficiente de determinacao): 0,00. Isso indica quanto da variacao do lucro pode ser explicada pelas vendas.</p>
-            <p class="avisoCorrelacao">A relacao entre vendas e lucro pode mostrar uma tendencia positiva, mas isso nao prova causa direta. Outros fatores, como quantidade vendida, categoria dos produtos e margem de lucro, tambem influenciam os resultados.</p>
+            <h4>Interpretação da correlação</h4>
+            <p id="tendenciaCorrelacao">Tendência nula ou fraca</p>
+            <p id="valorCorrelacao">Correlação (Vendas x Lucro): 0,00</p>
+            <p id="valorR2">R² (coeficiente de determinação): 0,00. Isso indica quanto da variação do lucro pode ser explicada pelas vendas.</p>
+            <p class="avisoCorrelacao">A relação entre vendas e lucro pode mostrar uma tendência positiva, mas isso não prova causa direta. Outros fatores, como quantidade vendida, categoria dos produtos e margem de lucro, também influenciam os resultados.</p>
           </div>
 
           <div class="correlacaoTexto">
-            <h4>Interpretacao da regressao</h4>
-            <p id="equacaoRegressao">Equacao da reta: y = 0,00x + 0,00</p>
-            <p id="inclinacaoRegressao">Inclinacao: 0,00</p>
+            <h4>Interpretação da regressão</h4>
+            <p id="equacaoRegressao">Equação da reta: y = 0,00x + 0,00</p>
+            <p id="inclinacaoRegressao">Inclinação: 0,00</p>
             <p id="interceptoRegressao">Intercepto: 0,00</p>
-            <p id="resumoRegressao">A regressao linear mostra a tendencia media do lucro conforme as vendas aumentam.</p>
+            <p id="resumoRegressao">A regressão linear mostra a tendência média do lucro conforme as vendas aumentam.</p>
           </div>
         </div>
       </div>
     </div>
 
     <div class="ranking">
-      <h3>Ranking de regioes por faturamento</h3>
+      <h3>Ranking de regiões por faturamento</h3>
       <ul id="rankingRegioes"></ul>
     </div>
 

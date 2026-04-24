@@ -34,7 +34,7 @@ const traducoesRegioes = {
 }
 
 const traducoesProdutos = {
-  Camera: "Camera",
+  Camera: "Câmera",
   Headphones: "Fones de ouvido",
   Keyboard: "Teclado",
   Laptop: "Notebook",
@@ -97,15 +97,15 @@ async function carregarCSVPadrao() {
     const resposta = await fetch(ARQUIVO_PADRAO)
 
     if (!resposta.ok) {
-      throw new Error("Nao foi possivel carregar a base padrao.")
+      throw new Error("Não foi possível carregar a base padrão.")
     }
 
     const texto = await resposta.text()
     processarCSV(texto)
-    document.getElementById("alertas").innerText = "Base padrao carregada com sucesso."
+    document.getElementById("alertas").innerText = "Base padrão carregada com sucesso."
     alertas(dadosProcessados.produtos, dadosProcessados.regioes, dadosProcessados.categorias)
   } catch (erro) {
-    exibirErro("Nao foi possivel carregar a base CSV padrao.")
+    exibirErro("Não foi possível carregar a base CSV padrão.")
     console.error(erro)
   }
 }
@@ -125,7 +125,7 @@ function carregarCSVLocal(evento) {
       document.getElementById("alertas").innerText = `Arquivo carregado: ${arquivo.name}`
       alertas(dadosProcessados.produtos, dadosProcessados.regioes, dadosProcessados.categorias)
     } catch (erro) {
-      exibirErro("Nao foi possivel processar o arquivo selecionado.")
+      exibirErro("Não foi possível processar o arquivo selecionado.")
       console.error(erro)
     }
   }
@@ -142,7 +142,7 @@ function processarCSV(textoCSV) {
   const resultado = agregarDados(dados)
 
   if (!resultado) {
-    throw new Error("A base CSV nao possui registros validos.")
+    throw new Error("A base CSV não possui registros válidos.")
   }
 
   dadosProcessados = resultado
@@ -502,13 +502,13 @@ function alertas(produtos, regioes, categorias) {
   const categoriaMais = Object.entries(categorias).sort((a, b) => b[1] - a[1])[0]
 
   if (!produtoMenos || !regiaoMenos || !categoriaMais) {
-    document.getElementById("alertas").innerText = "Importe um arquivo CSV para visualizar os destaques da analise."
+    document.getElementById("alertas").innerText = "Importe um arquivo CSV para visualizar os destaques da análise."
     return
   }
 
   document.getElementById("alertas").innerText =
-    `Produto com menos saida: ${traduzirRotulo(produtoMenos[0])} (${produtoMenos[1]}) | ` +
-    `Regiao com menos vendas: ${traduzirRotulo(regiaoMenos[0])} | ` +
+    `Produto com menos saída: ${traduzirRotulo(produtoMenos[0])} (${produtoMenos[1]}) | ` +
+    `Região com menos vendas: ${traduzirRotulo(regiaoMenos[0])} | ` +
     `Categoria mais lucrativa: ${categoriaMais[0]}`
 }
 
@@ -525,14 +525,14 @@ function graficoDispersaoCorrelacao(pontos) {
     data: {
       datasets: [
         {
-          label: "Observacoes",
+          label: "Observações",
           data: pontos,
           backgroundColor: "rgba(44,123,229,0.65)",
           borderColor: "#2c7be5",
           pointRadius: 4,
         },
         {
-          label: "Reta de regressao",
+          label: "Reta de regressão",
           data: linhaRegressao,
           type: "line",
           borderColor: "#e74c3c",
@@ -666,7 +666,7 @@ function interpretarBoxplotCategorias(distribuicoes) {
     .filter((item) => item.outliers.length)
     .sort((a, b) => b.outliers.length - a.outliers.length)
 
-  let textoOutliers = "Nenhuma categoria apresentou outliers pelo criterio de 1,5 x IQR."
+  let textoOutliers = "Nenhuma categoria apresentou outliers pelo critério de 1,5 x IQR."
 
   if (categoriasComOutliers.length) {
     const destaqueOutlier = categoriasComOutliers[0]
@@ -730,20 +730,20 @@ function calcularQuantil(valoresOrdenados, percentual) {
 
 function traduzirLinhasTooltipBoxplot(valorFormatado) {
   if (!valorFormatado) {
-    return "Distribuicao das vendas"
+    return "Distribuição das vendas"
   }
 
   if (typeof valorFormatado === "object") {
     const linhas = [
-      `Minimo: ${valorFormatado.min}`,
+      `Mínimo: ${valorFormatado.min}`,
       `Q1: ${valorFormatado.q1}`,
       `Mediana: ${valorFormatado.median}`,
       `Q3: ${valorFormatado.q3}`,
-      `Maximo: ${valorFormatado.max}`,
+      `Máximo: ${valorFormatado.max}`,
     ]
 
     if (valorFormatado.mean != null) {
-      linhas.splice(3, 0, `Media: ${valorFormatado.mean}`)
+      linhas.splice(3, 0, `Média: ${valorFormatado.mean}`)
     }
 
     return linhas
@@ -752,39 +752,39 @@ function traduzirLinhasTooltipBoxplot(valorFormatado) {
   if (typeof valorFormatado === "string") {
     return valorFormatado.split(", ").map((parte) =>
       parte
-        .replace(/^min:/i, "Minimo:")
+        .replace(/^min:/i, "Mínimo:")
         .replace(/^25% quantile:/i, "Q1:")
         .replace(/^median:/i, "Mediana:")
-        .replace(/^mean:/i, "Media:")
+        .replace(/^mean:/i, "Média:")
         .replace(/^75% quantile:/i, "Q3:")
-        .replace(/^max:/i, "Maximo:")
+        .replace(/^max:/i, "Máximo:")
     )
   }
 
-  return "Distribuicao das vendas"
+  return "Distribuição das vendas"
 }
 
 function interpretarCorrelacao(pontos) {
   const correlacao = calcularCorrelacaoPearson(pontos)
   const r2 = correlacao ** 2
-  let tendencia = "Tendencia nula ou fraca"
+  let tendencia = "Tendência nula ou fraca"
   const correlacaoFormatada = correlacao.toFixed(2).replace(".", ",")
   const r2Formatado = r2.toFixed(2).replace(".", ",")
   const percentualExplicado = Math.round(r2 * 100)
   const percentualRestante = 100 - percentualExplicado
 
   if (correlacao > 0.3) {
-    tendencia = "Tendencia positiva"
+    tendencia = "Tendência positiva"
   } else if (correlacao < -0.3) {
-    tendencia = "Tendencia negativa"
+    tendencia = "Tendência negativa"
   }
 
   document.getElementById("tendenciaCorrelacao").innerText = tendencia
-  document.getElementById("valorCorrelacao").innerText = `Correlacao (Vendas x Lucro): ${correlacaoFormatada}`
+  document.getElementById("valorCorrelacao").innerText = `Correlação (Vendas x Lucro): ${correlacaoFormatada}`
   document.getElementById("valorR2").innerText =
-    `R² (coeficiente de determinacao): ${r2Formatado}. ` +
-    `Isso indica quanto da variacao do lucro pode ser explicada pelas vendas. ` +
-    `Cerca de ${percentualExplicado}% da variacao do lucro pode ser explicada pelas vendas, ` +
+    `R² (coeficiente de determinação): ${r2Formatado}. ` +
+    `Isso indica quanto da variação do lucro pode ser explicada pelas vendas. ` +
+    `Cerca de ${percentualExplicado}% da variação do lucro pode ser explicada pelas vendas, ` +
     `enquanto os outros ${percentualRestante}% podem estar associados a fatores adicionais.`
 }
 
@@ -795,13 +795,13 @@ function interpretarRegressao(pontos) {
   const r2Formatado = formatadorNumero.format(r2)
 
   document.getElementById("equacaoRegressao").innerText =
-    `Equacao da reta: y = ${inclinacaoFormatada}x + ${interceptoFormatado}`
+    `Equação da reta: y = ${inclinacaoFormatada}x + ${interceptoFormatado}`
   document.getElementById("inclinacaoRegressao").innerText =
-    `Inclinacao: ${inclinacaoFormatada}. Em media, o lucro tende a variar esse valor a cada aumento de 1 unidade em vendas.`
+    `Inclinação: ${inclinacaoFormatada}. Em média, o lucro tende a variar esse valor a cada aumento de 1 unidade em vendas.`
   document.getElementById("interceptoRegressao").innerText =
     `Intercepto: ${interceptoFormatado}. Este e o valor estimado do lucro quando x = 0.`
   document.getElementById("resumoRegressao").innerText =
-    `A reta de regressao resume a tendencia media entre vendas e lucro. O ajuste atual apresenta R² de ${r2Formatado}.`
+    `A reta de regressão resume a tendência média entre vendas e lucro. O ajuste atual apresenta R² de ${r2Formatado}.`
 }
 
 function calcularCorrelacaoPearson(pontos) {
