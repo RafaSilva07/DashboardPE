@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard de Analise de Vendas</title>
+  </head>
+  <body>
+    <h1>Dashboard de Analise de Vendas</h1>
+
+    <div class="upload">
+      <label class="botaoUpload">
+        Importar base CSV
+        <input type="file" id="csvFile" accept=".csv,text/csv" hidden />
+      </label>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <h3>Total de vendas</h3>
+        <p id="totalVendas">0</p>
+      </div>
+
+      <div class="card">
+        <h3>Total de lucro</h3>
+        <p id="totalLucro">0</p>
+      </div>
+
+      <div class="card">
+        <h3>Total de pedidos</h3>
+        <p id="totalPedidos">0</p>
+      </div>
+
+      <div class="card">
+        <h3>Ticket medio</h3>
+        <p id="ticketMedio">0</p>
+      </div>
+
+      <div class="card">
+        <h3>Media das vendas</h3>
+        <p id="mediaVendas">0</p>
+      </div>
+
+      <div class="card">
+        <h3>Mediana das vendas</h3>
+        <p id="medianaVendas">0</p>
+      </div>
+
+      <div class="card">
+        <h3>Moda das vendas</h3>
+        <p id="modaVendas">0</p>
+      </div>
+
+      <div class="card">
+        <h3>Desvio padrao</h3>
+        <p id="desvioPadraoVendas">0</p>
+        <span class="cardLegenda">Mostra o quanto as vendas costumam se afastar da media.</span>
+      </div>
+
+      <div class="card">
+        <h3>Variancia</h3>
+        <p id="varianciaVendas">0</p>
+        <span class="cardLegenda">Representa a dispersao dos valores em relacao a media.</span>
+      </div>
+    </div>
+
+    <div id="alertas">Carregando base padrao...</div>
+
+    <div class="grid">
+      <div class="grafico">
+        <div class="cabecalhoGrafico">
+          <h3 id="tituloGraficoProdutos">Produtos mais vendidos</h3>
+          <div class="alternadorGrafico" data-target="produtos">
+            <button type="button" class="ativo" data-mode="top">Mais vendidos</button>
+            <button type="button" data-mode="bottom">Menos vendidos</button>
+          </div>
+        </div>
+        <canvas id="graficoProdutos"></canvas>
+      </div>
+
+      <div class="grafico">
+        <div class="cabecalhoGrafico">
+          <h3 id="tituloGraficoLucroProdutos">Produtos mais lucrativos</h3>
+          <div class="alternadorGrafico" data-target="lucroProdutos">
+            <button type="button" class="ativo" data-mode="top">Maior lucro</button>
+            <button type="button" data-mode="bottom">Menor lucro</button>
+          </div>
+        </div>
+        <canvas id="graficoLucroProdutos"></canvas>
+      </div>
+
+      <div class="grafico">
+        <h3 id="tituloGraficoRegioes">Distribuicao de vendas por regiao</h3>
+        <canvas id="graficoRegioes"></canvas>
+      </div>
+
+      <div class="grafico">
+        <h3>Evolucao das vendas por ano</h3>
+        <canvas id="graficoAno"></canvas>
+      </div>
+
+      <div class="grafico">
+        <div class="cabecalhoGrafico">
+          <h3 id="tituloGraficoCategoria">Categorias mais lucrativas</h3>
+          <div class="alternadorGrafico" data-target="categorias">
+            <button type="button" class="ativo" data-mode="top">Maior lucro</button>
+            <button type="button" data-mode="bottom">Menor lucro</button>
+          </div>
+        </div>
+        <canvas id="graficoCategoria"></canvas>
+      </div>
+
+      <div class="grafico boxplot">
+        <h3>Distribuicao das vendas por categoria</h3>
+        <div class="boxplotConteudo">
+          <div class="boxplotGrafico">
+            <canvas id="graficoBoxplotCategoria"></canvas>
+            <div class="legendaExplicativa">
+              <p><strong>O boxplot</strong> (ou diagrama de caixa) e um grafico usado para resumir a distribuicao dos dados e mostrar, de forma visual, como os valores estao espalhados.</p>
+              <p><strong>Partes do boxplot:</strong> minimo, Q1, mediana, Q3, caixa central e outliers. Elas ajudam a identificar posicao central, dispersao e possiveis valores atipicos.</p>
+            </div>
+          </div>
+
+          <div class="boxplotTexto">
+            <h4>Leitura estatistica</h4>
+            <p id="resumoBoxplot">Importe um arquivo CSV para visualizar a dispersao das vendas por categoria.</p>
+            <p class="avisoBoxplot">Cada caixa resume a distribuicao dos valores de venda de uma categoria. A linha central indica a mediana, a altura da caixa representa a faixa interquartil e os pontos fora dos limites indicam possiveis outliers.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grafico correlacao">
+      <h3>Analise de correlacao: vendas x lucro</h3>
+
+      <div class="correlacaoConteudo">
+        <div class="correlacaoGrafico">
+          <canvas id="graficoCorrelacao"></canvas>
+        </div>
+
+        <div class="correlacaoTexto">
+          <h4>Interpretacao visual</h4>
+          <p id="tendenciaCorrelacao">Tendencia nula ou fraca</p>
+          <p id="valorCorrelacao">Correlacao (Vendas x Lucro): 0,00</p>
+          <p id="valorR2">R² (coeficiente de determinacao): 0,00. Isso indica quanto da variacao do lucro pode ser explicada pelas vendas.</p>
+          <p class="avisoCorrelacao">A relacao entre vendas e lucro pode mostrar uma tendencia positiva, mas isso nao prova causa direta. Outros fatores, como quantidade vendida, categoria dos produtos e margem de lucro, tambem influenciam os resultados.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="ranking">
+      <h3>Ranking de regioes por faturamento</h3>
+      <ul id="rankingRegioes"></ul>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
