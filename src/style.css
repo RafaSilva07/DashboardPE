@@ -197,6 +197,11 @@ h1 {
   min-height: 320px;
 }
 
+.correlacaoPainel {
+  display: grid;
+  gap: 16px;
+}
+
 .correlacaoTexto {
   background: #f8f9fc;
   border-radius: 8px;

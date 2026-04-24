@@ -304,6 +304,7 @@ function renderizarGraficos() {
   interpretarBoxplotCategorias(dadosProcessados.distribuicaoVendasCategorias)
   graficoDispersaoCorrelacao(dadosProcessados.paresCorrelacao)
   interpretarCorrelacao(dadosProcessados.paresCorrelacao)
+  interpretarRegressao(dadosProcessados.paresCorrelacao)
 }
 
 function configurarAlternadores() {
@@ -516,22 +517,35 @@ function graficoDispersaoCorrelacao(pontos) {
     graficoCorrelacao.destroy()
   }
 
+  const regressao = calcularRegressaoLinear(pontos)
+  const linhaRegressao = criarPontosDaReta(regressao)
+
   graficoCorrelacao = new Chart(document.getElementById("graficoCorrelacao"), {
     type: "scatter",
     data: {
       datasets: [
         {
-          label: "Vendas x Lucro",
+          label: "Observacoes",
           data: pontos,
           backgroundColor: "rgba(44,123,229,0.65)",
           borderColor: "#2c7be5",
           pointRadius: 4,
         },
+        {
+          label: "Reta de regressao",
+          data: linhaRegressao,
+          type: "line",
+          borderColor: "#e74c3c",
+          backgroundColor: "#e74c3c",
+          pointRadius: 0,
+          borderWidth: 2.5,
+          tension: 0,
+        },
       ],
     },
     options: {
       plugins: {
-        legend: { display: false },
+        legend: { display: true },
       },
       scales: {
         x: {
@@ -774,6 +788,22 @@ function interpretarCorrelacao(pontos) {
     `enquanto os outros ${percentualRestante}% podem estar associados a fatores adicionais.`
 }
 
+function interpretarRegressao(pontos) {
+  const { inclinacao, intercepto, r2 } = calcularRegressaoLinear(pontos)
+  const inclinacaoFormatada = formatadorNumero.format(inclinacao)
+  const interceptoFormatado = formatadorNumero.format(intercepto)
+  const r2Formatado = formatadorNumero.format(r2)
+
+  document.getElementById("equacaoRegressao").innerText =
+    `Equacao da reta: y = ${inclinacaoFormatada}x + ${interceptoFormatado}`
+  document.getElementById("inclinacaoRegressao").innerText =
+    `Inclinacao: ${inclinacaoFormatada}. Em media, o lucro tende a variar esse valor a cada aumento de 1 unidade em vendas.`
+  document.getElementById("interceptoRegressao").innerText =
+    `Intercepto: ${interceptoFormatado}. Este e o valor estimado do lucro quando x = 0.`
+  document.getElementById("resumoRegressao").innerText =
+    `A reta de regressao resume a tendencia media entre vendas e lucro. O ajuste atual apresenta R² de ${r2Formatado}.`
+}
+
 function calcularCorrelacaoPearson(pontos) {
   if (pontos.length < 2) {
     return 0
@@ -802,6 +832,57 @@ function calcularCorrelacaoPearson(pontos) {
   }
 
   return numerador / denominador
+}
+
+function calcularRegressaoLinear(pontos) {
+  if (pontos.length < 2) {
+    return {
+      inclinacao: 0,
+      intercepto: 0,
+      r2: 0,
+    }
+  }
+
+  let somaX = 0
+  let somaY = 0
+  let somaXY = 0
+  let somaX2 = 0
+
+  pontos.forEach((ponto) => {
+    somaX += ponto.x
+    somaY += ponto.y
+    somaXY += ponto.x * ponto.y
+    somaX2 += ponto.x * ponto.x
+  })
+
+  const n = pontos.length
+  const denominador = n * somaX2 - somaX * somaX
+  const inclinacao = denominador ? (n * somaXY - somaX * somaY) / denominador : 0
+  const mediaX = somaX / n
+  const mediaY = somaY / n
+  const intercepto = mediaY - inclinacao * mediaX
+  const correlacao = calcularCorrelacaoPearson(pontos)
+
+  return {
+    inclinacao,
+    intercepto,
+    r2: correlacao ** 2,
+  }
+}
+
+function criarPontosDaReta(regressao) {
+  if (!dadosProcessados?.paresCorrelacao?.length) {
+    return []
+  }
+
+  const valoresX = dadosProcessados.paresCorrelacao.map((ponto) => ponto.x)
+  const minimoX = Math.min(...valoresX)
+  const maximoX = Math.max(...valoresX)
+
+  return [
+    { x: minimoX, y: regressao.inclinacao * minimoX + regressao.intercepto },
+    { x: maximoX, y: regressao.inclinacao * maximoX + regressao.intercepto },
+  ]
 }
 
 function traduzirRotulo(valor) {
