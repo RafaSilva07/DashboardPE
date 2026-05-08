@@ -250,6 +250,10 @@ h1 {
   margin-top: 20px;
 }
 
+.alternadorCorrelacao {
+  max-width: 560px;
+}
+
 .boxplotConteudo {
   display: grid;
   grid-template-columns: minmax(0, 3fr) minmax(280px, 1fr);

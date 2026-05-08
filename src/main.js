@@ -15,6 +15,7 @@ let graficoBoxplot
 let graficoPeriodo
 let dadosProcessados = null
 let metricaPeriodo = "vendas"
+let categoriaCorrelacao = "geral"
 
 const ARQUIVO_PADRAO = "/default-data.csv"
 
@@ -46,6 +47,12 @@ const traducoesProdutos = {
   Smartphone: "Smartphone",
   Smartwatch: "Smartwatch",
   Tablet: "Tablet",
+}
+
+const traducoesCategorias = {
+  Accessories: "Acessórios",
+  Electronics: "Eletrônicos",
+  Office: "Escritório",
 }
 
 const configuracoesGraficos = {
@@ -94,6 +101,7 @@ document.getElementById("csvFile").addEventListener("change", carregarCSVLocal)
 document.getElementById("dataInicioPeriodo").addEventListener("change", renderizarGraficoPeriodo)
 document.getElementById("dataFimPeriodo").addEventListener("change", renderizarGraficoPeriodo)
 document.querySelector(".alternadorPeriodo").addEventListener("click", alternarMetricaPeriodo)
+document.getElementById("alternadorCorrelacao").addEventListener("click", alternarCategoriaCorrelacao)
 configurarAlternadores()
 carregarCSVPadrao()
 
@@ -222,7 +230,7 @@ function agregarDados(dados) {
     totalVendas += vendas
     totalLucro += lucro
     listaVendas.push(vendas)
-    paresCorrelacao.push({ x: vendas, y: lucro })
+    paresCorrelacao.push({ x: vendas, y: lucro, categoria })
     vendasPeriodo.push({ data: dataKey, vendas, lucro })
 
     if (!dataMaisAntiga || dataKey < dataMaisAntiga) {
@@ -328,13 +336,16 @@ function renderizarGraficos() {
   renderizarGraficoAlternavel("categorias")
   graficoBoxplotCategorias(dadosProcessados.distribuicaoVendasCategorias)
   interpretarBoxplotCategorias(dadosProcessados.distribuicaoVendasCategorias)
-  graficoDispersaoCorrelacao(dadosProcessados.paresCorrelacao)
-  interpretarCorrelacao(dadosProcessados.paresCorrelacao)
-  interpretarRegressao(dadosProcessados.paresCorrelacao)
+  configurarAlternadorCorrelacao()
+  renderizarAnaliseCorrelacao()
 }
 
 function configurarAlternadores() {
   document.querySelectorAll(".alternadorGrafico").forEach((alternador) => {
+    if (!alternador.dataset.target) {
+      return
+    }
+
     alternador.addEventListener("click", (evento) => {
       const botao = evento.target.closest("button")
 
@@ -354,6 +365,66 @@ function configurarAlternadores() {
       renderizarGraficoAlternavel(target)
     })
   })
+}
+
+function configurarAlternadorCorrelacao() {
+  const alternador = document.getElementById("alternadorCorrelacao")
+  const categorias = Object.keys(dadosProcessados.categorias).sort((a, b) =>
+    traduzirRotulo(a).localeCompare(traduzirRotulo(b), "pt-BR")
+  )
+
+  if (categoriaCorrelacao !== "geral" && !categorias.includes(categoriaCorrelacao)) {
+    categoriaCorrelacao = "geral"
+  }
+
+  alternador.innerHTML = ""
+  alternador.appendChild(criarBotaoCorrelacao("geral", "Geral", categoriaCorrelacao === "geral"))
+
+  categorias.forEach((categoria) => {
+    alternador.appendChild(criarBotaoCorrelacao(categoria, traduzirRotulo(categoria), categoriaCorrelacao === categoria))
+  })
+}
+
+function criarBotaoCorrelacao(categoria, rotulo, ativo) {
+  const botao = document.createElement("button")
+  botao.type = "button"
+  botao.dataset.category = categoria
+  botao.innerText = rotulo
+  botao.classList.toggle("ativo", ativo)
+
+  return botao
+}
+
+function alternarCategoriaCorrelacao(evento) {
+  const botao = evento.target.closest("button")
+
+  if (!botao) {
+    return
+  }
+
+  categoriaCorrelacao = botao.dataset.category
+
+  document.querySelectorAll("#alternadorCorrelacao button").forEach((item) => {
+    item.classList.toggle("ativo", item === botao)
+  })
+
+  renderizarAnaliseCorrelacao()
+}
+
+function renderizarAnaliseCorrelacao() {
+  const pontos = obterPontosCorrelacaoSelecionados()
+
+  graficoDispersaoCorrelacao(pontos)
+  interpretarCorrelacao(pontos)
+  interpretarRegressao(pontos)
+}
+
+function obterPontosCorrelacaoSelecionados() {
+  if (categoriaCorrelacao === "geral") {
+    return dadosProcessados.paresCorrelacao
+  }
+
+  return dadosProcessados.paresCorrelacao.filter((ponto) => ponto.categoria === categoriaCorrelacao)
 }
 
 function renderizarGraficoAlternavel(chave) {
@@ -674,7 +745,7 @@ function alertas(produtos, regioes, categorias) {
   document.getElementById("alertas").innerText =
     `Produto com menos saída: ${traduzirRotulo(produtoMenos[0])} (${produtoMenos[1]}) | ` +
     `Região com menos vendas: ${traduzirRotulo(regiaoMenos[0])} | ` +
-    `Categoria mais lucrativa: ${categoriaMais[0]}`
+    `Categoria mais lucrativa: ${traduzirRotulo(categoriaMais[0])}`
 }
 
 function graficoDispersaoCorrelacao(pontos) {
@@ -683,7 +754,7 @@ function graficoDispersaoCorrelacao(pontos) {
   }
 
   const regressao = calcularRegressaoLinear(pontos)
-  const linhaRegressao = criarPontosDaReta(regressao)
+  const linhaRegressao = criarPontosDaReta(regressao, pontos)
 
   graficoCorrelacao = new Chart(document.getElementById("graficoCorrelacao"), {
     type: "scatter",
@@ -930,11 +1001,19 @@ function traduzirLinhasTooltipBoxplot(valorFormatado) {
 }
 
 function interpretarCorrelacao(pontos) {
+  if (pontos.length < 2) {
+    document.getElementById("tendenciaCorrelacao").innerText = "Dados insuficientes"
+    document.getElementById("valorCorrelacao").innerText = "Correlação (Vendas x Lucro): não disponível"
+    document.getElementById("valorR2").innerText =
+      "R² (coeficiente de determinação): não disponível. São necessários pelo menos dois registros para calcular a correlação."
+    return
+  }
+
   const correlacao = calcularCorrelacaoPearson(pontos)
   const r2 = correlacao ** 2
   let tendencia = "Tendência nula ou fraca"
-  const correlacaoFormatada = correlacao.toFixed(2).replace(".", ",")
-  const r2Formatado = r2.toFixed(2).replace(".", ",")
+  const correlacaoFormatada = correlacao.toFixed(3).replace(".", ",")
+  const r2Formatado = r2.toFixed(3).replace(".", ",")
   const percentualExplicado = Math.round(r2 * 100)
   const percentualRestante = 100 - percentualExplicado
 
@@ -954,6 +1033,16 @@ function interpretarCorrelacao(pontos) {
 }
 
 function interpretarRegressao(pontos) {
+  if (pontos.length < 2) {
+    document.getElementById("equacaoRegressao").innerText = "Equação da reta: não disponível"
+    document.getElementById("inclinacaoRegressao").innerText =
+      "Inclinação: não disponível. São necessários pelo menos dois registros para estimar a reta."
+    document.getElementById("interceptoRegressao").innerText = "Intercepto: não disponível"
+    document.getElementById("resumoRegressao").innerText =
+      "A regressão linear não pode ser calculada para a categoria selecionada."
+    return
+  }
+
   const { inclinacao, intercepto, r2 } = calcularRegressaoLinear(pontos)
   const inclinacaoFormatada = formatadorNumero.format(inclinacao)
   const interceptoFormatado = formatadorNumero.format(intercepto)
@@ -1035,12 +1124,12 @@ function calcularRegressaoLinear(pontos) {
   }
 }
 
-function criarPontosDaReta(regressao) {
-  if (!dadosProcessados?.paresCorrelacao?.length) {
+function criarPontosDaReta(regressao, pontos) {
+  if (pontos.length < 2) {
     return []
   }
 
-  const valoresX = dadosProcessados.paresCorrelacao.map((ponto) => ponto.x)
+  const valoresX = pontos.map((ponto) => ponto.x)
   const minimoX = Math.min(...valoresX)
   const maximoX = Math.max(...valoresX)
 
@@ -1051,7 +1140,7 @@ function criarPontosDaReta(regressao) {
 }
 
 function traduzirRotulo(valor) {
-  return traducoesProdutos[valor] || traducoesRegioes[valor] || valor
+  return traducoesProdutos[valor] || traducoesRegioes[valor] || traducoesCategorias[valor] || valor
 }
 
 function obterDataPedido(valor) {
