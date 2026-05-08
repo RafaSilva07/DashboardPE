@@ -118,16 +118,22 @@
 
       <div class="grafico graficoPeriodo">
         <div class="cabecalhoGrafico">
-          <h3>Faturamento por período</h3>
-          <div class="filtroPeriodo">
-            <label class="campoFiltroData">
-              Data inicial
-              <input type="date" id="dataInicioPeriodo" />
-            </label>
-            <label class="campoFiltroData">
-              Data final
-              <input type="date" id="dataFimPeriodo" />
-            </label>
+          <h3 id="tituloGraficoPeriodo">Faturamento por período</h3>
+          <div class="controlesPeriodo">
+            <div class="alternadorGrafico alternadorPeriodo">
+              <button type="button" class="ativo" data-metric="vendas">Faturamento</button>
+              <button type="button" data-metric="lucro">Lucro</button>
+            </div>
+            <div class="filtroPeriodo">
+              <label class="campoFiltroData">
+                Data inicial
+                <input type="date" id="dataInicioPeriodo" />
+              </label>
+              <label class="campoFiltroData">
+                Data final
+                <input type="date" id="dataFimPeriodo" />
+              </label>
+            </div>
           </div>
         </div>
         <p id="resumoPeriodo">Selecione um intervalo para visualizar o faturamento.</p>

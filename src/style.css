@@ -207,6 +207,12 @@ h1 {
   color: #fff;
 }
 
+.controlesPeriodo {
+  display: grid;
+  gap: 10px;
+  justify-items: end;
+}
+
 .filtroPeriodo {
   display: flex;
   gap: 10px;
@@ -450,6 +456,10 @@ h1 {
 
   .filtroPeriodo {
     justify-content: flex-start;
+  }
+
+  .controlesPeriodo {
+    justify-items: start;
   }
 
   .acoesDataset {

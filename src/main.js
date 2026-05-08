@@ -14,6 +14,7 @@ let graficoCorrelacao
 let graficoBoxplot
 let graficoPeriodo
 let dadosProcessados = null
+let metricaPeriodo = "vendas"
 
 const ARQUIVO_PADRAO = "/default-data.csv"
 
@@ -92,6 +93,7 @@ const estadoAlternadores = {
 document.getElementById("csvFile").addEventListener("change", carregarCSVLocal)
 document.getElementById("dataInicioPeriodo").addEventListener("change", renderizarGraficoPeriodo)
 document.getElementById("dataFimPeriodo").addEventListener("change", renderizarGraficoPeriodo)
+document.querySelector(".alternadorPeriodo").addEventListener("click", alternarMetricaPeriodo)
 configurarAlternadores()
 carregarCSVPadrao()
 
@@ -221,7 +223,7 @@ function agregarDados(dados) {
     totalLucro += lucro
     listaVendas.push(vendas)
     paresCorrelacao.push({ x: vendas, y: lucro })
-    vendasPeriodo.push({ data: dataKey, vendas })
+    vendasPeriodo.push({ data: dataKey, vendas, lucro })
 
     if (!dataMaisAntiga || dataKey < dataMaisAntiga) {
       dataMaisAntiga = dataKey
@@ -511,6 +513,22 @@ function configurarFiltroPeriodo() {
   fimInput.value = fim
 }
 
+function alternarMetricaPeriodo(evento) {
+  const botao = evento.target.closest("button")
+
+  if (!botao) {
+    return
+  }
+
+  metricaPeriodo = botao.dataset.metric
+
+  document.querySelectorAll(".alternadorPeriodo button").forEach((item) => {
+    item.classList.toggle("ativo", item === botao)
+  })
+
+  renderizarGraficoPeriodo()
+}
+
 function renderizarGraficoPeriodo() {
   if (!dadosProcessados) {
     return
@@ -524,12 +542,14 @@ function renderizarGraficoPeriodo() {
     return
   }
 
+  const configuracaoMetrica = obterConfiguracaoMetricaPeriodo()
   const vendasFiltradas = dadosProcessados.vendasPeriodo.filter((item) => item.data >= inicio && item.data <= fim)
-  const totalPeriodo = vendasFiltradas.reduce((total, item) => total + item.vendas, 0)
-  const agrupamento = agruparVendasPeriodo(vendasFiltradas, inicio, fim)
+  const totalPeriodo = vendasFiltradas.reduce((total, item) => total + item[metricaPeriodo], 0)
+  const agrupamento = agruparDadosPeriodo(vendasFiltradas, inicio, fim, metricaPeriodo)
 
+  document.getElementById("tituloGraficoPeriodo").innerText = `${configuracaoMetrica.titulo} por período`
   resumo.innerText =
-    `Faturamento de ${formatarDataBR(inicio)} até ${formatarDataBR(fim)}: ` +
+    `${configuracaoMetrica.titulo} de ${formatarDataBR(inicio)} até ${formatarDataBR(fim)}: ` +
     `${formatadorMoeda.format(totalPeriodo)}`
 
   if (graficoPeriodo) {
@@ -542,10 +562,10 @@ function renderizarGraficoPeriodo() {
       labels: agrupamento.labels,
       datasets: [
         {
-          label: "Faturamento",
+          label: configuracaoMetrica.titulo,
           data: agrupamento.valores,
-          borderColor: "#10b981",
-          backgroundColor: "rgba(16, 185, 129, 0.18)",
+          borderColor: configuracaoMetrica.cor,
+          backgroundColor: configuracaoMetrica.fundo,
           fill: true,
           tension: 0.25,
           pointRadius: 3,
@@ -571,13 +591,29 @@ function renderizarGraficoPeriodo() {
   })
 }
 
-function agruparVendasPeriodo(vendas, inicio, fim) {
+function obterConfiguracaoMetricaPeriodo() {
+  if (metricaPeriodo === "lucro") {
+    return {
+      titulo: "Lucro",
+      cor: "#2c7be5",
+      fundo: "rgba(44, 123, 229, 0.16)",
+    }
+  }
+
+  return {
+    titulo: "Faturamento",
+    cor: "#10b981",
+    fundo: "rgba(16, 185, 129, 0.18)",
+  }
+}
+
+function agruparDadosPeriodo(vendas, inicio, fim, metrica) {
   const agruparPorMes = calcularDiferencaDias(inicio, fim) > 90
   const totais = {}
 
   vendas.forEach((item) => {
     const chave = agruparPorMes ? item.data.slice(0, 7) : item.data
-    totais[chave] = (totais[chave] || 0) + item.vendas
+    totais[chave] = (totais[chave] || 0) + item[metrica]
   })
 
   const ordenado = Object.entries(totais).sort(([dataA], [dataB]) => dataA.localeCompare(dataB))
