@@ -16,9 +16,18 @@ h1 {
   margin-bottom: 25px;
 }
 
-.regrasDataset {
+.acoesDataset {
   max-width: 820px;
   margin: 14px auto 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.regrasDataset {
+  flex: 0 1 auto;
   text-align: center;
 }
 
@@ -87,6 +96,27 @@ h1 {
   font-weight: bold;
   cursor: pointer;
   display: inline-block;
+}
+
+.botaoDownloadDataset {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 41px;
+  padding: 0 18px;
+  border: 1px solid #1f9f7a;
+  border-radius: 999px;
+  background: #10b981;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 3px 8px rgba(16, 185, 129, 0.18);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.botaoDownloadDataset:hover {
+  background: #059669;
+  transform: translateY(-1px);
 }
 
 .cards {
@@ -175,6 +205,39 @@ h1 {
   background: #2c7be5;
   border-color: #2c7be5;
   color: #fff;
+}
+
+.filtroPeriodo {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.campoFiltroData {
+  display: grid;
+  gap: 6px;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.campoFiltroData input {
+  min-height: 38px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #0f172a;
+  font: inherit;
+  font-size: 14px;
+  padding: 0 10px;
+}
+
+#resumoPeriodo {
+  margin: 0 0 14px;
+  color: #334155;
+  font-weight: 700;
 }
 
 .correlacao {
@@ -383,5 +446,18 @@ h1 {
 
   .alternadorGrafico {
     justify-content: flex-start;
+  }
+
+  .filtroPeriodo {
+    justify-content: flex-start;
+  }
+
+  .acoesDataset {
+    align-items: stretch;
+  }
+
+  .regrasDataset,
+  .botaoDownloadDataset {
+    flex-basis: 100%;
   }
 }

@@ -13,20 +13,23 @@
         Importar base CSV
         <input type="file" id="csvFile" accept=".csv,text/csv" hidden />
       </label>
-      <details class="regrasDataset">
-        <summary>Regras do dataset <span class="setaResumo">▼</span></summary>
-        <div class="avisoDataset">
-          <strong>Formato esperado do dataset:</strong>
-          <p>Envie um arquivo no formato <strong>CSV</strong> com cabeçalho na primeira linha.</p>
-          <p><strong>Colunas obrigatórias:</strong> <code>Order Date</code>, <code>Product Name</code>, <code>Category</code>, <code>Region</code>, <code>Quantity</code>, <code>Sales</code> e <code>Profit</code>.</p>
-          <p><strong>Regras importantes:</strong> datas válidas em <code>Order Date</code> e valores numéricos em <code>Quantity</code>, <code>Sales</code> e <code>Profit</code>.</p>
-          <p><strong>Exemplo de cabeçalho:</strong></p>
-          <p><code>Order Date,Product Name,Category,Region,Quantity,Sales,Profit</code></p>
-          <p><strong>Exemplo de linha válida:</strong></p>
-          <p><code>2024-12-31,Printer,Office,North,4,3640,348.93</code></p>
-          <p><strong>Exemplo do formato dos dados:</strong> <code>Order Date</code> como <code>2024-12-31</code>, <code>Region</code> como <code>North</code>, <code>Quantity</code> como <code>4</code> e <code>Profit</code> como <code>348.93</code>.</p>
-        </div>
-      </details>
+      <div class="acoesDataset">
+        <details class="regrasDataset">
+          <summary>Regras do dataset <span class="setaResumo">▼</span></summary>
+          <div class="avisoDataset">
+            <strong>Formato esperado do dataset:</strong>
+            <p>Envie um arquivo no formato <strong>CSV</strong> com cabeçalho na primeira linha.</p>
+            <p><strong>Colunas obrigatórias:</strong> <code>Order Date</code>, <code>Product Name</code>, <code>Category</code>, <code>Region</code>, <code>Quantity</code>, <code>Sales</code> e <code>Profit</code>.</p>
+            <p><strong>Regras importantes:</strong> datas válidas em <code>Order Date</code> e valores numéricos em <code>Quantity</code>, <code>Sales</code> e <code>Profit</code>.</p>
+            <p><strong>Exemplo de cabeçalho:</strong></p>
+            <p><code>Order Date,Product Name,Category,Region,Quantity,Sales,Profit</code></p>
+            <p><strong>Exemplo de linha válida:</strong></p>
+            <p><code>2024-12-31,Printer,Office,North,4,3640,348.93</code></p>
+            <p><strong>Exemplo do formato dos dados:</strong> <code>Order Date</code> como <code>2024-12-31</code>, <code>Region</code> como <code>North</code>, <code>Quantity</code> como <code>4</code> e <code>Profit</code> como <code>348.93</code>.</p>
+          </div>
+        </details>
+        <a class="botaoDownloadDataset" href="/default-data.csv" download="dataset-vendas.csv">Baixar dataset</a>
+      </div>
     </div>
 
     <div class="cards">
@@ -111,6 +114,24 @@
       <div class="grafico">
         <h3>Evolução das vendas por ano</h3>
         <canvas id="graficoAno"></canvas>
+      </div>
+
+      <div class="grafico graficoPeriodo">
+        <div class="cabecalhoGrafico">
+          <h3>Faturamento por período</h3>
+          <div class="filtroPeriodo">
+            <label class="campoFiltroData">
+              Data inicial
+              <input type="date" id="dataInicioPeriodo" />
+            </label>
+            <label class="campoFiltroData">
+              Data final
+              <input type="date" id="dataFimPeriodo" />
+            </label>
+          </div>
+        </div>
+        <p id="resumoPeriodo">Selecione um intervalo para visualizar o faturamento.</p>
+        <canvas id="graficoPeriodo"></canvas>
       </div>
 
       <div class="grafico">

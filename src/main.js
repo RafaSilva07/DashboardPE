@@ -12,6 +12,7 @@ let graficoAno
 let graficoCategoria
 let graficoCorrelacao
 let graficoBoxplot
+let graficoPeriodo
 let dadosProcessados = null
 
 const ARQUIVO_PADRAO = "/default-data.csv"
@@ -89,6 +90,8 @@ const estadoAlternadores = {
 }
 
 document.getElementById("csvFile").addEventListener("change", carregarCSVLocal)
+document.getElementById("dataInicioPeriodo").addEventListener("change", renderizarGraficoPeriodo)
+document.getElementById("dataFimPeriodo").addEventListener("change", renderizarGraficoPeriodo)
 configurarAlternadores()
 carregarCSVPadrao()
 
@@ -175,9 +178,12 @@ function agregarDados(dados) {
   const categorias = {}
   const distribuicaoVendasCategorias = {}
   const paresCorrelacao = []
+  const vendasPeriodo = []
   let totalVendas = 0
   let totalLucro = 0
   const listaVendas = []
+  let dataMaisAntiga = null
+  let dataMaisNova = null
 
   dados.forEach((item) => {
     const produto = item["Product Name"]?.trim()
@@ -187,16 +193,18 @@ function agregarDados(dados) {
     const quantidade = Number(item["Quantity"])
     const vendas = Number(item["Sales"])
     const lucro = Number(item["Profit"])
-    const dataPedido = new Date(item["Order Date"])
+    const dataPedido = obterDataPedido(item["Order Date"])
     const ano = dataPedido.getFullYear()
 
     if (!produto || !regiao || !categoria) {
       return
     }
 
-    if ([quantidade, vendas, lucro, ano].some((valor) => Number.isNaN(valor))) {
+    if ([quantidade, vendas, lucro, ano].some((valor) => Number.isNaN(valor)) || Number.isNaN(dataPedido.getTime())) {
       return
     }
+
+    const dataKey = formatarDataISO(dataPedido)
 
     produtos[produto] = (produtos[produto] || 0) + quantidade
     lucroProdutos[produto] = (lucroProdutos[produto] || 0) + lucro
@@ -213,6 +221,15 @@ function agregarDados(dados) {
     totalLucro += lucro
     listaVendas.push(vendas)
     paresCorrelacao.push({ x: vendas, y: lucro })
+    vendasPeriodo.push({ data: dataKey, vendas })
+
+    if (!dataMaisAntiga || dataKey < dataMaisAntiga) {
+      dataMaisAntiga = dataKey
+    }
+
+    if (!dataMaisNova || dataKey > dataMaisNova) {
+      dataMaisNova = dataKey
+    }
   })
 
   if (!listaVendas.length) {
@@ -229,6 +246,11 @@ function agregarDados(dados) {
     categorias,
     distribuicaoVendasCategorias,
     paresCorrelacao,
+    vendasPeriodo,
+    intervaloDatas: {
+      inicio: dataMaisAntiga,
+      fim: dataMaisNova,
+    },
     metricas,
   }
 }
@@ -299,6 +321,8 @@ function renderizarGraficos() {
   renderizarGraficoAlternavel("lucroProdutos")
   graficoPizza(dadosProcessados.regioes, "graficoRegioes")
   graficoLinha(dadosProcessados.anos, "graficoAno")
+  configurarFiltroPeriodo()
+  renderizarGraficoPeriodo()
   renderizarGraficoAlternavel("categorias")
   graficoBoxplotCategorias(dadosProcessados.distribuicaoVendasCategorias)
   interpretarBoxplotCategorias(dadosProcessados.distribuicaoVendasCategorias)
@@ -464,6 +488,111 @@ function graficoLinha(data, id) {
       ],
     },
   })
+}
+
+function configurarFiltroPeriodo() {
+  const inicioInput = document.getElementById("dataInicioPeriodo")
+  const fimInput = document.getElementById("dataFimPeriodo")
+  const { inicio, fim } = dadosProcessados.intervaloDatas
+
+  if (!inicio || !fim) {
+    inicioInput.disabled = true
+    fimInput.disabled = true
+    return
+  }
+
+  inicioInput.disabled = false
+  fimInput.disabled = false
+  inicioInput.min = inicio
+  inicioInput.max = fim
+  fimInput.min = inicio
+  fimInput.max = fim
+  inicioInput.value = inicio
+  fimInput.value = fim
+}
+
+function renderizarGraficoPeriodo() {
+  if (!dadosProcessados) {
+    return
+  }
+
+  const inicio = document.getElementById("dataInicioPeriodo").value
+  const fim = document.getElementById("dataFimPeriodo").value
+  const resumo = document.getElementById("resumoPeriodo")
+
+  if (!inicio || !fim) {
+    return
+  }
+
+  const vendasFiltradas = dadosProcessados.vendasPeriodo.filter((item) => item.data >= inicio && item.data <= fim)
+  const totalPeriodo = vendasFiltradas.reduce((total, item) => total + item.vendas, 0)
+  const agrupamento = agruparVendasPeriodo(vendasFiltradas, inicio, fim)
+
+  resumo.innerText =
+    `Faturamento de ${formatarDataBR(inicio)} até ${formatarDataBR(fim)}: ` +
+    `${formatadorMoeda.format(totalPeriodo)}`
+
+  if (graficoPeriodo) {
+    graficoPeriodo.destroy()
+  }
+
+  graficoPeriodo = new Chart(document.getElementById("graficoPeriodo"), {
+    type: "line",
+    data: {
+      labels: agrupamento.labels,
+      datasets: [
+        {
+          label: "Faturamento",
+          data: agrupamento.valores,
+          borderColor: "#10b981",
+          backgroundColor: "rgba(16, 185, 129, 0.18)",
+          fill: true,
+          tension: 0.25,
+          pointRadius: 3,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: {
+          display: false,
+        },
+      },
+      scales: {
+        y: {
+          ticks: {
+            callback: (valor) => formatadorMoeda.format(valor),
+          },
+        },
+      },
+    },
+  })
+}
+
+function agruparVendasPeriodo(vendas, inicio, fim) {
+  const agruparPorMes = calcularDiferencaDias(inicio, fim) > 90
+  const totais = {}
+
+  vendas.forEach((item) => {
+    const chave = agruparPorMes ? item.data.slice(0, 7) : item.data
+    totais[chave] = (totais[chave] || 0) + item.vendas
+  })
+
+  const ordenado = Object.entries(totais).sort(([dataA], [dataB]) => dataA.localeCompare(dataB))
+
+  if (!ordenado.length) {
+    return {
+      labels: ["Sem dados"],
+      valores: [0],
+    }
+  }
+
+  return {
+    labels: ordenado.map(([data]) => (agruparPorMes ? formatarMesAno(data) : formatarDataBR(data))),
+    valores: ordenado.map(([, valor]) => valor),
+  }
 }
 
 function ranking(regioes) {
@@ -887,6 +1016,48 @@ function criarPontosDaReta(regressao) {
 
 function traduzirRotulo(valor) {
   return traducoesProdutos[valor] || traducoesRegioes[valor] || valor
+}
+
+function obterDataPedido(valor) {
+  const texto = String(valor || "").trim()
+  const partesISO = texto.match(/^(\d{4})-(\d{2})-(\d{2})$/)
+
+  if (partesISO) {
+    const [, ano, mes, dia] = partesISO
+    return new Date(Number(ano), Number(mes) - 1, Number(dia))
+  }
+
+  return new Date(texto)
+}
+
+function formatarDataISO(data) {
+  const ano = data.getFullYear()
+  const mes = String(data.getMonth() + 1).padStart(2, "0")
+  const dia = String(data.getDate()).padStart(2, "0")
+
+  return `${ano}-${mes}-${dia}`
+}
+
+function criarDataLocalDeISO(dataISO) {
+  const [ano, mes, dia] = dataISO.split("-").map(Number)
+  return new Date(ano, mes - 1, dia)
+}
+
+function formatarDataBR(dataISO) {
+  return criarDataLocalDeISO(dataISO).toLocaleDateString("pt-BR")
+}
+
+function formatarMesAno(mesISO) {
+  const [ano, mes] = mesISO.split("-").map(Number)
+  return new Date(ano, mes - 1, 1).toLocaleDateString("pt-BR", {
+    month: "2-digit",
+    year: "numeric",
+  })
+}
+
+function calcularDiferencaDias(inicio, fim) {
+  const umDia = 1000 * 60 * 60 * 24
+  return Math.round((criarDataLocalDeISO(fim) - criarDataLocalDeISO(inicio)) / umDia)
 }
 
 function exibirErro(mensagem) {
