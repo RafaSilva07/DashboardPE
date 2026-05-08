@@ -16,6 +16,8 @@ let graficoPeriodo
 let dadosProcessados = null
 let metricaPeriodo = "vendas"
 let categoriaCorrelacao = "geral"
+let categoriaHeatmap = "geral"
+let anoHeatmap = ""
 
 const ARQUIVO_PADRAO = "/default-data.csv"
 
@@ -102,6 +104,8 @@ document.getElementById("dataInicioPeriodo").addEventListener("change", renderiz
 document.getElementById("dataFimPeriodo").addEventListener("change", renderizarGraficoPeriodo)
 document.querySelector(".alternadorPeriodo").addEventListener("click", alternarMetricaPeriodo)
 document.getElementById("alternadorCorrelacao").addEventListener("click", alternarCategoriaCorrelacao)
+document.getElementById("alternadorHeatmap").addEventListener("click", alternarCategoriaHeatmap)
+document.getElementById("anoHeatmap").addEventListener("change", alternarAnoHeatmap)
 configurarAlternadores()
 carregarCSVPadrao()
 
@@ -189,6 +193,7 @@ function agregarDados(dados) {
   const distribuicaoVendasCategorias = {}
   const paresCorrelacao = []
   const vendasPeriodo = []
+  const vendasHeatmap = []
   let totalVendas = 0
   let totalLucro = 0
   const listaVendas = []
@@ -232,6 +237,7 @@ function agregarDados(dados) {
     listaVendas.push(vendas)
     paresCorrelacao.push({ x: vendas, y: lucro, categoria })
     vendasPeriodo.push({ data: dataKey, vendas, lucro })
+    vendasHeatmap.push({ mes: dataKey.slice(0, 7), regiao, categoria, vendas })
 
     if (!dataMaisAntiga || dataKey < dataMaisAntiga) {
       dataMaisAntiga = dataKey
@@ -257,6 +263,7 @@ function agregarDados(dados) {
     distribuicaoVendasCategorias,
     paresCorrelacao,
     vendasPeriodo,
+    vendasHeatmap,
     intervaloDatas: {
       inicio: dataMaisAntiga,
       fim: dataMaisNova,
@@ -334,6 +341,9 @@ function renderizarGraficos() {
   configurarFiltroPeriodo()
   renderizarGraficoPeriodo()
   renderizarGraficoAlternavel("categorias")
+  configurarAlternadorHeatmap()
+  configurarFiltroAnoHeatmap()
+  renderizarHeatmapVendas()
   graficoBoxplotCategorias(dadosProcessados.distribuicaoVendasCategorias)
   interpretarBoxplotCategorias(dadosProcessados.distribuicaoVendasCategorias)
   configurarAlternadorCorrelacao()
@@ -378,14 +388,14 @@ function configurarAlternadorCorrelacao() {
   }
 
   alternador.innerHTML = ""
-  alternador.appendChild(criarBotaoCorrelacao("geral", "Geral", categoriaCorrelacao === "geral"))
+  alternador.appendChild(criarBotaoCategoria("geral", "Geral", categoriaCorrelacao === "geral"))
 
   categorias.forEach((categoria) => {
-    alternador.appendChild(criarBotaoCorrelacao(categoria, traduzirRotulo(categoria), categoriaCorrelacao === categoria))
+    alternador.appendChild(criarBotaoCategoria(categoria, traduzirRotulo(categoria), categoriaCorrelacao === categoria))
   })
 }
 
-function criarBotaoCorrelacao(categoria, rotulo, ativo) {
+function criarBotaoCategoria(categoria, rotulo, ativo) {
   const botao = document.createElement("button")
   botao.type = "button"
   botao.dataset.category = categoria
@@ -425,6 +435,176 @@ function obterPontosCorrelacaoSelecionados() {
   }
 
   return dadosProcessados.paresCorrelacao.filter((ponto) => ponto.categoria === categoriaCorrelacao)
+}
+
+function configurarAlternadorHeatmap() {
+  const alternador = document.getElementById("alternadorHeatmap")
+  const categorias = obterCategoriasOrdenadas()
+
+  if (categoriaHeatmap !== "geral" && !categorias.includes(categoriaHeatmap)) {
+    categoriaHeatmap = "geral"
+  }
+
+  alternador.innerHTML = ""
+  alternador.appendChild(criarBotaoCategoria("geral", "Geral", categoriaHeatmap === "geral"))
+
+  categorias.forEach((categoria) => {
+    alternador.appendChild(criarBotaoCategoria(categoria, traduzirRotulo(categoria), categoriaHeatmap === categoria))
+  })
+}
+
+function configurarFiltroAnoHeatmap() {
+  const select = document.getElementById("anoHeatmap")
+  const anos = obterAnosHeatmap()
+
+  if (!anos.length) {
+    select.innerHTML = ""
+    select.disabled = true
+    anoHeatmap = ""
+    return
+  }
+
+  if (!anoHeatmap || !anos.includes(anoHeatmap)) {
+    anoHeatmap = anos[anos.length - 1]
+  }
+
+  select.disabled = false
+  select.innerHTML = ""
+
+  anos.forEach((ano) => {
+    const option = document.createElement("option")
+    option.value = ano
+    option.innerText = ano
+    option.selected = ano === anoHeatmap
+    select.appendChild(option)
+  })
+}
+
+function alternarCategoriaHeatmap(evento) {
+  const botao = evento.target.closest("button")
+
+  if (!botao) {
+    return
+  }
+
+  categoriaHeatmap = botao.dataset.category
+
+  document.querySelectorAll("#alternadorHeatmap button").forEach((item) => {
+    item.classList.toggle("ativo", item === botao)
+  })
+
+  renderizarHeatmapVendas()
+}
+
+function alternarAnoHeatmap(evento) {
+  anoHeatmap = evento.target.value
+  renderizarHeatmapVendas()
+}
+
+function renderizarHeatmapVendas() {
+  const tabela = document.getElementById("tabelaHeatmap")
+  const resumo = document.getElementById("resumoHeatmap")
+  const dados = obterDadosHeatmapSelecionados()
+  const meses = criarMesesDoAno(anoHeatmap)
+  const regioes = [...new Set(dadosProcessados.vendasHeatmap.map((item) => item.regiao))].sort((a, b) =>
+    traduzirRotulo(a).localeCompare(traduzirRotulo(b), "pt-BR")
+  )
+  const matriz = criarMatrizHeatmap(dados)
+  const maiorValor = Math.max(...Object.values(matriz), 0)
+  const total = dados.reduce((soma, item) => soma + item.vendas, 0)
+  const rotuloCategoria = categoriaHeatmap === "geral" ? "todas as categorias" : traduzirRotulo(categoriaHeatmap)
+
+  tabela.innerHTML = ""
+  resumo.innerText = `Vendas por mês e região em ${rotuloCategoria} no ano de ${anoHeatmap}: ${formatadorMoeda.format(total)}`
+
+  if (!meses.length || !regioes.length) {
+    tabela.appendChild(criarLinhaHeatmap(["Sem dados para exibir."]))
+    return
+  }
+
+  const cabecalho = document.createElement("thead")
+  cabecalho.appendChild(criarLinhaHeatmap(["Região", ...meses.map(formatarMesCurto)], "th"))
+  tabela.appendChild(cabecalho)
+
+  const corpo = document.createElement("tbody")
+
+  regioes.forEach((regiao) => {
+    const tr = document.createElement("tr")
+    const th = document.createElement("td")
+    th.innerText = traduzirRotulo(regiao)
+    tr.appendChild(th)
+
+    meses.forEach((mes) => {
+      const valor = matriz[`${regiao}|${mes}`] || 0
+      const td = document.createElement("td")
+      td.innerText = formatadorMoeda.format(valor)
+      td.style.backgroundColor = obterCorHeatmap(valor, maiorValor)
+      td.style.color = valor && valor / maiorValor > 0.65 ? "#ffffff" : "#0f172a"
+      td.title = `${traduzirRotulo(regiao)} em ${formatarMesAno(mes)}: ${formatadorMoeda.format(valor)}`
+      tr.appendChild(td)
+    })
+
+    corpo.appendChild(tr)
+  })
+
+  tabela.appendChild(corpo)
+}
+
+function obterDadosHeatmapSelecionados() {
+  const dadosDoAno = dadosProcessados.vendasHeatmap.filter((item) => item.mes.startsWith(`${anoHeatmap}-`))
+
+  if (categoriaHeatmap === "geral") {
+    return dadosDoAno
+  }
+
+  return dadosDoAno.filter((item) => item.categoria === categoriaHeatmap)
+}
+
+function criarMatrizHeatmap(dados) {
+  return dados.reduce((matriz, item) => {
+    const chave = `${item.regiao}|${item.mes}`
+    matriz[chave] = (matriz[chave] || 0) + item.vendas
+    return matriz
+  }, {})
+}
+
+function criarLinhaHeatmap(celulas, tipo = "td") {
+  const tr = document.createElement("tr")
+
+  celulas.forEach((texto) => {
+    const celula = document.createElement(tipo)
+    celula.innerText = texto
+    tr.appendChild(celula)
+  })
+
+  return tr
+}
+
+function obterCorHeatmap(valor, maiorValor) {
+  if (!valor || !maiorValor) {
+    return "#f8fafc"
+  }
+
+  const intensidade = Math.max(0.12, valor / maiorValor)
+  return `rgba(44, 123, 229, ${intensidade})`
+}
+
+function obterCategoriasOrdenadas() {
+  return Object.keys(dadosProcessados.categorias).sort((a, b) =>
+    traduzirRotulo(a).localeCompare(traduzirRotulo(b), "pt-BR")
+  )
+}
+
+function obterAnosHeatmap() {
+  return [...new Set(dadosProcessados.vendasHeatmap.map((item) => item.mes.slice(0, 4)))].sort()
+}
+
+function criarMesesDoAno(ano) {
+  if (!ano) {
+    return []
+  }
+
+  return Array.from({ length: 12 }, (_, indice) => `${ano}-${String(indice + 1).padStart(2, "0")}`)
 }
 
 function renderizarGraficoAlternavel(chave) {
@@ -1178,6 +1358,15 @@ function formatarMesAno(mesISO) {
     month: "2-digit",
     year: "numeric",
   })
+}
+
+function formatarMesCurto(mesISO) {
+  const [ano, mes] = mesISO.split("-").map(Number)
+  const rotulo = new Date(ano, mes - 1, 1).toLocaleDateString("pt-BR", {
+    month: "short",
+  })
+
+  return rotulo.replace(".", "")
 }
 
 function calcularDiferencaDias(inicio, fim) {

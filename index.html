@@ -151,6 +151,25 @@
         <canvas id="graficoCategoria"></canvas>
       </div>
 
+      <div class="grafico heatmapVendas">
+        <div class="cabecalhoGrafico">
+          <h3>Heatmap de vendas por mês e região</h3>
+          <div class="controlesHeatmap">
+            <label class="campoFiltroData campoAnoHeatmap">
+              Ano
+              <select id="anoHeatmap"></select>
+            </label>
+            <div class="alternadorGrafico alternadorHeatmap" id="alternadorHeatmap">
+              <button type="button" class="ativo" data-category="geral">Geral</button>
+            </div>
+          </div>
+        </div>
+        <p id="resumoHeatmap">Compare o faturamento mensal entre as regiões.</p>
+        <div class="heatmapScroll">
+          <table class="tabelaHeatmap" id="tabelaHeatmap"></table>
+        </div>
+      </div>
+
       <div class="grafico boxplot">
         <h3>Distribuição das vendas por categoria</h3>
         <div class="boxplotConteudo">
