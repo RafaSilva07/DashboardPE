@@ -7,3 +7,9 @@
     at renderizarGraficos (http://localhost:5173/src/main.js?t=1778284112268:343:3)
     at processarCSV (http://localhost:5173/src/main.js?t=1778284112268:168:3)
     at carregarCSVPadrao (http://localhost:5173/src/main.js?t=1778284112268:122:5)
+[2m21:05:53[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mSyntaxError[22m: Identifier 'configurarTema' has already been declared
+[39m
+[2m21:06:01[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mSyntaxError[22m: Identifier 'traduzirRotulo' has already been declared
+[39m
+[2m21:06:18[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mSyntaxError[22m: Identifier 'traduzirRotulo' has already been declared
+[39m

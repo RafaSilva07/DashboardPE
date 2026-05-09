@@ -120,6 +120,41 @@ h1 {
   margin-bottom: 25px;
 }
 
+.dashboardShell {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.secaoDashboard {
+  margin-bottom: 26px;
+}
+
+.secaoCabecalho {
+  margin-bottom: 14px;
+  display: grid;
+  gap: 4px;
+}
+
+.secaoCabecalho span {
+  color: #2c7be5;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.secaoCabecalho h2 {
+  margin: 0;
+  color: var(--textoForte);
+  font-size: 22px;
+}
+
+.secaoCabecalho p {
+  margin: 0;
+  color: var(--textoDiscreto);
+  line-height: 1.5;
+}
+
 .acoesDataset {
   max-width: 820px;
   margin: 14px auto 0;
@@ -557,6 +592,9 @@ h1 {
   border-radius: 6px;
   font-weight: bold;
   margin-bottom: 20px;
+  max-width: 1180px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .ranking {

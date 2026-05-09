@@ -41,6 +41,14 @@
       </div>
     </div>
 
+    <main class="dashboardShell">
+      <section class="secaoDashboard">
+        <div class="secaoCabecalho">
+          <span>Resumo executivo</span>
+          <h2>Indicadores principais</h2>
+          <p>Visão rápida dos totais, medidas de tendência central e dispersão das vendas.</p>
+        </div>
+
     <div class="cards">
       <div class="card">
         <h3>Total de vendas</h3>
@@ -90,7 +98,16 @@
       </div>
     </div>
 
+      </section>
+
     <div id="alertas">Carregando base padrão...</div>
+
+      <section class="secaoDashboard">
+        <div class="secaoCabecalho">
+          <span>Produtos</span>
+          <h2>Performance de produtos</h2>
+          <p>Compare volume vendido e lucro por produto para encontrar destaques e pontos de atenção.</p>
+        </div>
 
     <div class="grid">
       <div class="grafico">
@@ -115,6 +132,17 @@
         <canvas id="graficoLucroProdutos"></canvas>
       </div>
 
+    </div>
+      </section>
+
+      <section class="secaoDashboard">
+        <div class="secaoCabecalho">
+          <span>Operação</span>
+          <h2>Tempo, regiões e categorias</h2>
+          <p>Acompanhe evolução temporal, distribuição geográfica e desempenho por categoria.</p>
+        </div>
+
+    <div class="grid">
       <div class="grafico">
         <h3 id="tituloGraficoRegioes">Distribuição de vendas por região</h3>
         <canvas id="graficoRegioes"></canvas>
@@ -179,6 +207,17 @@
         </div>
       </div>
 
+    </div>
+      </section>
+
+      <section class="secaoDashboard">
+        <div class="secaoCabecalho">
+          <span>Estatística</span>
+          <h2>Análises avançadas</h2>
+          <p>Explore dispersão, correlação e regressão para entender padrões além dos totais.</p>
+        </div>
+
+    <div class="grid">
       <div class="grafico boxplot">
         <h3>Distribuição das vendas por categoria</h3>
         <div class="boxplotConteudo">
@@ -231,11 +270,21 @@
         </div>
       </div>
     </div>
+      </section>
+
+      <section class="secaoDashboard">
+        <div class="secaoCabecalho">
+          <span>Ranking</span>
+          <h2>Regiões por faturamento</h2>
+          <p>Ordenação das regiões para comparar rapidamente a participação no faturamento.</p>
+        </div>
 
     <div class="ranking">
       <h3>Ranking de regiões por faturamento</h3>
       <ul id="rankingRegioes"></ul>
     </div>
+      </section>
+    </main>
 
     <script type="module" src="/src/main.js"></script>
   </body>

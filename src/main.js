@@ -2,6 +2,19 @@ import "./style.css"
 import Papa from "papaparse"
 import { Chart, registerables } from "chart.js"
 import { BoxAndWiskers, BoxPlotController } from "@sgratzl/chartjs-chart-boxplot"
+import { configuracoesGraficos, estadoAlternadores } from "./constants/chartConfig.js"
+import { traduzirRotulo } from "./constants/translations.js"
+import {
+  calcularDiferencaDias,
+  formatadorMoeda,
+  formatadorNumero,
+  formatarDataBR,
+  formatarDataISO,
+  formatarMesAno,
+  formatarMesCurto,
+  obterDataPedido,
+} from "./utils/formatters.js"
+import { configurarTema } from "./ui/theme.js"
 
 Chart.register(...registerables, BoxPlotController, BoxAndWiskers)
 
@@ -21,84 +34,6 @@ let anoHeatmap = ""
 
 const ARQUIVO_PADRAO = "/default-data.csv"
 
-const formatadorMoeda = new Intl.NumberFormat("pt-BR", {
-  style: "currency",
-  currency: "BRL",
-})
-
-const formatadorNumero = new Intl.NumberFormat("pt-BR", {
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2,
-})
-
-const traducoesRegioes = {
-  North: "Norte",
-  South: "Sul",
-  East: "Leste",
-  West: "Oeste",
-}
-
-const traducoesProdutos = {
-  Camera: "Câmera",
-  Headphones: "Fones de ouvido",
-  Keyboard: "Teclado",
-  Laptop: "Notebook",
-  Monitor: "Monitor",
-  Mouse: "Mouse",
-  Printer: "Impressora",
-  Smartphone: "Smartphone",
-  Smartwatch: "Smartwatch",
-  Tablet: "Tablet",
-}
-
-const traducoesCategorias = {
-  Accessories: "Acessórios",
-  Electronics: "Eletrônicos",
-  Office: "Escritório",
-}
-
-const configuracoesGraficos = {
-  produtos: {
-    chartId: "graficoProdutos",
-    tituloId: "tituloGraficoProdutos",
-    label: "Quantidade vendida",
-    type: "bar",
-    limit: 5,
-    titles: {
-      top: "Produtos mais vendidos",
-      bottom: "Produtos menos vendidos",
-    },
-  },
-  lucroProdutos: {
-    chartId: "graficoLucroProdutos",
-    tituloId: "tituloGraficoLucroProdutos",
-    label: "Lucro",
-    type: "bar",
-    limit: 5,
-    titles: {
-      top: "Produtos mais lucrativos",
-      bottom: "Produtos menos lucrativos",
-    },
-  },
-  categorias: {
-    chartId: "graficoCategoria",
-    tituloId: "tituloGraficoCategoria",
-    label: "Lucro",
-    type: "bar",
-    limit: 10,
-    titles: {
-      top: "Categorias mais lucrativas",
-      bottom: "Categorias menos lucrativas",
-    },
-  },
-}
-
-const estadoAlternadores = {
-  produtos: "top",
-  lucroProdutos: "top",
-  categorias: "top",
-}
-
 configurarTema()
 document.getElementById("csvFile").addEventListener("change", carregarCSVLocal)
 document.getElementById("dataInicioPeriodo").addEventListener("change", renderizarGraficoPeriodo)
@@ -109,29 +44,6 @@ document.getElementById("alternadorHeatmap").addEventListener("click", alternarC
 document.getElementById("anoHeatmap").addEventListener("change", alternarAnoHeatmap)
 configurarAlternadores()
 carregarCSVPadrao()
-
-function configurarTema() {
-  const botaoTema = document.getElementById("alternadorTema")
-  const temaSalvo = localStorage.getItem("temaDashboard")
-  const temaInicial = temaSalvo || "claro"
-
-  aplicarTema(temaInicial)
-
-  botaoTema.addEventListener("click", () => {
-    const proximoTema = document.body.dataset.tema === "escuro" ? "claro" : "escuro"
-    aplicarTema(proximoTema)
-    localStorage.setItem("temaDashboard", proximoTema)
-  })
-}
-
-function aplicarTema(tema) {
-  const botaoTema = document.getElementById("alternadorTema")
-  const temaEscuro = tema === "escuro"
-
-  document.body.dataset.tema = temaEscuro ? "escuro" : "claro"
-  botaoTema.setAttribute("aria-pressed", String(temaEscuro))
-  botaoTema.title = temaEscuro ? "Alternar para modo claro" : "Alternar para modo escuro"
-}
 
 async function carregarCSVPadrao() {
   try {
@@ -1341,61 +1253,6 @@ function criarPontosDaReta(regressao, pontos) {
     { x: minimoX, y: regressao.inclinacao * minimoX + regressao.intercepto },
     { x: maximoX, y: regressao.inclinacao * maximoX + regressao.intercepto },
   ]
-}
-
-function traduzirRotulo(valor) {
-  return traducoesProdutos[valor] || traducoesRegioes[valor] || traducoesCategorias[valor] || valor
-}
-
-function obterDataPedido(valor) {
-  const texto = String(valor || "").trim()
-  const partesISO = texto.match(/^(\d{4})-(\d{2})-(\d{2})$/)
-
-  if (partesISO) {
-    const [, ano, mes, dia] = partesISO
-    return new Date(Number(ano), Number(mes) - 1, Number(dia))
-  }
-
-  return new Date(texto)
-}
-
-function formatarDataISO(data) {
-  const ano = data.getFullYear()
-  const mes = String(data.getMonth() + 1).padStart(2, "0")
-  const dia = String(data.getDate()).padStart(2, "0")
-
-  return `${ano}-${mes}-${dia}`
-}
-
-function criarDataLocalDeISO(dataISO) {
-  const [ano, mes, dia] = dataISO.split("-").map(Number)
-  return new Date(ano, mes - 1, dia)
-}
-
-function formatarDataBR(dataISO) {
-  return criarDataLocalDeISO(dataISO).toLocaleDateString("pt-BR")
-}
-
-function formatarMesAno(mesISO) {
-  const [ano, mes] = mesISO.split("-").map(Number)
-  return new Date(ano, mes - 1, 1).toLocaleDateString("pt-BR", {
-    month: "2-digit",
-    year: "numeric",
-  })
-}
-
-function formatarMesCurto(mesISO) {
-  const [ano, mes] = mesISO.split("-").map(Number)
-  const rotulo = new Date(ano, mes - 1, 1).toLocaleDateString("pt-BR", {
-    month: "short",
-  })
-
-  return rotulo.replace(".", "")
-}
-
-function calcularDiferencaDias(inicio, fim) {
-  const umDia = 1000 * 60 * 60 * 24
-  return Math.round((criarDataLocalDeISO(fim) - criarDataLocalDeISO(inicio)) / umDia)
 }
 
 function exibirErro(mensagem) {
