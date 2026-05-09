@@ -290,7 +290,7 @@ h1 {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
   gap: 20px;
 }
 
@@ -299,10 +299,19 @@ h1 {
   padding: 20px;
   border-radius: 10px;
   box-shadow: var(--sombraCard);
+  min-width: 0;
+  overflow: hidden;
 }
 
 .grafico canvas {
+  display: block;
+  width: 100% !important;
+  height: 300px !important;
   margin-bottom: 14px;
+}
+
+.graficoPeriodo canvas {
+  height: 320px !important;
 }
 
 .boxplot {
@@ -570,6 +579,11 @@ h1 {
   min-height: 320px;
 }
 
+.correlacaoGrafico canvas {
+  width: 100% !important;
+  height: 360px !important;
+}
+
 .correlacaoPainel {
   display: grid;
   gap: 16px;
@@ -658,6 +672,15 @@ h1 {
 }
 
 @media (max-width: 900px) {
+  .grafico canvas {
+    height: 280px !important;
+  }
+
+  .graficoPeriodo canvas,
+  .correlacaoGrafico canvas {
+    height: 320px !important;
+  }
+
   .boxplotConteudo {
     grid-template-columns: 1fr;
   }
@@ -705,6 +728,19 @@ h1 {
 
   .grid {
     grid-template-columns: 1fr;
+  }
+
+  .grafico {
+    padding: 16px;
+  }
+
+  .grafico canvas {
+    height: 250px !important;
+  }
+
+  .graficoPeriodo canvas,
+  .correlacaoGrafico canvas {
+    height: 300px !important;
   }
 
   .card {

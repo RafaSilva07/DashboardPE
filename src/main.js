@@ -624,7 +624,7 @@ function criarGraficoOrdenado(configuracao, itens) {
     },
     options: {
       responsive: true,
-      maintainAspectRatio: true,
+      maintainAspectRatio: false,
       plugins: {
         legend: {
           display: configuracao.type !== "bar",
@@ -652,7 +652,7 @@ function graficoPizza(data, id) {
     },
     options: {
       responsive: true,
-      maintainAspectRatio: true,
+      maintainAspectRatio: false,
     },
   })
 }
@@ -675,6 +675,10 @@ function graficoLinha(data, id) {
           tension: 0.3,
         },
       ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
     },
   })
 }
@@ -761,7 +765,7 @@ function renderizarGraficoPeriodo() {
     },
     options: {
       responsive: true,
-      maintainAspectRatio: true,
+      maintainAspectRatio: false,
       plugins: {
         legend: {
           display: false,
@@ -896,6 +900,8 @@ function graficoDispersaoCorrelacao(pontos) {
       ],
     },
     options: {
+      responsive: true,
+      maintainAspectRatio: false,
       plugins: {
         legend: { display: true },
       },
