@@ -8,13 +8,6 @@ export const formatadorNumero = new Intl.NumberFormat("pt-BR", {
   maximumFractionDigits: 2,
 })
 
-export const formatadorMoedaCompacta = new Intl.NumberFormat("pt-BR", {
-  style: "currency",
-  currency: "BRL",
-  notation: "compact",
-  maximumFractionDigits: 1,
-})
-
 export function obterDataPedido(valor) {
   const texto = String(valor || "").trim()
   const partesISO = texto.match(/^(\d{4})-(\d{2})-(\d{2})$/)

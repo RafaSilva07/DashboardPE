@@ -446,8 +446,8 @@ h1 {
 
 .tabelaHeatmap th,
 .tabelaHeatmap td {
-  min-width: 112px;
-  max-width: 112px;
+  min-width: 150px;
+  max-width: 150px;
   height: 52px;
   border-radius: 8px;
   padding: 8px 10px;
@@ -465,8 +465,8 @@ h1 {
 }
 
 .tabelaHeatmap th:first-child {
-  min-width: 132px;
-  max-width: 132px;
+  min-width: 140px;
+  max-width: 140px;
   text-align: left;
   position: sticky;
   left: 0;
@@ -475,14 +475,14 @@ h1 {
 
 .tabelaHeatmap td {
   color: var(--textoForte);
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 700;
   line-height: 1.2;
 }
 
 .tabelaHeatmap td:first-child {
-  min-width: 132px;
-  max-width: 132px;
+  min-width: 140px;
+  max-width: 140px;
   background: var(--fundoSuave);
   text-align: left;
   position: sticky;
@@ -681,7 +681,7 @@ h1 {
   }
 
   .tabelaHeatmap {
-    min-width: 1480px;
+    min-width: 1940px;
   }
 }
 
@@ -739,22 +739,22 @@ h1 {
 
   .tabelaHeatmap {
     border-spacing: 5px;
-    min-width: 1420px;
+    min-width: 1880px;
   }
 
   .tabelaHeatmap th,
   .tabelaHeatmap td {
-    min-width: 108px;
-    max-width: 108px;
+    min-width: 146px;
+    max-width: 146px;
     height: 50px;
     padding: 7px 8px;
-    font-size: 12px;
+    font-size: 12.5px;
   }
 
   .tabelaHeatmap th:first-child,
   .tabelaHeatmap td:first-child {
-    min-width: 124px;
-    max-width: 124px;
+    min-width: 132px;
+    max-width: 132px;
     font-size: 12px;
   }
 
