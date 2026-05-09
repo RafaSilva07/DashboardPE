@@ -7,6 +7,7 @@ import { traduzirRotulo } from "./constants/translations.js"
 import {
   calcularDiferencaDias,
   formatadorMoeda,
+  formatadorMoedaCompacta,
   formatadorNumero,
   formatarDataBR,
   formatarDataISO,
@@ -473,7 +474,7 @@ function renderizarHeatmapVendas() {
     meses.forEach((mes) => {
       const valor = matriz[`${regiao}|${mes}`] || 0
       const td = document.createElement("td")
-      td.innerText = formatadorMoeda.format(valor)
+      td.innerText = valor ? formatadorMoedaCompacta.format(valor) : "-"
       td.style.backgroundColor = obterCorHeatmap(valor, maiorValor)
       td.style.color = valor && valor / maiorValor > 0.65 ? "#ffffff" : "#0f172a"
       td.title = `${traduzirRotulo(regiao)} em ${formatarMesAno(mes)}: ${formatadorMoeda.format(valor)}`

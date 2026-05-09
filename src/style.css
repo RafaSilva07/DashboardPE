@@ -431,21 +431,31 @@ h1 {
 .heatmapScroll {
   width: 100%;
   overflow-x: auto;
-  padding-bottom: 4px;
+  padding-bottom: 8px;
+  scrollbar-color: #2c7be5 var(--fundoSuave);
+  scrollbar-width: thin;
 }
 
 .tabelaHeatmap {
-  width: 100%;
+  width: max-content;
+  min-width: 100%;
   border-collapse: separate;
-  border-spacing: 4px;
+  border-spacing: 6px;
   table-layout: fixed;
 }
 
 .tabelaHeatmap th,
 .tabelaHeatmap td {
-  border-radius: 6px;
-  padding: 12px 8px;
+  min-width: 112px;
+  max-width: 112px;
+  height: 52px;
+  border-radius: 8px;
+  padding: 8px 10px;
   text-align: center;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
 }
 
 .tabelaHeatmap th {
@@ -455,6 +465,8 @@ h1 {
 }
 
 .tabelaHeatmap th:first-child {
+  min-width: 132px;
+  max-width: 132px;
   text-align: left;
   position: sticky;
   left: 0;
@@ -463,16 +475,20 @@ h1 {
 
 .tabelaHeatmap td {
   color: var(--textoForte);
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 700;
+  line-height: 1.2;
 }
 
 .tabelaHeatmap td:first-child {
+  min-width: 132px;
+  max-width: 132px;
   background: var(--fundoSuave);
   text-align: left;
   position: sticky;
   left: 0;
   z-index: 1;
+  font-size: 13px;
 }
 
 .boxplotConteudo {
@@ -658,6 +674,15 @@ h1 {
   .correlacaoConteudo {
     grid-template-columns: 1fr;
   }
+
+  .heatmapScroll {
+    margin: 0 -4px;
+    padding: 0 4px 10px;
+  }
+
+  .tabelaHeatmap {
+    min-width: 1480px;
+  }
 }
 
 @media (max-width: 640px) {
@@ -706,6 +731,31 @@ h1 {
 
   .controlesHeatmap {
     justify-items: start;
+  }
+
+  .heatmapVendas {
+    padding: 16px;
+  }
+
+  .tabelaHeatmap {
+    border-spacing: 5px;
+    min-width: 1420px;
+  }
+
+  .tabelaHeatmap th,
+  .tabelaHeatmap td {
+    min-width: 108px;
+    max-width: 108px;
+    height: 50px;
+    padding: 7px 8px;
+    font-size: 12px;
+  }
+
+  .tabelaHeatmap th:first-child,
+  .tabelaHeatmap td:first-child {
+    min-width: 124px;
+    max-width: 124px;
+    font-size: 12px;
   }
 
   .acoesDataset {
