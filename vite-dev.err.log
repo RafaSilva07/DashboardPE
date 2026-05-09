@@ -1,0 +1,9 @@
+[2m20:46:15[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mReferenceError: renderizarGraficoParetoProdutos is not defined
+    at renderizarGraficos (http://localhost:5173/src/main.js?t=1778283974788:343:3)
+    at processarCSV (http://localhost:5173/src/main.js?t=1778283974788:168:3)
+    at carregarCSVPadrao (http://localhost:5173/src/main.js?t=1778283974788:122:5)
+[2m20:49:25[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mTypeError: Cannot set properties of null (setting 'innerText')
+    at renderizarGraficoParetoProdutos (http://localhost:5173/src/main.js?t=1778284112268:736:20)
+    at renderizarGraficos (http://localhost:5173/src/main.js?t=1778284112268:343:3)
+    at processarCSV (http://localhost:5173/src/main.js?t=1778284112268:168:3)
+    at carregarCSVPadrao (http://localhost:5173/src/main.js?t=1778284112268:122:5)
