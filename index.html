@@ -270,6 +270,70 @@
         </div>
       </div>
     </div>
+
+    <div class="grafico distribuicaoNormalLucro">
+      <h3>Distribuição Normal do Lucro</h3>
+      <p class="subtituloGrafico">Análise da concentração dos valores de lucro em torno da média e identificação de possíveis anomalias acima de 3 desvios padrão.</p>
+
+      <div class="cardsNormal">
+        <div class="cardNormal">
+          <span>Métrica analisada:</span>
+          <strong id="normalMetrica">Lucro</strong>
+        </div>
+        <div class="cardNormal">
+          <span>Média do lucro</span>
+          <strong id="normalMediaLucro">-</strong>
+        </div>
+        <div class="cardNormal">
+          <span>Desvio padrão</span>
+          <strong id="normalDesvioPadrao">-</strong>
+        </div>
+        <div class="cardNormal">
+          <span>Limite superior</span>
+          <strong id="normalLimiteSuperior">-</strong>
+        </div>
+        <div class="cardNormal">
+          <span>Maior lucro observado</span>
+          <strong id="normalMaiorLucro">-</strong>
+        </div>
+        <div class="cardNormal">
+          <span>Registros válidos usados no cálculo</span>
+          <strong id="normalRegistrosValidos">0</strong>
+        </div>
+      </div>
+
+      <div class="normalGrafico">
+        <canvas id="graficoDistribuicaoNormalLucro"></canvas>
+      </div>
+
+      <div class="legendaExplicativa legendaNormal">
+        <p>A densidade indica onde os valores de lucro tendem a se concentrar na curva normal. Ela nao representa dinheiro nem quantidade de registros; e uma medida estatistica de concentracao. Quanto mais alta a curva em uma regiao, mais esperado e encontrar lucros proximos daquele valor. Como os valores de densidade costumam ser muito pequenos, o eixo usa a escala Densidade x1000 apenas para facilitar a leitura visual. O limite superior marca um ponto de atencao: lucros iguais ou acima dele estao muito acima da media calculada.</p>
+        <p>A curva mostra como os valores de lucro se distribuem em torno da média. A região central representa os valores mais esperados. O limite superior indica um valor muito acima da média e funciona como limite de atenção para possíveis comportamentos incomuns.</p>
+      </div>
+
+      <details class="formulasNormal">
+        <h4>Fórmulas utilizadas</h4>
+        <summary>Formulas utilizadas <span class="setaResumo">▼</span></summary>
+        <div class="gradeFormulas">
+          <p><strong>Média:</strong><br /><code>μ = Σxᵢ / n</code></p>
+          <p><strong>Desvio padrão:</strong><br /><code>σ = √(Σ(xᵢ - μ)² / n)</code></p>
+          <p><strong>Ponto de atenção:</strong><br /><code>x = μ + 3σ</code></p>
+          <p><strong>Distribuição normal:</strong><br /><code>f(x) = 1 / (σ√(2π)) · e^(-1/2((x - μ) / σ)²)</code></p>
+        </div>
+        <div class="simbolosNormal">
+          <p><strong>μ:</strong> média dos valores de lucro</p>
+          <p><strong>σ:</strong> desvio padrão dos valores de lucro</p>
+          <p><strong>x:</strong> valor analisado na curva</p>
+          <p><strong>xᵢ:</strong> cada valor de lucro do dataset</p>
+          <p><strong>n:</strong> quantidade de registros válidos</p>
+        </div>
+      </details>
+
+      <div class="interpretacaoNormal">
+        <h4>Interpretação</h4>
+        <p id="interpretacaoDistribuicaoNormal">Não há valores válidos de lucro para gerar a distribuição normal.</p>
+      </div>
+    </div>
       </section>
 
       <section class="secaoDashboard">

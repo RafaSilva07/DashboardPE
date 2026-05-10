@@ -614,6 +614,154 @@ h1 {
   color: var(--textoForte);
 }
 
+.distribuicaoNormalLucro {
+  margin-top: 20px;
+}
+
+.distribuicaoNormalLucro h3 {
+  margin-top: 0;
+}
+
+.subtituloGrafico {
+  margin: 6px 0 18px;
+  color: var(--textoDiscreto);
+  line-height: 1.5;
+}
+
+.cardsNormal {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.cardNormal {
+  background: var(--fundoSuave);
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  padding: 14px;
+  min-width: 0;
+}
+
+.cardNormal span {
+  display: block;
+  color: var(--textoDiscreto);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 8px;
+}
+
+.cardNormal strong {
+  display: block;
+  color: var(--textoForte);
+  font-size: 18px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.normalGrafico {
+  min-height: 360px;
+}
+
+.normalGrafico canvas {
+  width: 100% !important;
+  height: 360px !important;
+}
+
+.legendaNormal {
+  margin-top: 12px;
+}
+
+.legendaNormal p + p {
+  display: none;
+}
+
+.formulasNormal,
+.interpretacaoNormal {
+  margin-top: 14px;
+  padding: 16px;
+  border-radius: 8px;
+  background: var(--fundoSuave);
+  border: 1px solid var(--borda);
+}
+
+.formulasNormal h4,
+.interpretacaoNormal h4 {
+  margin: 0 0 12px;
+  color: var(--textoForte);
+}
+
+.formulasNormal h4 {
+  display: none;
+}
+
+.formulasNormal summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  list-style: none;
+  background: var(--fundoCard);
+  color: var(--textoPrincipal);
+  border: 1px solid var(--borda);
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-weight: 700;
+  box-shadow: var(--sombraSuave);
+}
+
+.formulasNormal summary::-webkit-details-marker {
+  display: none;
+}
+
+.formulasNormal[open] .setaResumo {
+  transform: rotate(180deg);
+}
+
+.gradeFormulas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.gradeFormulas p,
+.simbolosNormal p,
+.interpretacaoNormal p {
+  margin: 0;
+  line-height: 1.55;
+  color: var(--textoSecundario);
+}
+
+.gradeFormulas p {
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--fundoCard);
+}
+
+.gradeFormulas code {
+  display: inline-block;
+  margin-top: 6px;
+  font-family: Consolas, "Courier New", monospace;
+  color: var(--textoForte);
+  background: var(--fundoCodigo);
+  border-radius: 6px;
+  padding: 4px 6px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.simbolosNormal {
+  display: grid;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.simbolosNormal strong {
+  color: var(--textoForte);
+}
+
 #alertas {
   text-align: center;
   background: var(--alertaFundo);
@@ -677,7 +825,8 @@ h1 {
   }
 
   .graficoPeriodo canvas,
-  .correlacaoGrafico canvas {
+  .correlacaoGrafico canvas,
+  .normalGrafico canvas {
     height: 320px !important;
   }
 
@@ -739,7 +888,8 @@ h1 {
   }
 
   .graficoPeriodo canvas,
-  .correlacaoGrafico canvas {
+  .correlacaoGrafico canvas,
+  .normalGrafico canvas {
     height: 300px !important;
   }
 

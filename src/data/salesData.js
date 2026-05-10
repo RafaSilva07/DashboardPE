@@ -27,6 +27,7 @@ export function agregarDados(dados) {
   const paresCorrelacao = []
   const vendasPeriodo = []
   const vendasHeatmap = []
+  const registrosLucro = []
   let totalVendas = 0
   let totalLucro = 0
   const listaVendas = []
@@ -71,6 +72,9 @@ export function agregarDados(dados) {
     paresCorrelacao.push({ x: vendas, y: lucro, categoria })
     vendasPeriodo.push({ data: dataKey, vendas, lucro })
     vendasHeatmap.push({ mes: dataKey.slice(0, 7), regiao, categoria, vendas })
+    if (valorNumericoValido(item["Profit"])) {
+      registrosLucro.push({ data: dataKey, mes: dataKey.slice(0, 7), regiao, categoria, lucro })
+    }
 
     if (!dataMaisAntiga || dataKey < dataMaisAntiga) {
       dataMaisAntiga = dataKey
@@ -95,12 +99,27 @@ export function agregarDados(dados) {
     paresCorrelacao,
     vendasPeriodo,
     vendasHeatmap,
+    registrosLucro,
     intervaloDatas: {
       inicio: dataMaisAntiga,
       fim: dataMaisNova,
     },
     metricas: calcularMetricas(listaVendas, totalVendas, totalLucro),
   }
+}
+
+function valorNumericoValido(valor) {
+  if (valor == null) {
+    return false
+  }
+
+  const texto = String(valor).trim()
+
+  if (!texto) {
+    return false
+  }
+
+  return Number.isFinite(Number(texto))
 }
 
 function calcularMetricas(listaVendas, totalVendas, totalLucro) {

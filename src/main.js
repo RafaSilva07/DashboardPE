@@ -11,6 +11,7 @@ import {
   criarGraficoPeriodo,
   criarGraficoPizza,
 } from "./charts/chartFactory.js"
+import { renderizarNormalDistributionProfitChart } from "./charts/NormalDistributionProfitChart.tsx"
 import {
   atualizarAlertas,
   atualizarIndicadores,
@@ -35,6 +36,7 @@ let metricaPeriodo = "vendas"
 let categoriaCorrelacao = "geral"
 let categoriaHeatmap = "geral"
 let anoHeatmap = ""
+let anoHeatmapAtivo = false
 
 inicializarAplicacao()
 
@@ -108,6 +110,7 @@ function processarCSV(textoCSV) {
   }
 
   dadosProcessados = resultado
+  anoHeatmapAtivo = false
   atualizarIndicadores(resultado.metricas)
   renderizarGraficos()
   renderizarRankingRegioes(resultado.regioes)
@@ -135,6 +138,7 @@ function renderizarGraficos() {
   interpretarBoxplotCategorias(dadosProcessados.distribuicaoVendasCategorias)
   configurarAlternadorCorrelacao()
   renderizarAnaliseCorrelacao()
+  renderizarDistribuicaoNormalLucro()
 }
 
 function configurarAlternadores() {
@@ -194,6 +198,7 @@ function alternarCategoriaCorrelacao(evento) {
   })
 
   renderizarAnaliseCorrelacao()
+  renderizarDistribuicaoNormalLucro()
 }
 
 function renderizarAnaliseCorrelacao() {
@@ -269,11 +274,14 @@ function alternarCategoriaHeatmap(evento) {
   })
 
   renderizarHeatmapSelecionado()
+  renderizarDistribuicaoNormalLucro()
 }
 
 function alternarAnoHeatmap(evento) {
   anoHeatmap = evento.target.value
+  anoHeatmapAtivo = true
   renderizarHeatmapSelecionado()
+  renderizarDistribuicaoNormalLucro()
 }
 
 function renderizarHeatmapSelecionado() {
@@ -374,6 +382,24 @@ function renderizarGraficoPeriodo() {
     `${formatadorMoeda.format(totalPeriodo)}`
 
   graficos.atualizar("periodo", () => criarGraficoPeriodo({ agrupamento, configuracaoMetrica }))
+  renderizarDistribuicaoNormalLucro()
+}
+
+function renderizarDistribuicaoNormalLucro() {
+  if (!dadosProcessados) {
+    return
+  }
+
+  renderizarNormalDistributionProfitChart({
+    registros: dadosProcessados.registrosLucro,
+    graficos,
+    filtros: {
+      dataInicio: document.getElementById("dataInicioPeriodo").value,
+      dataFim: document.getElementById("dataFimPeriodo").value,
+      categoria: categoriaCorrelacao !== "geral" ? categoriaCorrelacao : categoriaHeatmap,
+      ano: anoHeatmapAtivo ? anoHeatmap : "",
+    },
+  })
 }
 
 function obterConfiguracaoMetricaPeriodo() {
