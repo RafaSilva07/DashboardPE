@@ -13,6 +13,7 @@
   "dependencies": {
     "@sgratzl/chartjs-chart-boxplot": "^4.4.5",
     "chart.js": "^4.5.1",
+    "jstat": "^1.9.6",
     "papaparse": "^5.5.3",
     "vite": "^8.0.10"
   }

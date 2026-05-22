@@ -361,6 +361,82 @@
 
       <section class="secaoDashboard">
         <div class="secaoCabecalho">
+          <span>Validacao estatistica</span>
+          <h2>Teste de Hipoteses da Melhoria</h2>
+          <p>Teste t pareado para verificar se a melhoria reduziu o tempo para encontrar informacoes importantes no dashboard.</p>
+        </div>
+
+        <div class="gradeHipoteseTopo">
+          <article class="cardHipotese">
+            <h3>Melhoria analisada</h3>
+            <p>
+              Foram implementados modo escuro, reorganizacao visual por secoes e filtros de regiao/produto nos graficos.
+              A analise estatistica considera principalmente o impacto dos filtros e da nova organizacao visual no tempo
+              necessario para encontrar informacoes no dashboard.
+            </p>
+          </article>
+
+          <article class="cardHipotese">
+            <h3>Hipoteses</h3>
+            <p><strong>H0:</strong> As melhorias implementadas nao reduziram o tempo necessario para encontrar informacoes no dashboard.</p>
+            <p><strong>H1:</strong> As melhorias implementadas reduziram o tempo necessario para encontrar informacoes no dashboard.</p>
+            <p class="formulaHipotese"><strong>Formula:</strong> <code>t = d&#772; / (sd / &radic;n)</code></p>
+          </article>
+        </div>
+
+        <article class="cardHipotese tabelaHipoteseCard">
+          <h3>Dados coletados (antes x depois)</h3>
+          <p>
+            A coleta foi feita com 2 participantes. Cada participante realizou 4 tarefas de busca no dashboard, antes e depois das melhorias, totalizando 8 registros de tempo.
+          </p>
+          <p>
+            Como o dashboard possui uma estrutura simples e objetiva, os tempos registrados foram relativamente baixos, variando entre 17 e 24 segundos antes das melhorias e entre 11 e 16 segundos apos as melhorias.
+          </p>
+          <div class="tabelaHipoteseScroll">
+            <table class="tabelaHipotese">
+              <thead>
+                <tr>
+                  <th>Registro</th>
+                  <th>Participante</th>
+                  <th>Tarefa</th>
+                  <th>Antes da melhoria (s)</th>
+                  <th>Depois da melhoria (s)</th>
+                  <th>Diferenca (s)</th>
+                </tr>
+              </thead>
+              <tbody id="linhasTesteHipotese"></tbody>
+            </table>
+          </div>
+        </article>
+
+        <div class="gradeHipoteseResultado">
+          <article class="cardHipotese">
+            <h3>Resumo dos calculos</h3>
+            <div class="listaCalculosHipotese">
+              <p>Media antes: <strong id="mediaAntesHipotese">-</strong></p>
+              <p>Media depois: <strong id="mediaDepoisHipotese">-</strong></p>
+              <p>Media das diferencas: <strong id="mediaDiferencasHipotese">-</strong></p>
+              <p>Desvio padrao das diferencas: <strong id="desvioDiferencasHipotese">-</strong></p>
+              <p>Numero de registros (n): <strong id="nRegistrosHipotese">-</strong></p>
+              <p>Graus de liberdade (gl): <strong id="glHipotese">-</strong></p>
+              <p>Valor de t: <strong id="valorTHipotese">-</strong></p>
+              <p>P-Valor: <strong id="pValorHipotese">-</strong></p>
+              <p>Alpha adotado: <strong id="alphaHipotese">-</strong></p>
+            </div>
+          </article>
+
+          <article class="cardHipotese cardEvidenciaHipotese" id="evidenciaHipotese">
+            <h3>Evidencia da conclusao</h3>
+            <p class="badgeHipotese" id="decisaoHipotese">-</p>
+            <p id="textoDecisaoHipotese">-</p>
+            <p id="comparacaoPValorHipotese">-</p>
+            <p id="textoInterpretacaoHipotese">-</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="secaoDashboard">
+        <div class="secaoCabecalho">
           <span>Ranking</span>
           <h2>Regioes por faturamento</h2>
           <p>Ordenacao das regioes para comparar rapidamente a participacao no faturamento.</p>

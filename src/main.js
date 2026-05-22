@@ -25,6 +25,7 @@ import {
   renderizarRankingRegioes,
   traduzirLinhasTooltipBoxplot,
 } from "./ui/dashboardUi.js"
+import { renderizarTesteHipoteseMelhoria } from "./ui/hypothesisTestUi.js"
 import { configurarTema } from "./ui/theme.js"
 import { calcularDiferencaDias, formatadorMoeda, formatarDataBR, formatarMesAno } from "./utils/formatters.js"
 
@@ -44,6 +45,7 @@ function inicializarAplicacao() {
   configurarTema()
   configurarEventos()
   configurarAlternadores()
+  renderizarTesteHipoteseMelhoria()
   carregarCSVPadrao()
 }
 
