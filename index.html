@@ -3,17 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard de Análise de Vendas</title>
+    <title>Dashboard de Analise de Vendas</title>
   </head>
   <body>
     <header class="topoDashboard">
-      <h1>Dashboard de Análise de Vendas</h1>
+      <h1>Dashboard de Analise de Vendas</h1>
       <button class="alternadorTema" id="alternadorTema" type="button" aria-label="Alternar entre modo claro e modo escuro" aria-pressed="false">
-        <span class="iconeTema iconeSol">☀</span>
+        <span class="iconeTema iconeSol">&#9728;</span>
         <span class="trilhoTema">
           <span class="bolinhaTema"></span>
         </span>
-        <span class="iconeTema iconeLua">☾</span>
+        <span class="iconeTema iconeLua">&#9790;</span>
       </button>
     </header>
 
@@ -24,15 +24,15 @@
       </label>
       <div class="acoesDataset">
         <details class="regrasDataset">
-          <summary>Regras do dataset <span class="setaResumo">▼</span></summary>
+          <summary>Regras do dataset <span class="setaResumo">&#9662;</span></summary>
           <div class="avisoDataset">
             <strong>Formato esperado do dataset:</strong>
-            <p>Envie um arquivo no formato <strong>CSV</strong> com cabeçalho na primeira linha.</p>
-            <p><strong>Colunas obrigatórias:</strong> <code>Order Date</code>, <code>Product Name</code>, <code>Category</code>, <code>Region</code>, <code>Quantity</code>, <code>Sales</code> e <code>Profit</code>.</p>
-            <p><strong>Regras importantes:</strong> datas válidas em <code>Order Date</code> e valores numéricos em <code>Quantity</code>, <code>Sales</code> e <code>Profit</code>.</p>
-            <p><strong>Exemplo de cabeçalho:</strong></p>
+            <p>Envie um arquivo no formato <strong>CSV</strong> com cabecalho na primeira linha.</p>
+            <p><strong>Colunas obrigatorias:</strong> <code>Order Date</code>, <code>Product Name</code>, <code>Category</code>, <code>Region</code>, <code>Quantity</code>, <code>Sales</code> e <code>Profit</code>.</p>
+            <p><strong>Regras importantes:</strong> datas validas em <code>Order Date</code> e valores numericos em <code>Quantity</code>, <code>Sales</code> e <code>Profit</code>.</p>
+            <p><strong>Exemplo de cabecalho:</strong></p>
             <p><code>Order Date,Product Name,Category,Region,Quantity,Sales,Profit</code></p>
-            <p><strong>Exemplo de linha válida:</strong></p>
+            <p><strong>Exemplo de linha valida:</strong></p>
             <p><code>2024-12-31,Printer,Office,North,4,3640,348.93</code></p>
             <p><strong>Exemplo do formato dos dados:</strong> <code>Order Date</code> como <code>2024-12-31</code>, <code>Region</code> como <code>North</code>, <code>Quantity</code> como <code>4</code> e <code>Profit</code> como <code>348.93</code>.</p>
           </div>
@@ -46,310 +46,334 @@
         <div class="secaoCabecalho">
           <span>Resumo executivo</span>
           <h2>Indicadores principais</h2>
-          <p>Visão rápida dos totais, medidas de tendência central e dispersão das vendas.</p>
+          <p>Visao rapida dos totais, medidas de tendencia central e dispersao das vendas.</p>
         </div>
 
-    <div class="cards">
-      <div class="card">
-        <h3>Total de vendas</h3>
-        <p id="totalVendas">0</p>
-      </div>
+        <div class="cards">
+          <div class="card">
+            <h3>Total de vendas</h3>
+            <p id="totalVendas">0</p>
+          </div>
 
-      <div class="card">
-        <h3>Total de lucro</h3>
-        <p id="totalLucro">0</p>
-      </div>
+          <div class="card">
+            <h3>Total de lucro</h3>
+            <p id="totalLucro">0</p>
+          </div>
 
-      <div class="card">
-        <h3>Total de pedidos</h3>
-        <p id="totalPedidos">0</p>
-      </div>
+          <div class="card">
+            <h3>Total de pedidos</h3>
+            <p id="totalPedidos">0</p>
+          </div>
 
-      <div class="card">
-        <h3>Ticket médio</h3>
-        <p id="ticketMedio">0</p>
-      </div>
+          <div class="card">
+            <h3>Ticket medio</h3>
+            <p id="ticketMedio">0</p>
+          </div>
 
-      <div class="card">
-        <h3>Média das vendas</h3>
-        <p id="mediaVendas">0</p>
-      </div>
+          <div class="card">
+            <h3>Media das vendas</h3>
+            <p id="mediaVendas">0</p>
+          </div>
 
-      <div class="card">
-        <h3>Mediana das vendas</h3>
-        <p id="medianaVendas">0</p>
-      </div>
+          <div class="card">
+            <h3>Mediana das vendas</h3>
+            <p id="medianaVendas">0</p>
+          </div>
 
-      <div class="card">
-        <h3>Moda das vendas</h3>
-        <p id="modaVendas">0</p>
-      </div>
+          <div class="card">
+            <h3>Moda das vendas</h3>
+            <p id="modaVendas">0</p>
+          </div>
 
-      <div class="card">
-        <h3>Desvio padrão</h3>
-        <p id="desvioPadraoVendas">0</p>
-        <span class="cardLegenda">Mostra o quanto as vendas costumam se afastar da média.</span>
-      </div>
+          <div class="card">
+            <h3>Desvio padrao</h3>
+            <p id="desvioPadraoVendas">0</p>
+            <span class="cardLegenda">Mostra o quanto as vendas costumam se afastar da media.</span>
+          </div>
 
-      <div class="card">
-        <h3>Variância</h3>
-        <p id="varianciaVendas">0</p>
-        <span class="cardLegenda">Representa a dispersão dos valores em relação à média.</span>
-      </div>
-    </div>
-
+          <div class="card">
+            <h3>Variancia</h3>
+            <p id="varianciaVendas">0</p>
+            <span class="cardLegenda">Representa a dispersao dos valores em relacao a media.</span>
+          </div>
+        </div>
       </section>
 
-    <div id="alertas">Carregando base padrão...</div>
+      <div id="alertas">Carregando base padrao...</div>
 
       <section class="secaoDashboard">
         <div class="secaoCabecalho">
           <span>Produtos</span>
           <h2>Performance de produtos</h2>
-          <p>Compare volume vendido e lucro por produto para encontrar destaques e pontos de atenção.</p>
+          <p>Compare volume vendido e lucro por produto para encontrar destaques e pontos de atencao.</p>
         </div>
 
-    <div class="grid">
-      <div class="grafico">
-        <div class="cabecalhoGrafico">
-          <h3 id="tituloGraficoProdutos">Produtos mais vendidos</h3>
-          <div class="alternadorGrafico" data-target="produtos">
-            <button type="button" class="ativo" data-mode="top">Mais vendidos</button>
-            <button type="button" data-mode="bottom">Menos vendidos</button>
+        <div class="grid">
+          <div class="grafico">
+            <div class="cabecalhoGrafico">
+              <h3 id="tituloGraficoProdutos">Produtos mais vendidos</h3>
+              <div class="alternadorGrafico" data-target="produtos">
+                <button type="button" class="ativo" data-mode="top">Mais vendidos</button>
+                <button type="button" data-mode="bottom">Menos vendidos</button>
+              </div>
+            </div>
+            <canvas id="graficoProdutos"></canvas>
+          </div>
+
+          <div class="grafico">
+            <div class="cabecalhoGrafico">
+              <h3 id="tituloGraficoLucroProdutos">Produtos mais lucrativos</h3>
+              <div class="alternadorGrafico" data-target="lucroProdutos">
+                <button type="button" class="ativo" data-mode="top">Maior lucro</button>
+                <button type="button" data-mode="bottom">Menor lucro</button>
+              </div>
+            </div>
+            <canvas id="graficoLucroProdutos"></canvas>
           </div>
         </div>
-        <canvas id="graficoProdutos"></canvas>
-      </div>
-
-      <div class="grafico">
-        <div class="cabecalhoGrafico">
-          <h3 id="tituloGraficoLucroProdutos">Produtos mais lucrativos</h3>
-          <div class="alternadorGrafico" data-target="lucroProdutos">
-            <button type="button" class="ativo" data-mode="top">Maior lucro</button>
-            <button type="button" data-mode="bottom">Menor lucro</button>
-          </div>
-        </div>
-        <canvas id="graficoLucroProdutos"></canvas>
-      </div>
-
-    </div>
       </section>
 
       <section class="secaoDashboard">
         <div class="secaoCabecalho">
-          <span>Operação</span>
-          <h2>Tempo, regiões e categorias</h2>
-          <p>Acompanhe evolução temporal, distribuição geográfica e desempenho por categoria.</p>
+          <span>Operacao</span>
+          <h2>Tempo, regioes e categorias</h2>
+          <p>Acompanhe evolucao temporal, distribuicao geografica e desempenho por categoria.</p>
         </div>
 
-    <div class="grid">
-      <div class="grafico">
-        <h3 id="tituloGraficoRegioes">Distribuição de vendas por região</h3>
-        <canvas id="graficoRegioes"></canvas>
-      </div>
+        <div class="grid">
+          <div class="grafico">
+            <h3 id="tituloGraficoRegioes">Distribuicao de vendas por regiao</h3>
+            <canvas id="graficoRegioes"></canvas>
+          </div>
 
-      <div class="grafico">
-        <h3>Evolução das vendas por ano</h3>
-        <canvas id="graficoAno"></canvas>
-      </div>
+          <div class="grafico">
+            <h3>Evolucao das vendas por ano</h3>
+            <canvas id="graficoAno"></canvas>
+          </div>
 
-      <div class="grafico graficoPeriodo">
-        <div class="cabecalhoGrafico">
-          <h3 id="tituloGraficoPeriodo">Faturamento por período</h3>
-          <div class="controlesPeriodo">
-            <div class="alternadorGrafico alternadorPeriodo">
-              <button type="button" class="ativo" data-metric="vendas">Faturamento</button>
-              <button type="button" data-metric="lucro">Lucro</button>
+          <div class="grafico graficoPeriodo">
+            <div class="cabecalhoGrafico">
+              <h3 id="tituloGraficoPeriodo">Faturamento por periodo</h3>
+              <div class="controlesPeriodo">
+                <div class="alternadorGrafico alternadorPeriodo">
+                  <button type="button" class="ativo" data-metric="vendas">Faturamento</button>
+                  <button type="button" data-metric="lucro">Lucro</button>
+                </div>
+                <div class="filtroPeriodo">
+                  <label class="campoFiltroData">
+                    Data inicial
+                    <input type="date" id="dataInicioPeriodo" />
+                  </label>
+                  <label class="campoFiltroData">
+                    Data final
+                    <input type="date" id="dataFimPeriodo" />
+                  </label>
+                </div>
+              </div>
             </div>
-            <div class="filtroPeriodo">
-              <label class="campoFiltroData">
-                Data inicial
-                <input type="date" id="dataInicioPeriodo" />
-              </label>
-              <label class="campoFiltroData">
-                Data final
-                <input type="date" id="dataFimPeriodo" />
-              </label>
+            <canvas id="graficoPeriodo"></canvas>
+            <details class="detalhesGrafico">
+              <summary>Ver explicacao ou analise detalhada <span class="setaResumo">&#9662;</span></summary>
+              <div class="detalhesConteudo">
+                <p id="resumoPeriodo">Selecione um intervalo para visualizar o faturamento.</p>
+              </div>
+            </details>
+          </div>
+
+          <div class="grafico">
+            <div class="cabecalhoGrafico">
+              <h3 id="tituloGraficoCategoria">Categorias mais lucrativas</h3>
+              <div class="alternadorGrafico" data-target="categorias">
+                <button type="button" class="ativo" data-mode="top">Maior lucro</button>
+                <button type="button" data-mode="bottom">Menor lucro</button>
+              </div>
             </div>
+            <canvas id="graficoCategoria"></canvas>
+          </div>
+
+          <div class="grafico heatmapVendas">
+            <div class="cabecalhoGrafico">
+              <h3>Heatmap de vendas por mes e regiao</h3>
+              <div class="controlesHeatmap">
+                <label class="campoFiltroData campoAnoHeatmap">
+                  Ano
+                  <select id="anoHeatmap"></select>
+                </label>
+                <div class="alternadorGrafico alternadorHeatmap" id="alternadorHeatmap">
+                  <button type="button" class="ativo" data-category="geral">Geral</button>
+                </div>
+              </div>
+            </div>
+            <div class="heatmapScroll">
+              <table class="tabelaHeatmap" id="tabelaHeatmap"></table>
+            </div>
+            <details class="detalhesGrafico">
+              <summary>Ver explicacao ou analise detalhada <span class="setaResumo">&#9662;</span></summary>
+              <div class="detalhesConteudo">
+                <p id="resumoHeatmap">Compare o faturamento mensal entre as regioes.</p>
+              </div>
+            </details>
           </div>
         </div>
-        <p id="resumoPeriodo">Selecione um intervalo para visualizar o faturamento.</p>
-        <canvas id="graficoPeriodo"></canvas>
-      </div>
+      </section>
 
-      <div class="grafico">
-        <div class="cabecalhoGrafico">
-          <h3 id="tituloGraficoCategoria">Categorias mais lucrativas</h3>
-          <div class="alternadorGrafico" data-target="categorias">
-            <button type="button" class="ativo" data-mode="top">Maior lucro</button>
-            <button type="button" data-mode="bottom">Menor lucro</button>
+      <section class="secaoDashboard">
+        <div class="secaoCabecalho">
+          <span>Estatistica</span>
+          <h2>Analises avancadas</h2>
+          <p>Explore dispersao, correlacao e regressao para entender padroes alem dos totais.</p>
+        </div>
+
+        <div class="grid">
+          <div class="grafico boxplot">
+            <h3>Distribuicao das vendas por categoria</h3>
+            <div class="boxplotConteudo">
+              <div class="boxplotGrafico">
+                <canvas id="graficoBoxplotCategoria"></canvas>
+              </div>
+            </div>
+            <details class="detalhesGrafico detalhesBoxplot">
+              <summary>Ver explicacao ou analise detalhada <span class="setaResumo">&#9662;</span></summary>
+              <div class="detalhesConteudo">
+                <div class="legendaExplicativa">
+                  <p><strong>O boxplot</strong> (ou diagrama de caixa) e um grafico usado para resumir a distribuicao dos dados e mostrar, de forma visual, como os valores estao espalhados.</p>
+                  <p><strong>Partes do boxplot:</strong> minimo, Q1, mediana, Q3, caixa central e outliers. Elas ajudam a identificar posicao central, dispersao e possiveis valores atipicos.</p>
+                </div>
+
+                <div class="boxplotTexto">
+                  <h4>Leitura estatistica</h4>
+                  <p id="resumoBoxplot">Importe um arquivo CSV para visualizar a dispersao das vendas por categoria.</p>
+                  <p class="avisoBoxplot">Cada caixa resume a distribuicao dos valores de venda de uma categoria. A linha central indica a mediana, a altura da caixa representa a faixa interquartil e os pontos fora dos limites indicam possiveis outliers.</p>
+                </div>
+              </div>
+            </details>
           </div>
         </div>
-        <canvas id="graficoCategoria"></canvas>
-      </div>
 
-      <div class="grafico heatmapVendas">
-        <div class="cabecalhoGrafico">
-          <h3>Heatmap de vendas por mês e região</h3>
-          <div class="controlesHeatmap">
-            <label class="campoFiltroData campoAnoHeatmap">
-              Ano
-              <select id="anoHeatmap"></select>
-            </label>
-            <div class="alternadorGrafico alternadorHeatmap" id="alternadorHeatmap">
+        <div class="grafico correlacao">
+          <div class="cabecalhoGrafico">
+            <h3>Analise de correlacao e regressao linear: vendas x lucro</h3>
+            <div class="alternadorGrafico alternadorCorrelacao" id="alternadorCorrelacao">
               <button type="button" class="ativo" data-category="geral">Geral</button>
             </div>
           </div>
-        </div>
-        <p id="resumoHeatmap">Compare o faturamento mensal entre as regiões.</p>
-        <div class="heatmapScroll">
-          <table class="tabelaHeatmap" id="tabelaHeatmap"></table>
-        </div>
-      </div>
 
-    </div>
-      </section>
-
-      <section class="secaoDashboard">
-        <div class="secaoCabecalho">
-          <span>Estatística</span>
-          <h2>Análises avançadas</h2>
-          <p>Explore dispersão, correlação e regressão para entender padrões além dos totais.</p>
-        </div>
-
-    <div class="grid">
-      <div class="grafico boxplot">
-        <h3>Distribuição das vendas por categoria</h3>
-        <div class="boxplotConteudo">
-          <div class="boxplotGrafico">
-            <canvas id="graficoBoxplotCategoria"></canvas>
-            <div class="legendaExplicativa">
-              <p><strong>O boxplot</strong> (ou diagrama de caixa) é um gráfico usado para resumir a distribuição dos dados e mostrar, de forma visual, como os valores estão espalhados.</p>
-              <p><strong>Partes do boxplot:</strong> mínimo, Q1, mediana, Q3, caixa central e outliers. Elas ajudam a identificar posição central, dispersão e possíveis valores atípicos.</p>
+          <div class="correlacaoConteudo">
+            <div class="correlacaoGrafico">
+              <canvas id="graficoCorrelacao"></canvas>
             </div>
           </div>
 
-          <div class="boxplotTexto">
-            <h4>Leitura estatística</h4>
-            <p id="resumoBoxplot">Importe um arquivo CSV para visualizar a dispersão das vendas por categoria.</p>
-            <p class="avisoBoxplot">Cada caixa resume a distribuição dos valores de venda de uma categoria. A linha central indica a mediana, a altura da caixa representa a faixa interquartil e os pontos fora dos limites indicam possíveis outliers.</p>
+          <details class="detalhesGrafico">
+            <summary>Ver explicacao ou analise detalhada <span class="setaResumo">&#9662;</span></summary>
+            <div class="detalhesConteudo">
+              <div class="correlacaoPainel">
+                <div class="correlacaoTexto">
+                  <h4>Interpretacao da correlacao</h4>
+                  <p id="tendenciaCorrelacao">Tendencia nula ou fraca</p>
+                  <p id="valorCorrelacao">Correlacao (Vendas x Lucro): 0,00</p>
+                  <p id="valorR2">R2 (coeficiente de determinacao): 0,00. Isso indica quanto da variacao do lucro pode ser explicada pelas vendas.</p>
+                  <p class="avisoCorrelacao">A relacao entre vendas e lucro pode mostrar uma tendencia positiva, mas isso nao prova causa direta. Outros fatores, como quantidade vendida, categoria dos produtos e margem de lucro, tambem influenciam os resultados.</p>
+                </div>
+
+                <div class="correlacaoTexto">
+                  <h4>Interpretacao da regressao</h4>
+                  <p id="equacaoRegressao">Equacao da reta: y = 0,00x + 0,00</p>
+                  <p id="inclinacaoRegressao">Inclinacao: 0,00</p>
+                  <p id="interceptoRegressao">Intercepto: 0,00</p>
+                  <p id="resumoRegressao">A regressao linear mostra a tendencia media do lucro conforme as vendas aumentam.</p>
+                </div>
+              </div>
+            </div>
+          </details>
+        </div>
+
+        <div class="grafico distribuicaoNormalLucro">
+          <h3>Distribuicao Normal do Lucro</h3>
+
+          <div class="normalGrafico">
+            <canvas id="graficoDistribuicaoNormalLucro"></canvas>
           </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="grafico correlacao">
-      <div class="cabecalhoGrafico">
-        <h3>Análise de correlação e regressão linear: vendas x lucro</h3>
-        <div class="alternadorGrafico alternadorCorrelacao" id="alternadorCorrelacao">
-          <button type="button" class="ativo" data-category="geral">Geral</button>
-        </div>
-      </div>
+          <details class="detalhesGrafico detalhesNormal">
+            <summary>Ver explicacao ou analise detalhada <span class="setaResumo">&#9662;</span></summary>
+            <div class="detalhesConteudo">
+              <p class="subtituloGrafico">Analise da concentracao dos valores de lucro em torno da media e identificacao de possiveis anomalias acima de 3 desvios padrao.</p>
 
-      <div class="correlacaoConteudo">
-        <div class="correlacaoGrafico">
-          <canvas id="graficoCorrelacao"></canvas>
-        </div>
+              <div class="cardsNormal">
+                <div class="cardNormal">
+                  <span>Metrica analisada:</span>
+                  <strong id="normalMetrica">Lucro</strong>
+                </div>
+                <div class="cardNormal">
+                  <span>Media do lucro</span>
+                  <strong id="normalMediaLucro">-</strong>
+                </div>
+                <div class="cardNormal">
+                  <span>Desvio padrao</span>
+                  <strong id="normalDesvioPadrao">-</strong>
+                </div>
+                <div class="cardNormal">
+                  <span>Limite superior</span>
+                  <strong id="normalLimiteSuperior">-</strong>
+                </div>
+                <div class="cardNormal">
+                  <span>Maior lucro observado</span>
+                  <strong id="normalMaiorLucro">-</strong>
+                </div>
+                <div class="cardNormal">
+                  <span>Registros validos usados no calculo</span>
+                  <strong id="normalRegistrosValidos">0</strong>
+                </div>
+              </div>
 
-        <div class="correlacaoPainel">
-          <div class="correlacaoTexto">
-            <h4>Interpretação da correlação</h4>
-            <p id="tendenciaCorrelacao">Tendência nula ou fraca</p>
-            <p id="valorCorrelacao">Correlação (Vendas x Lucro): 0,00</p>
-            <p id="valorR2">R² (coeficiente de determinação): 0,00. Isso indica quanto da variação do lucro pode ser explicada pelas vendas.</p>
-            <p class="avisoCorrelacao">A relação entre vendas e lucro pode mostrar uma tendência positiva, mas isso não prova causa direta. Outros fatores, como quantidade vendida, categoria dos produtos e margem de lucro, também influenciam os resultados.</p>
-          </div>
+              <div class="legendaExplicativa legendaNormal">
+                <p>A densidade indica onde os valores de lucro tendem a se concentrar na curva normal. Ela nao representa dinheiro nem quantidade de registros; e uma medida estatistica de concentracao. Quanto mais alta a curva em uma regiao, mais esperado e encontrar lucros proximos daquele valor. Como os valores de densidade costumam ser muito pequenos, o eixo usa a escala Densidade x1000 apenas para facilitar a leitura visual. O limite superior marca um ponto de atencao: lucros iguais ou acima dele estao muito acima da media calculada.</p>
+                <p>A curva mostra como os valores de lucro se distribuem em torno da media. A regiao central representa os valores mais esperados. O limite superior indica um valor muito acima da media e funciona como limite de atencao para possiveis comportamentos incomuns.</p>
+              </div>
 
-          <div class="correlacaoTexto">
-            <h4>Interpretação da regressão</h4>
-            <p id="equacaoRegressao">Equação da reta: y = 0,00x + 0,00</p>
-            <p id="inclinacaoRegressao">Inclinação: 0,00</p>
-            <p id="interceptoRegressao">Intercepto: 0,00</p>
-            <p id="resumoRegressao">A regressão linear mostra a tendência média do lucro conforme as vendas aumentam.</p>
-          </div>
-        </div>
-      </div>
-    </div>
+              <details class="formulasNormal">
+                <h4>Formulas utilizadas</h4>
+                <summary>Formulas utilizadas <span class="setaResumo">&#9662;</span></summary>
+                <div class="gradeFormulas">
+                  <p><strong>Media:</strong><br /><code>mu = SUMx_i / n</code></p>
+                  <p><strong>Desvio padrao:</strong><br /><code>sigma = sqrt(SUM(x_i - mu)^2 / n)</code></p>
+                  <p><strong>Ponto de atencao:</strong><br /><code>x = mu + 3sigma</code></p>
+                  <p><strong>Distribuicao normal:</strong><br /><code>f(x) = 1 / (sigma*sqrt(2pi)) * e^(-1/2((x-mu)/sigma)^2)</code></p>
+                </div>
+                <div class="simbolosNormal">
+                  <p><strong>mu:</strong> media dos valores de lucro</p>
+                  <p><strong>sigma:</strong> desvio padrao dos valores de lucro</p>
+                  <p><strong>x:</strong> valor analisado na curva</p>
+                  <p><strong>x_i:</strong> cada valor de lucro do dataset</p>
+                  <p><strong>n:</strong> quantidade de registros validos</p>
+                </div>
+              </details>
 
-    <div class="grafico distribuicaoNormalLucro">
-      <h3>Distribuição Normal do Lucro</h3>
-      <p class="subtituloGrafico">Análise da concentração dos valores de lucro em torno da média e identificação de possíveis anomalias acima de 3 desvios padrão.</p>
-
-      <div class="cardsNormal">
-        <div class="cardNormal">
-          <span>Métrica analisada:</span>
-          <strong id="normalMetrica">Lucro</strong>
+              <div class="interpretacaoNormal">
+                <h4>Interpretacao</h4>
+                <p id="interpretacaoDistribuicaoNormal">Nao ha valores validos de lucro para gerar a distribuicao normal.</p>
+              </div>
+            </div>
+          </details>
         </div>
-        <div class="cardNormal">
-          <span>Média do lucro</span>
-          <strong id="normalMediaLucro">-</strong>
-        </div>
-        <div class="cardNormal">
-          <span>Desvio padrão</span>
-          <strong id="normalDesvioPadrao">-</strong>
-        </div>
-        <div class="cardNormal">
-          <span>Limite superior</span>
-          <strong id="normalLimiteSuperior">-</strong>
-        </div>
-        <div class="cardNormal">
-          <span>Maior lucro observado</span>
-          <strong id="normalMaiorLucro">-</strong>
-        </div>
-        <div class="cardNormal">
-          <span>Registros válidos usados no cálculo</span>
-          <strong id="normalRegistrosValidos">0</strong>
-        </div>
-      </div>
-
-      <div class="normalGrafico">
-        <canvas id="graficoDistribuicaoNormalLucro"></canvas>
-      </div>
-
-      <div class="legendaExplicativa legendaNormal">
-        <p>A densidade indica onde os valores de lucro tendem a se concentrar na curva normal. Ela nao representa dinheiro nem quantidade de registros; e uma medida estatistica de concentracao. Quanto mais alta a curva em uma regiao, mais esperado e encontrar lucros proximos daquele valor. Como os valores de densidade costumam ser muito pequenos, o eixo usa a escala Densidade x1000 apenas para facilitar a leitura visual. O limite superior marca um ponto de atencao: lucros iguais ou acima dele estao muito acima da media calculada.</p>
-        <p>A curva mostra como os valores de lucro se distribuem em torno da média. A região central representa os valores mais esperados. O limite superior indica um valor muito acima da média e funciona como limite de atenção para possíveis comportamentos incomuns.</p>
-      </div>
-
-      <details class="formulasNormal">
-        <h4>Fórmulas utilizadas</h4>
-        <summary>Formulas utilizadas <span class="setaResumo">▼</span></summary>
-        <div class="gradeFormulas">
-          <p><strong>Média:</strong><br /><code>μ = Σxᵢ / n</code></p>
-          <p><strong>Desvio padrão:</strong><br /><code>σ = √(Σ(xᵢ - μ)² / n)</code></p>
-          <p><strong>Ponto de atenção:</strong><br /><code>x = μ + 3σ</code></p>
-          <p><strong>Distribuição normal:</strong><br /><code>f(x) = 1 / (σ√(2π)) · e^(-1/2((x - μ) / σ)²)</code></p>
-        </div>
-        <div class="simbolosNormal">
-          <p><strong>μ:</strong> média dos valores de lucro</p>
-          <p><strong>σ:</strong> desvio padrão dos valores de lucro</p>
-          <p><strong>x:</strong> valor analisado na curva</p>
-          <p><strong>xᵢ:</strong> cada valor de lucro do dataset</p>
-          <p><strong>n:</strong> quantidade de registros válidos</p>
-        </div>
-      </details>
-
-      <div class="interpretacaoNormal">
-        <h4>Interpretação</h4>
-        <p id="interpretacaoDistribuicaoNormal">Não há valores válidos de lucro para gerar a distribuição normal.</p>
-      </div>
-    </div>
       </section>
 
       <section class="secaoDashboard">
         <div class="secaoCabecalho">
           <span>Ranking</span>
-          <h2>Regiões por faturamento</h2>
-          <p>Ordenação das regiões para comparar rapidamente a participação no faturamento.</p>
+          <h2>Regioes por faturamento</h2>
+          <p>Ordenacao das regioes para comparar rapidamente a participacao no faturamento.</p>
         </div>
 
-    <div class="ranking">
-      <h3>Ranking de regiões por faturamento</h3>
-      <ul id="rankingRegioes"></ul>
-    </div>
+        <div class="ranking">
+          <h3>Ranking de regioes por faturamento</h3>
+          <ul id="rankingRegioes"></ul>
+        </div>
       </section>
     </main>
 
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
+

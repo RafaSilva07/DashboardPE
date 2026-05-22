@@ -314,6 +314,38 @@ h1 {
   height: 320px !important;
 }
 
+.detalhesGrafico {
+  margin-top: 10px;
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  background: var(--fundoSuave);
+}
+
+.detalhesGrafico summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  list-style: none;
+  padding: 12px 14px;
+  font-weight: 700;
+  color: var(--textoSecundario);
+}
+
+.detalhesGrafico summary::-webkit-details-marker {
+  display: none;
+}
+
+.detalhesGrafico[open] .setaResumo {
+  transform: rotate(180deg);
+}
+
+.detalhesConteudo {
+  padding: 0 14px 14px;
+  border-top: 1px solid var(--borda);
+}
+
 .boxplot {
   grid-column: 1 / -1;
 }
@@ -389,7 +421,7 @@ h1 {
 }
 
 #resumoPeriodo {
-  margin: 0 0 14px;
+  margin: 14px 0 0;
   color: var(--textoSecundario);
   font-weight: 700;
 }
@@ -432,7 +464,7 @@ h1 {
 }
 
 #resumoHeatmap {
-  margin: 0 0 14px;
+  margin: 14px 0 0;
   color: var(--textoSecundario);
   font-weight: 700;
 }
@@ -501,16 +533,13 @@ h1 {
 }
 
 .boxplotConteudo {
-  display: grid;
-  grid-template-columns: minmax(0, 3fr) minmax(280px, 1fr);
-  gap: 24px;
-  align-items: stretch;
+  display: block;
 }
 
 .boxplotGrafico {
   position: relative;
   min-height: 420px;
-  padding: 12px 8px 0 0;
+  padding: 12px 0 0;
 }
 
 .boxplotGrafico canvas {
@@ -519,16 +548,16 @@ h1 {
 }
 
 .boxplotTexto {
+  margin-top: 12px;
   background: var(--fundoSuave);
   border-radius: 8px;
   padding: 20px;
-  font-size: 18px;
 }
 
 .boxplotTexto h4 {
   margin-top: 0;
   margin-bottom: 12px;
-  font-size: 28px;
+  font-size: 20px;
 }
 
 .boxplotTexto p {
@@ -569,10 +598,7 @@ h1 {
 }
 
 .correlacaoConteudo {
-  display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
-  gap: 20px;
-  align-items: start;
+  display: block;
 }
 
 .correlacaoGrafico {
@@ -587,6 +613,7 @@ h1 {
 .correlacaoPainel {
   display: grid;
   gap: 16px;
+  margin-top: 14px;
 }
 
 .correlacaoTexto {
@@ -623,7 +650,7 @@ h1 {
 }
 
 .subtituloGrafico {
-  margin: 6px 0 18px;
+  margin: 14px 0 18px;
   color: var(--textoDiscreto);
   line-height: 1.5;
 }
@@ -679,7 +706,7 @@ h1 {
 
 .formulasNormal,
 .interpretacaoNormal {
-  margin-top: 14px;
+  margin-top: 12px;
   padding: 16px;
   border-radius: 8px;
   background: var(--fundoSuave);
@@ -830,21 +857,8 @@ h1 {
     height: 320px !important;
   }
 
-  .boxplotConteudo {
-    grid-template-columns: 1fr;
-  }
-
   .boxplotGrafico {
     min-height: 360px;
-    padding-right: 0;
-  }
-
-  .boxplotGrafico canvas {
-    height: 360px !important;
-  }
-
-  .correlacaoConteudo {
-    grid-template-columns: 1fr;
   }
 
   .heatmapScroll {
