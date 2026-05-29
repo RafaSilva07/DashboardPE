@@ -839,7 +839,7 @@ h1 {
 
 .tabelaHipotese {
   width: 100%;
-  min-width: 980px;
+  min-width: 860px;
   border-collapse: collapse;
 }
 
@@ -860,8 +860,8 @@ h1 {
   color: var(--textoForte);
 }
 
-.tabelaHipotese th:nth-child(3),
-.tabelaHipotese td:nth-child(3) {
+.tabelaHipotese th:nth-child(2),
+.tabelaHipotese td:nth-child(2) {
   min-width: 320px;
 }
 

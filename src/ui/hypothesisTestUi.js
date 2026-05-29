@@ -20,10 +20,9 @@ function renderizarTabela(linhas) {
     const tr = document.createElement("tr")
     tr.innerHTML = `
       <td>${linha.registro}</td>
-      <td>${linha.participante}</td>
       <td>${linha.tarefa}</td>
-      <td>${formatarDecimal(linha.tempoAntes, 2)}</td>
-      <td>${formatarDecimal(linha.tempoDepois, 2)}</td>
+      <td>${formatarDecimal(linha.tempoPlanilha, 2)}</td>
+      <td>${formatarDecimal(linha.tempoDashboardMedio, 2)}</td>
       <td>${formatarDecimal(linha.diferenca, 2)}</td>
     `
     corpoTabela.appendChild(tr)
@@ -31,8 +30,8 @@ function renderizarTabela(linhas) {
 }
 
 function preencherResumoCalculos(resultado) {
-  setText("mediaAntesHipotese", formatarDecimal(resultado.mediaAntes, 2))
-  setText("mediaDepoisHipotese", formatarDecimal(resultado.mediaDepois, 2))
+  setText("mediaPlanilhaHipotese", formatarDecimal(resultado.mediaPlanilha, 2))
+  setText("mediaDashboardHipotese", formatarDecimal(resultado.mediaDashboardMedio, 2))
   setText("mediaDiferencasHipotese", formatarDecimal(resultado.mediaDiferencas, 2))
   setText("desvioDiferencasHipotese", formatarDecimal(resultado.desvioPadraoDiferencas, 2))
   setText("nRegistrosHipotese", String(resultado.n))
@@ -59,7 +58,7 @@ function preencherInterpretacao(resultado) {
 
   badge.innerText = resultado.rejeitarH0 ? "Evidencia de melhora" : "Evidencia inconclusiva"
   textoDecisao.innerText = `Decisao: ${resultado.decisaoSimplificada}.`
-  comparacao.innerText = `P-Valor ${formatarPValor(resultado.pValue)} ${resultado.rejeitarH0 ? "<" : ">="} alpha ${formatarDecimal(resultado.alpha, 2)}.`
+  comparacao.innerText = `P-Valor = ${formatarPValor(resultado.pValue)} ${resultado.rejeitarH0 ? "<" : ">="} alpha ${formatarDecimal(resultado.alpha, 2)}.`
   textoInterpretacao.innerText = resultado.interpretacao
 }
 

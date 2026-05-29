@@ -363,44 +363,42 @@
         <div class="secaoCabecalho">
           <span>Validacao estatistica</span>
           <h2>Teste de Hipoteses da Melhoria</h2>
-          <p>Teste t pareado para verificar se a melhoria reduziu o tempo para encontrar informacoes importantes no dashboard.</p>
+          <p>Teste t pareado para verificar se o dashboard reduziu o tempo para encontrar informacoes em comparacao com a pesquisa direta na planilha.</p>
         </div>
 
         <div class="gradeHipoteseTopo">
           <article class="cardHipotese">
             <h3>Melhoria analisada</h3>
             <p>
-              Foram implementados modo escuro, reorganizacao visual por secoes e filtros de regiao/produto nos graficos.
-              A analise estatistica considera principalmente o impacto dos filtros e da nova organizacao visual no tempo
-              necessario para encontrar informacoes no dashboard.
+              A analise compara o tempo necessario para encontrar metricas no dataset cru em planilha com o tempo para encontrar as mesmas
+              informacoes no dashboard. O dashboard organiza os dados em graficos, cards, filtros e secoes, reduzindo o esforco manual exigido na planilha.
             </p>
           </article>
 
           <article class="cardHipotese">
             <h3>Hipoteses</h3>
-            <p><strong>H0:</strong> As melhorias implementadas nao reduziram o tempo necessario para encontrar informacoes no dashboard.</p>
-            <p><strong>H1:</strong> As melhorias implementadas reduziram o tempo necessario para encontrar informacoes no dashboard.</p>
+            <p><strong>H0:</strong> O dashboard nao reduziu o tempo necessario para encontrar informacoes em comparacao com a pesquisa direta na planilha.</p>
+            <p><strong>H1:</strong> O dashboard reduziu o tempo necessario para encontrar informacoes em comparacao com a pesquisa direta na planilha.</p>
             <p class="formulaHipotese"><strong>Formula:</strong> <code>t = d&#772; / (sd / &radic;n)</code></p>
           </article>
         </div>
 
         <article class="cardHipotese tabelaHipoteseCard">
-          <h3>Dados coletados (antes x depois)</h3>
+          <h3>Dados coletados (planilha x dashboard)</h3>
           <p>
-            A coleta foi feita com 2 participantes. Cada participante realizou 4 tarefas de busca no dashboard, antes e depois das melhorias, totalizando 8 registros de tempo.
+            A coleta foi organizada em 4 registros, cada um correspondente a uma tarefa de busca. Na planilha, foi considerado 1 participante realizando as buscas no dataset cru.
           </p>
           <p>
-            Como o dashboard possui uma estrutura simples e objetiva, os tempos registrados foram relativamente baixos, variando entre 17 e 24 segundos antes das melhorias e entre 11 e 16 segundos apos as melhorias.
+            No dashboard, foi usado o tempo medio dos 2 participantes que ja tinham realizado as mesmas tarefas. Diferenca utilizada: tempo na planilha - tempo medio no dashboard.
           </p>
           <div class="tabelaHipoteseScroll">
             <table class="tabelaHipotese">
               <thead>
                 <tr>
                   <th>Registro</th>
-                  <th>Participante</th>
                   <th>Tarefa</th>
-                  <th>Antes da melhoria (s)</th>
-                  <th>Depois da melhoria (s)</th>
+                  <th>Planilha (s)</th>
+                  <th>Dashboard medio (s)</th>
                   <th>Diferenca (s)</th>
                 </tr>
               </thead>
@@ -413,8 +411,8 @@
           <article class="cardHipotese">
             <h3>Resumo dos calculos</h3>
             <div class="listaCalculosHipotese">
-              <p>Media antes: <strong id="mediaAntesHipotese">-</strong></p>
-              <p>Media depois: <strong id="mediaDepoisHipotese">-</strong></p>
+              <p>Media na planilha: <strong id="mediaPlanilhaHipotese">-</strong></p>
+              <p>Media no dashboard: <strong id="mediaDashboardHipotese">-</strong></p>
               <p>Media das diferencas: <strong id="mediaDiferencasHipotese">-</strong></p>
               <p>Desvio padrao das diferencas: <strong id="desvioDiferencasHipotese">-</strong></p>
               <p>Numero de registros (n): <strong id="nRegistrosHipotese">-</strong></p>

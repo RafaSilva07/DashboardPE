@@ -1,74 +1,67 @@
-# Teste de Hipoteses da Melhoria do Dashboard
+# Teste de Hipoteses - Dashboard vs Planilha
 
-## 1. Melhoria implementada
+## 1. Melhoria analisada
 
-O dashboard recebeu melhorias de usabilidade e organizacao visual. Foram implementados:
+A analise compara o tempo necessario para encontrar metricas no dataset cru em planilha com o tempo necessario para encontrar as mesmas informacoes no dashboard.
+
+O dashboard organiza os dados em graficos, cards, filtros e secoes, reduzindo o esforco manual exigido na planilha.
+
+Melhorias consideradas no dashboard:
 
 - modo escuro;
-- reorganizacao visual por secoes para deixar o conteudo mais limpo;
-- filtros de regiao e produto em graficos que antes eram apenas gerais.
-
-Para o teste estatistico, a melhoria analisada foi principalmente o impacto dos filtros e da reorganizacao visual no tempo necessario para encontrar informacoes.
+- organizacao da pagina por secoes;
+- visualizacao mais limpa e objetiva;
+- filtros de regiao e produto nos graficos.
 
 ## 2. Hipoteses H0 e H1
 
-**H0:** As melhorias implementadas nao reduziram o tempo necessario para encontrar informacoes no dashboard.
+**H0:** O dashboard nao reduziu o tempo necessario para encontrar informacoes em comparacao com a pesquisa direta na planilha.
 
-**H1:** As melhorias implementadas reduziram o tempo necessario para encontrar informacoes no dashboard.
+**H1:** O dashboard reduziu o tempo necessario para encontrar informacoes em comparacao com a pesquisa direta na planilha.
 
 ## 3. Dados coletados
 
-A coleta foi feita com 2 participantes. Cada participante realizou 4 tarefas de busca no dashboard, antes e depois das melhorias, totalizando 8 registros de tempo.
+A coleta foi organizada em 4 registros, cada um correspondente a uma tarefa de busca.
 
-As tarefas realizadas foram:
+Na planilha, foi considerado 1 participante realizando as buscas no dataset cru.
 
-1. Encontrar a regiao com menor lucro.
-2. Encontrar o produto com maior venda.
-3. Identificar a categoria com maior lucro.
-4. Localizar uma regiao ou produto com baixo desempenho.
+No dashboard, foi usado o tempo medio dos 2 participantes que ja tinham realizado as mesmas tarefas.
 
-Como o dashboard possui uma estrutura simples e objetiva, os tempos registrados foram relativamente baixos, variando entre 17 e 24 segundos antes das melhorias e entre 11 e 16 segundos apos as melhorias.
+Assim, cada registro compara a busca manual na planilha com a busca visual no dashboard.
 
-| Registro | Participante | Tarefa | Antes da melhoria (s) | Depois da melhoria (s) | Diferenca (s) |
-|---:|---|---|---:|---:|---:|
-| 1 | Participante 1 | Encontrar a regiao com menor lucro | 22 | 15 | 7 |
-| 2 | Participante 1 | Encontrar o produto com maior venda | 20 | 14 | 6 |
-| 3 | Participante 1 | Identificar a categoria com maior lucro | 18 | 12 | 6 |
-| 4 | Participante 1 | Localizar regiao/produto com baixo desempenho | 24 | 16 | 8 |
-| 5 | Participante 2 | Encontrar a regiao com menor lucro | 21 | 14 | 7 |
-| 6 | Participante 2 | Encontrar o produto com maior venda | 19 | 13 | 6 |
-| 7 | Participante 2 | Identificar a categoria com maior lucro | 17 | 11 | 6 |
-| 8 | Participante 2 | Localizar regiao/produto com baixo desempenho | 23 | 15 | 8 |
+Diferenca utilizada: `tempo na planilha - tempo medio no dashboard`.
+
+| Reg. | Tarefa | Planilha (s) | Dashboard medio (s) | Diferenca (s) |
+|---:|---|---:|---:|---:|
+| 1 | Encontrar a regiao com menor lucro | 105 | 21,5 | 83,5 |
+| 2 | Encontrar o produto com maior venda | 98 | 19,5 | 78,5 |
+| 3 | Identificar a categoria com maior lucro | 88 | 17,5 | 70,5 |
+| 4 | Localizar regiao/produto com baixo desempenho | 120 | 23,5 | 96,5 |
 
 ## 4. Calculo do P-Valor
 
-Foi utilizado teste t pareado unilateral a direita, com:
+Foi aplicado um teste t pareado unilateral a direita, pois a hipotese alternativa verifica se o dashboard reduziu o tempo de busca em relacao a planilha.
 
-- diferenca = tempoAntes - tempoDepois
-- H1: media das diferencas > 0
-
-Formula aplicada:
+Formula usada:
 
 `t = d_bar / (sd / sqrt(n))`
 
 Onde:
 
-- `d_bar` = media das diferencas;
-- `sd` = desvio padrao amostral das diferencas;
-- `n` = numero de registros.
-
-Resultados calculados pelo sistema:
+- `d_bar` e a media das diferencas;
+- `sd` e o desvio padrao amostral das diferencas;
+- `n` e o numero de registros.
 
 | Metrica | Valor |
 |---|---:|
-| Media antes | 20,50 s |
-| Media depois | 13,75 s |
-| Media das diferencas | 6,75 s |
-| Desvio padrao das diferencas | 0,89 s |
-| Numero de registros (n) | 8 |
-| Graus de liberdade (gl) | 7 |
-| Valor de t | 21,5385 |
-| P-Valor | < 0,0001 |
+| Media na planilha | 102,75 s |
+| Media no dashboard | 20,50 s |
+| Media das diferencas | 82,25 s |
+| Desvio padrao das diferencas | 10,90 s |
+| Numero de registros (n) | 4 |
+| Graus de liberdade (gl) | 3 |
+| Valor de t | 15,08 |
+| P-Valor | 0,0003 |
 | Alpha adotado | 0,05 |
 
 ## 5. Interpretacao do resultado
@@ -78,22 +71,14 @@ Regra de decisao:
 - se `P-Valor < 0,05`, rejeitamos H0;
 - se `P-Valor >= 0,05`, nao rejeitamos H0.
 
-Como o P-Valor calculado foi menor que 0,05, a decisao estatistica e:
+Como o P-Valor foi `0,0003`, menor que `0,05`, a decisao e:
 
 **H0 rejeitada.**
 
-Interpretacao:
+Isso indica que ha evidencia estatistica de que o dashboard reduziu o tempo necessario para encontrar informacoes quando comparado a pesquisa direta na planilha com o dataset cru.
 
-Ha evidencia estatistica de que as melhorias implementadas reduziram o tempo necessario para encontrar informacoes no dashboard.
+## 6. Evidencia da mensagem no dashboard
 
-## 6. Evidencia da mensagem exibida no dashboard
+A secao do dashboard deve exibir os dados, o resumo dos calculos e a seguinte interpretacao final:
 
-Inserir aqui o print da secao implementada no dashboard:
-
-![Mensagem exibida no dashboard](./print-teste-hipotese-dashboard.png)
-
-A mensagem exibida no dashboard apresenta:
-
-- comparacao entre P-Valor e alpha = 0,05;
-- decisao sobre H0;
-- justificativa em linguagem simples sobre o resultado.
+`Decisao: H0 rejeitada. P-Valor = 0,0003 < alpha 0,05. Portanto, ha evidencia estatistica de que o dashboard reduziu o tempo necessario para encontrar informacoes em comparacao com a pesquisa direta na planilha.`
