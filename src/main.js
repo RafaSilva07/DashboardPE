@@ -30,6 +30,7 @@ import { configurarTema } from "./ui/theme.js"
 import { calcularDiferencaDias, formatadorMoeda, formatarDataBR, formatarMesAno } from "./utils/formatters.js"
 
 const ARQUIVO_PADRAO = "/default-data.csv"
+const CHAVE_LAYOUT_DASHBOARD = "dashboard-layout-version"
 
 const graficos = new GerenciadorGraficos()
 let dadosProcessados = null
@@ -38,11 +39,13 @@ let categoriaCorrelacao = "geral"
 let categoriaHeatmap = "geral"
 let anoHeatmap = ""
 let anoHeatmapAtivo = false
+let layoutDashboard = obterLayoutSalvo()
 
 inicializarAplicacao()
 
 function inicializarAplicacao() {
   configurarTema()
+  configurarLayoutDashboard()
   configurarEventos()
   configurarAlternadores()
   renderizarTesteHipoteseMelhoria()
@@ -57,6 +60,10 @@ function configurarEventos() {
   document.getElementById("alternadorCorrelacao").addEventListener("click", alternarCategoriaCorrelacao)
   document.getElementById("alternadorHeatmap").addEventListener("click", alternarCategoriaHeatmap)
   document.getElementById("anoHeatmap").addEventListener("change", alternarAnoHeatmap)
+  document.getElementById("alternadorLayoutDashboard").addEventListener("click", alternarLayoutDashboard)
+  document.getElementById("filtroRegiaoLayoutB").addEventListener("change", atualizarResumoFiltrosLayoutB)
+  document.getElementById("filtroCategoriaLayoutB").addEventListener("change", alternarCategoriaLayoutB)
+  document.getElementById("filtroProdutoLayoutB").addEventListener("change", atualizarResumoFiltrosLayoutB)
 }
 
 async function carregarCSVPadrao() {
@@ -114,8 +121,150 @@ function processarCSV(textoCSV) {
   dadosProcessados = resultado
   anoHeatmapAtivo = false
   atualizarIndicadores(resultado.metricas)
+  configurarFiltrosLayoutB()
   renderizarGraficos()
   renderizarRankingRegioes(resultado.regioes)
+  atualizarResumoFiltrosLayoutB()
+}
+
+function obterLayoutSalvo() {
+  return localStorage.getItem(CHAVE_LAYOUT_DASHBOARD) === "B" ? "B" : "A"
+}
+
+function configurarLayoutDashboard() {
+  aplicarLayoutDashboard(layoutDashboard)
+}
+
+function alternarLayoutDashboard(evento) {
+  const botao = evento.target.closest("button")
+
+  if (!botao) {
+    return
+  }
+
+  layoutDashboard = botao.dataset.layout === "B" ? "B" : "A"
+  localStorage.setItem(CHAVE_LAYOUT_DASHBOARD, layoutDashboard)
+  aplicarLayoutDashboard(layoutDashboard)
+}
+
+function aplicarLayoutDashboard(layout) {
+  const layoutB = layout === "B"
+  const controlesPeriodo = document.querySelector(".controlesPeriodo")
+  const destinoLayoutB = document.getElementById("filtrosLayoutBPeriodo")
+  const cabecalhoPeriodo = document.querySelector(".graficoPeriodo .cabecalhoGrafico")
+
+  document.body.dataset.layoutDashboard = layoutB ? "B" : "A"
+
+  document.querySelectorAll("#alternadorLayoutDashboard button").forEach((botao) => {
+    const ativo = botao.dataset.layout === (layoutB ? "B" : "A")
+    botao.classList.toggle("ativo", ativo)
+    botao.setAttribute("aria-pressed", String(ativo))
+  })
+
+  if (!controlesPeriodo || !destinoLayoutB || !cabecalhoPeriodo) {
+    return
+  }
+
+  if (layoutB) {
+    destinoLayoutB.appendChild(controlesPeriodo)
+  } else {
+    cabecalhoPeriodo.appendChild(controlesPeriodo)
+  }
+}
+
+function configurarFiltrosLayoutB() {
+  preencherSelectFiltro("filtroRegiaoLayoutB", dadosProcessados.regioes, "Todas as regioes")
+  preencherSelectFiltro("filtroCategoriaLayoutB", dadosProcessados.categorias, "Todas as categorias")
+  preencherSelectFiltro("filtroProdutoLayoutB", dadosProcessados.produtos, "Todos os produtos")
+}
+
+function preencherSelectFiltro(id, dados, rotuloGeral) {
+  const select = document.getElementById(id)
+  const valorAtual = select.value || "geral"
+  const opcoes = Object.keys(dados).sort((a, b) => traduzirRotulo(a).localeCompare(traduzirRotulo(b), "pt-BR"))
+
+  select.innerHTML = ""
+  select.appendChild(criarOpcaoFiltro("geral", rotuloGeral))
+
+  opcoes.forEach((valor) => {
+    select.appendChild(criarOpcaoFiltro(valor, traduzirRotulo(valor)))
+  })
+
+  select.value = opcoes.includes(valorAtual) ? valorAtual : "geral"
+}
+
+function criarOpcaoFiltro(valor, rotulo) {
+  const option = document.createElement("option")
+  option.value = valor
+  option.innerText = rotulo
+  return option
+}
+
+function alternarCategoriaLayoutB(evento) {
+  if (!dadosProcessados) {
+    return
+  }
+
+  const categoriaSelecionada = evento.target.value
+
+  categoriaCorrelacao = categoriaSelecionada
+  categoriaHeatmap = categoriaSelecionada
+  configurarAlternadorCorrelacao()
+  configurarAlternadorHeatmap()
+  renderizarAnaliseCorrelacao()
+  renderizarHeatmapSelecionado()
+  renderizarDistribuicaoNormalLucro()
+  atualizarResumoFiltrosLayoutB()
+}
+
+function atualizarResumoFiltrosLayoutB() {
+  const resumo = document.getElementById("resumoFiltrosLayoutB")
+
+  if (!dadosProcessados || !resumo) {
+    return
+  }
+
+  const regiao = document.getElementById("filtroRegiaoLayoutB").value
+  const categoria = document.getElementById("filtroCategoriaLayoutB").value
+  const produto = document.getElementById("filtroProdutoLayoutB").value
+  const inicio = document.getElementById("dataInicioPeriodo").value
+  const fim = document.getElementById("dataFimPeriodo").value
+  const registros = obterRegistrosFiltradosLayoutB({ regiao, categoria, produto, inicio, fim })
+  const totalVendas = registros.reduce((total, item) => total + item.vendas, 0)
+  const totalLucro = registros.reduce((total, item) => total + item.lucro, 0)
+  const quantidade = registros.reduce((total, item) => total + item.quantidade, 0)
+  const periodo = inicio && fim ? `${formatarDataBR(inicio)} ate ${formatarDataBR(fim)}` : "periodo completo"
+
+  resumo.innerText =
+    `Recorte selecionado (${periodo}): ${registros.length} pedidos, ` +
+    `${quantidade} itens vendidos, ${formatadorMoeda.format(totalVendas)} em faturamento e ` +
+    `${formatadorMoeda.format(totalLucro)} em lucro.`
+}
+
+function obterRegistrosFiltradosLayoutB({ regiao, categoria, produto, inicio, fim }) {
+  return dadosProcessados.registrosAnalise.filter((registro) => {
+    if (regiao !== "geral" && registro.regiao !== regiao) {
+      return false
+    }
+
+    if (categoria !== "geral" && registro.categoria !== categoria) {
+      return false
+    }
+
+    if (produto !== "geral" && registro.produto !== produto) {
+      return false
+    }
+
+    if (inicio && registro.data < inicio) {
+      return false
+    }
+
+    if (fim && registro.data > fim) {
+      return false
+    }
+
+    return true
+  })
 }
 
 function renderizarGraficos() {
@@ -201,6 +350,8 @@ function alternarCategoriaCorrelacao(evento) {
 
   renderizarAnaliseCorrelacao()
   renderizarDistribuicaoNormalLucro()
+  sincronizarCategoriaFiltroLayoutB(categoriaCorrelacao)
+  atualizarResumoFiltrosLayoutB()
 }
 
 function renderizarAnaliseCorrelacao() {
@@ -277,6 +428,8 @@ function alternarCategoriaHeatmap(evento) {
 
   renderizarHeatmapSelecionado()
   renderizarDistribuicaoNormalLucro()
+  sincronizarCategoriaFiltroLayoutB(categoriaHeatmap)
+  atualizarResumoFiltrosLayoutB()
 }
 
 function alternarAnoHeatmap(evento) {
@@ -385,6 +538,15 @@ function renderizarGraficoPeriodo() {
 
   graficos.atualizar("periodo", () => criarGraficoPeriodo({ agrupamento, configuracaoMetrica }))
   renderizarDistribuicaoNormalLucro()
+  atualizarResumoFiltrosLayoutB()
+}
+
+function sincronizarCategoriaFiltroLayoutB(categoria) {
+  const select = document.getElementById("filtroCategoriaLayoutB")
+
+  if (select && [...select.options].some((option) => option.value === categoria)) {
+    select.value = categoria
+  }
 }
 
 function renderizarDistribuicaoNormalLucro() {

@@ -28,6 +28,7 @@ export function agregarDados(dados) {
   const vendasPeriodo = []
   const vendasHeatmap = []
   const registrosLucro = []
+  const registrosAnalise = []
   let totalVendas = 0
   let totalLucro = 0
   const listaVendas = []
@@ -72,6 +73,7 @@ export function agregarDados(dados) {
     paresCorrelacao.push({ x: vendas, y: lucro, categoria })
     vendasPeriodo.push({ data: dataKey, vendas, lucro })
     vendasHeatmap.push({ mes: dataKey.slice(0, 7), regiao, categoria, vendas })
+    registrosAnalise.push({ data: dataKey, produto, regiao, categoria, quantidade, vendas, lucro })
     if (valorNumericoValido(item["Profit"])) {
       registrosLucro.push({ data: dataKey, mes: dataKey.slice(0, 7), regiao, categoria, lucro })
     }
@@ -100,6 +102,7 @@ export function agregarDados(dados) {
     vendasPeriodo,
     vendasHeatmap,
     registrosLucro,
+    registrosAnalise,
     intervaloDatas: {
       inicio: dataMaisAntiga,
       fim: dataMaisNova,

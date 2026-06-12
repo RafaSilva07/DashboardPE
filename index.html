@@ -8,13 +8,19 @@
   <body>
     <header class="topoDashboard">
       <h1>Dashboard de Analise de Vendas</h1>
-      <button class="alternadorTema" id="alternadorTema" type="button" aria-label="Alternar entre modo claro e modo escuro" aria-pressed="false">
-        <span class="iconeTema iconeSol">&#9728;</span>
-        <span class="trilhoTema">
-          <span class="bolinhaTema"></span>
-        </span>
-        <span class="iconeTema iconeLua">&#9790;</span>
-      </button>
+      <div class="controlesTopoDashboard">
+        <button class="alternadorTema" id="alternadorTema" type="button" aria-label="Alternar entre modo claro e modo escuro" aria-pressed="false">
+          <span class="iconeTema iconeSol">&#9728;</span>
+          <span class="trilhoTema">
+            <span class="bolinhaTema"></span>
+          </span>
+          <span class="iconeTema iconeLua">&#9790;</span>
+        </button>
+        <div class="alternadorLayout" id="alternadorLayoutDashboard" role="group" aria-label="Escolha a versao visual do dashboard">
+          <button type="button" class="ativo" data-layout="A">Layout A</button>
+          <button type="button" data-layout="B">Layout B</button>
+        </div>
+      </div>
     </header>
 
     <div class="upload">
@@ -42,6 +48,41 @@
     </div>
 
     <main class="dashboardShell">
+      <section class="barraFiltrosLayoutB" id="barraFiltrosLayoutB" aria-labelledby="tituloFiltrosLayoutB">
+        <div class="cabecalhoFiltrosLayoutB">
+          <span>Filtros principais</span>
+          <h2 id="tituloFiltrosLayoutB">Comece a analise pelo recorte dos dados</h2>
+          <p>Na Versao B, os filtros ficam reunidos antes dos cards e graficos.</p>
+        </div>
+
+        <div class="gradeFiltrosLayoutB">
+          <label class="campoFiltroData">
+            Regiao
+            <select id="filtroRegiaoLayoutB">
+              <option value="geral">Todas as regioes</option>
+            </select>
+          </label>
+
+          <label class="campoFiltroData">
+            Categoria
+            <select id="filtroCategoriaLayoutB">
+              <option value="geral">Todas as categorias</option>
+            </select>
+          </label>
+
+          <label class="campoFiltroData">
+            Produto
+            <select id="filtroProdutoLayoutB">
+              <option value="geral">Todos os produtos</option>
+            </select>
+          </label>
+
+          <div class="filtroPeriodoLayoutB" id="filtrosLayoutBPeriodo"></div>
+        </div>
+
+        <p class="resumoFiltrosLayoutB" id="resumoFiltrosLayoutB">Carregando resumo do recorte selecionado.</p>
+      </section>
+
       <section class="secaoDashboard">
         <div class="secaoCabecalho">
           <span>Resumo executivo</span>

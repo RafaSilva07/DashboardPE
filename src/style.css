@@ -56,9 +56,17 @@ body {
   margin: 0;
 }
 
-.alternadorTema {
+.controlesTopoDashboard {
   position: absolute;
   right: 0;
+  top: 50%;
+  display: grid;
+  justify-items: end;
+  gap: 8px;
+  transform: translateY(-50%);
+}
+
+.alternadorTema {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -123,6 +131,123 @@ h1 {
 .dashboardShell {
   max-width: 1180px;
   margin: 0 auto;
+}
+
+.alternadorLayout {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--borda);
+  border-radius: 999px;
+  background: var(--fundoCard);
+  box-shadow: var(--sombraSuave);
+  flex-shrink: 0;
+}
+
+.alternadorLayout button {
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--textoSecundario);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 7px 11px;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.alternadorLayout button:hover {
+  transform: translateY(-1px);
+}
+
+.alternadorLayout button.ativo {
+  background: #2c7be5;
+  color: #fff;
+}
+
+.barraFiltrosLayoutB {
+  display: none;
+  margin-bottom: 22px;
+  padding: 18px;
+  background: linear-gradient(180deg, var(--fundoCard), var(--fundoSuave));
+  border: 1px solid var(--borda);
+  border-left: 4px solid #2c7be5;
+  border-radius: 10px;
+  box-shadow: var(--sombraCard);
+}
+
+body[data-layout-dashboard="B"] .barraFiltrosLayoutB {
+  display: block;
+}
+
+.cabecalhoFiltrosLayoutB {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.cabecalhoFiltrosLayoutB span {
+  color: #2c7be5;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cabecalhoFiltrosLayoutB h2 {
+  margin: 0;
+  color: var(--textoForte);
+  font-size: 21px;
+}
+
+.cabecalhoFiltrosLayoutB p {
+  margin: 0;
+  color: var(--textoDiscreto);
+  line-height: 1.45;
+}
+
+.gradeFiltrosLayoutB {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  align-items: end;
+}
+
+.gradeFiltrosLayoutB .campoFiltroData select,
+.gradeFiltrosLayoutB .campoFiltroData input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.filtroPeriodoLayoutB .controlesPeriodo {
+  gap: 8px;
+  justify-items: stretch;
+}
+
+.filtroPeriodoLayoutB .alternadorPeriodo {
+  display: none;
+}
+
+.filtroPeriodoLayoutB .alternadorPeriodo,
+.filtroPeriodoLayoutB .filtroPeriodo {
+  justify-content: flex-start;
+}
+
+.filtroPeriodoLayoutB .filtroPeriodo {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.resumoFiltrosLayoutB {
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: var(--fundoCard);
+  border: 1px solid var(--borda);
+  color: var(--textoSecundario);
+  font-weight: 700;
+  line-height: 1.45;
 }
 
 .secaoDashboard {
@@ -981,6 +1106,10 @@ body[data-tema="escuro"] .cardEvidenciaHipotese.hipoteseNeutro {
 }
 
 @media (max-width: 900px) {
+  .gradeFiltrosLayoutB {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .grafico canvas {
     height: 280px !important;
   }
@@ -1019,8 +1148,19 @@ body[data-tema="escuro"] .cardEvidenciaHipotese.hipoteseNeutro {
     font-size: 26px;
   }
 
-  .alternadorTema {
+  .controlesTopoDashboard {
     position: static;
+    transform: none;
+    justify-items: center;
+  }
+
+  .alternadorLayout {
+    box-sizing: border-box;
+  }
+
+  .gradeFiltrosLayoutB,
+  .filtroPeriodoLayoutB .filtroPeriodo {
+    grid-template-columns: 1fr;
   }
 
   .grid {
