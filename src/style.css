@@ -922,6 +922,53 @@ body[data-layout-dashboard="B"] .barraFiltrosLayoutB {
   margin-bottom: 16px;
 }
 
+.secaoHipoteseRecolhida {
+  margin-top: 8px;
+}
+
+.painelHipoteseRecolhido {
+  display: grid;
+  justify-items: center;
+}
+
+.painelHipoteseRecolhido summary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  list-style: none;
+  cursor: pointer;
+  border: 1px solid var(--borda);
+  border-radius: 999px;
+  background: var(--fundoCard);
+  color: var(--textoForte);
+  padding: 12px 18px;
+  font-weight: 800;
+  box-shadow: var(--sombraSuave);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.painelHipoteseRecolhido summary:hover {
+  border-color: #2c7be5;
+  transform: translateY(-1px);
+}
+
+.painelHipoteseRecolhido summary::-webkit-details-marker {
+  display: none;
+}
+
+.painelHipoteseRecolhido[open] summary {
+  margin-bottom: 18px;
+}
+
+.painelHipoteseRecolhido[open] .setaResumo {
+  transform: rotate(180deg);
+}
+
+.conteudoHipoteseRecolhido {
+  width: 100%;
+}
+
 .cardHipotese {
   background: var(--fundoCard);
   border: 1px solid var(--borda);

@@ -15,6 +15,7 @@ A escolha do usuario e salva no `localStorage` com a chave `dashboard-layout-ver
 - `src/main.js`: recebeu a logica de alternancia, persistencia da escolha, preenchimento dos filtros e resumo do recorte selecionado.
 - `src/style.css`: recebeu os estilos do seletor, da barra de filtros e os ajustes responsivos.
 - `src/data/salesData.js`: passou a manter registros processados para calcular o resumo dos filtros da Versao B.
+- A secao de teste de hipotese foi movida para o final da pagina e ficou recolhida em um botao, para nao competir visualmente com as analises de vendas.
 
 ## 3. Como funciona a troca entre Versao A e Versao B
 

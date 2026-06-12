@@ -402,80 +402,6 @@
 
       <section class="secaoDashboard">
         <div class="secaoCabecalho">
-          <span>Validacao estatistica</span>
-          <h2>Teste de Hipoteses da Melhoria</h2>
-          <p>Teste t pareado para verificar se o dashboard reduziu o tempo para encontrar informacoes em comparacao com a pesquisa direta na planilha.</p>
-        </div>
-
-        <div class="gradeHipoteseTopo">
-          <article class="cardHipotese">
-            <h3>Melhoria analisada</h3>
-            <p>
-              A analise compara o tempo necessario para encontrar metricas no dataset cru em planilha com o tempo para encontrar as mesmas
-              informacoes no dashboard. O dashboard organiza os dados em graficos, cards, filtros e secoes, reduzindo o esforco manual exigido na planilha.
-            </p>
-          </article>
-
-          <article class="cardHipotese">
-            <h3>Hipoteses</h3>
-            <p><strong>H0:</strong> O dashboard nao reduziu o tempo necessario para encontrar informacoes em comparacao com a pesquisa direta na planilha.</p>
-            <p><strong>H1:</strong> O dashboard reduziu o tempo necessario para encontrar informacoes em comparacao com a pesquisa direta na planilha.</p>
-            <p class="formulaHipotese"><strong>Formula:</strong> <code>t = d&#772; / (sd / &radic;n)</code></p>
-          </article>
-        </div>
-
-        <article class="cardHipotese tabelaHipoteseCard">
-          <h3>Dados coletados (planilha x dashboard)</h3>
-          <p>
-            A coleta foi organizada em 4 registros, cada um correspondente a uma tarefa de busca. Na planilha, foi considerado 1 participante realizando as buscas no dataset cru.
-          </p>
-          <p>
-            No dashboard, foi usado o tempo medio dos 2 participantes que ja tinham realizado as mesmas tarefas. Diferenca utilizada: tempo na planilha - tempo medio no dashboard.
-          </p>
-          <div class="tabelaHipoteseScroll">
-            <table class="tabelaHipotese">
-              <thead>
-                <tr>
-                  <th>Registro</th>
-                  <th>Tarefa</th>
-                  <th>Planilha (s)</th>
-                  <th>Dashboard medio (s)</th>
-                  <th>Diferenca (s)</th>
-                </tr>
-              </thead>
-              <tbody id="linhasTesteHipotese"></tbody>
-            </table>
-          </div>
-        </article>
-
-        <div class="gradeHipoteseResultado">
-          <article class="cardHipotese">
-            <h3>Resumo dos calculos</h3>
-            <div class="listaCalculosHipotese">
-              <p>Media na planilha: <strong id="mediaPlanilhaHipotese">-</strong></p>
-              <p>Media no dashboard: <strong id="mediaDashboardHipotese">-</strong></p>
-              <p>Media das diferencas: <strong id="mediaDiferencasHipotese">-</strong></p>
-              <p>Desvio padrao das diferencas: <strong id="desvioDiferencasHipotese">-</strong></p>
-              <p>Numero de registros (n): <strong id="nRegistrosHipotese">-</strong></p>
-              <p>Graus de liberdade (gl): <strong id="glHipotese">-</strong></p>
-              <p>Valor de t: <strong id="valorTHipotese">-</strong></p>
-              <p>P-Valor: <strong id="pValorHipotese">-</strong></p>
-              <p>Alpha adotado: <strong id="alphaHipotese">-</strong></p>
-            </div>
-          </article>
-
-          <article class="cardHipotese cardEvidenciaHipotese" id="evidenciaHipotese">
-            <h3>Evidencia da conclusao</h3>
-            <p class="badgeHipotese" id="decisaoHipotese">-</p>
-            <p id="textoDecisaoHipotese">-</p>
-            <p id="comparacaoPValorHipotese">-</p>
-            <p id="textoInterpretacaoHipotese">-</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="secaoDashboard">
-        <div class="secaoCabecalho">
           <span>Ranking</span>
           <h2>Regioes por faturamento</h2>
           <p>Ordenacao das regioes para comparar rapidamente a participacao no faturamento.</p>
@@ -485,6 +411,86 @@
           <h3>Ranking de regioes por faturamento</h3>
           <ul id="rankingRegioes"></ul>
         </div>
+      </section>
+
+      <section class="secaoDashboard secaoHipoteseRecolhida">
+        <details class="painelHipoteseRecolhido">
+          <summary>Ver testes de hipotese <span class="setaResumo">&#9662;</span></summary>
+
+          <div class="conteudoHipoteseRecolhido">
+            <div class="secaoCabecalho">
+              <span>Validacao estatistica</span>
+              <h2>Teste de Hipoteses da Melhoria</h2>
+              <p>Teste t pareado para verificar se o dashboard reduziu o tempo para encontrar informacoes em comparacao com a pesquisa direta na planilha.</p>
+            </div>
+
+            <div class="gradeHipoteseTopo">
+              <article class="cardHipotese">
+                <h3>Melhoria analisada</h3>
+                <p>
+                  A analise compara o tempo necessario para encontrar metricas no dataset cru em planilha com o tempo para encontrar as mesmas
+                  informacoes no dashboard. O dashboard organiza os dados em graficos, cards, filtros e secoes, reduzindo o esforco manual exigido na planilha.
+                </p>
+              </article>
+
+              <article class="cardHipotese">
+                <h3>Hipoteses</h3>
+                <p><strong>H0:</strong> O dashboard nao reduziu o tempo necessario para encontrar informacoes em comparacao com a pesquisa direta na planilha.</p>
+                <p><strong>H1:</strong> O dashboard reduziu o tempo necessario para encontrar informacoes em comparacao com a pesquisa direta na planilha.</p>
+                <p class="formulaHipotese"><strong>Formula:</strong> <code>t = d&#772; / (sd / &radic;n)</code></p>
+              </article>
+            </div>
+
+            <article class="cardHipotese tabelaHipoteseCard">
+              <h3>Dados coletados (planilha x dashboard)</h3>
+              <p>
+                A coleta foi organizada em 4 registros, cada um correspondente a uma tarefa de busca. Na planilha, foi considerado 1 participante realizando as buscas no dataset cru.
+              </p>
+              <p>
+                No dashboard, foi usado o tempo medio dos 2 participantes que ja tinham realizado as mesmas tarefas. Diferenca utilizada: tempo na planilha - tempo medio no dashboard.
+              </p>
+              <div class="tabelaHipoteseScroll">
+                <table class="tabelaHipotese">
+                  <thead>
+                    <tr>
+                      <th>Registro</th>
+                      <th>Tarefa</th>
+                      <th>Planilha (s)</th>
+                      <th>Dashboard medio (s)</th>
+                      <th>Diferenca (s)</th>
+                    </tr>
+                  </thead>
+                  <tbody id="linhasTesteHipotese"></tbody>
+                </table>
+              </div>
+            </article>
+
+            <div class="gradeHipoteseResultado">
+              <article class="cardHipotese">
+                <h3>Resumo dos calculos</h3>
+                <div class="listaCalculosHipotese">
+                  <p>Media na planilha: <strong id="mediaPlanilhaHipotese">-</strong></p>
+                  <p>Media no dashboard: <strong id="mediaDashboardHipotese">-</strong></p>
+                  <p>Media das diferencas: <strong id="mediaDiferencasHipotese">-</strong></p>
+                  <p>Desvio padrao das diferencas: <strong id="desvioDiferencasHipotese">-</strong></p>
+                  <p>Numero de registros (n): <strong id="nRegistrosHipotese">-</strong></p>
+                  <p>Graus de liberdade (gl): <strong id="glHipotese">-</strong></p>
+                  <p>Valor de t: <strong id="valorTHipotese">-</strong></p>
+                  <p>P-Valor: <strong id="pValorHipotese">-</strong></p>
+                  <p>Alpha adotado: <strong id="alphaHipotese">-</strong></p>
+                </div>
+              </article>
+
+              <article class="cardHipotese cardEvidenciaHipotese" id="evidenciaHipotese">
+                <h3>Evidencia da conclusao</h3>
+                <p class="badgeHipotese" id="decisaoHipotese">-</p>
+                <p id="textoDecisaoHipotese">-</p>
+                <p id="comparacaoPValorHipotese">-</p>
+                <p id="textoInterpretacaoHipotese">-</p>
+              </article>
+            </div>
+          </div>
+        </details>
       </section>
     </main>
 
