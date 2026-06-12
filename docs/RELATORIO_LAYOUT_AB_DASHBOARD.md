@@ -12,8 +12,11 @@ A escolha do usuario e salva no `localStorage` com a chave `dashboard-layout-ver
 ## 2. Arquivos modificados
 
 - `index.html`: recebeu o seletor de layout A/B no topo do dashboard e a barra superior de filtros da Versao B.
-- `src/main.js`: recebeu a logica de alternancia, persistencia da escolha, preenchimento dos filtros e resumo do recorte selecionado.
-- `src/style.css`: recebeu os estilos do seletor, da barra de filtros e os ajustes responsivos.
+- `src/main.js`: manteve a renderizacao principal do dashboard e passou a usar modulos dedicados para layout A/B e teste de hipotese.
+- `src/ui/layoutAb.js`: centraliza a alternancia A/B, a persistencia da escolha, o reposicionamento dos filtros de periodo e a area recolhida de estatisticas secundarias no Layout B.
+- `src/ui/hypothesisPanel.js`: renderiza o teste de hipotese somente quando o painel final e aberto pela primeira vez.
+- `src/style.css`: recebeu os estilos condicionados ao Layout B, incluindo filtros compactos, cards principais destacados, estatisticas recolhidas e responsividade.
+- O Layout B recebeu uma repaginacao executiva, com fundo mais neutro, cards corporativos, secoes com hierarquia mais clara, graficos com bordas/sombras mais discretas e controles mais compactos.
 - `src/data/salesData.js`: passou a manter registros processados para calcular o resumo dos filtros da Versao B.
 - A secao de teste de hipotese foi movida para o final da pagina e ficou recolhida em um botao, para nao competir visualmente com as analises de vendas.
 
@@ -21,7 +24,7 @@ A escolha do usuario e salva no `localStorage` com a chave `dashboard-layout-ver
 
 O usuario escolhe entre `Layout A` e `Layout B` em um botao segmentado abaixo do alternador de modo claro/escuro.
 
-Quando o Layout A esta ativo, o dashboard preserva a organizacao original. Quando o Layout B esta ativo, a barra de filtros aparece acima dos cards principais e os campos de data do periodo ficam nessa barra.
+Quando o Layout A esta ativo, o dashboard preserva a organizacao atual. Quando o Layout B esta ativo, a barra de filtros aparece acima dos cards principais, os campos de data do periodo ficam nessa barra e os cards estatisticos secundarios ficam recolhidos.
 
 Essa troca altera apenas a organizacao visual da tela. Os dados, cards e graficos continuam usando a mesma base processada pelo dashboard.
 
@@ -44,4 +47,6 @@ Os filtros de regiao, categoria e produto atualizam um resumo do recorte selecio
 4. Confirme que o Layout A mantem a tela original.
 5. Confirme que o Layout B mostra a barra superior de filtros antes dos cards.
 6. Altere regiao, categoria, produto e periodo na barra superior.
-7. Recarregue a pagina e confira se o layout escolhido permanece ativo.
+7. No Layout B, confira se apenas os quatro cards principais ficam destacados e se as estatisticas secundarias aparecem ao abrir o botao correspondente.
+8. Abra o botao final de testes de hipotese e confira se os dados sao preenchidos nesse momento.
+9. Recarregue a pagina e confira se o layout escolhido permanece ativo.

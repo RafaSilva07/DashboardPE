@@ -25,12 +25,12 @@ import {
   renderizarRankingRegioes,
   traduzirLinhasTooltipBoxplot,
 } from "./ui/dashboardUi.js"
-import { renderizarTesteHipoteseMelhoria } from "./ui/hypothesisTestUi.js"
+import { configurarLayoutAb } from "./ui/layoutAb.js"
+import { configurarPainelHipotese } from "./ui/hypothesisPanel.js"
 import { configurarTema } from "./ui/theme.js"
 import { calcularDiferencaDias, formatadorMoeda, formatarDataBR, formatarMesAno } from "./utils/formatters.js"
 
 const ARQUIVO_PADRAO = "/default-data.csv"
-const CHAVE_LAYOUT_DASHBOARD = "dashboard-layout-version"
 
 const graficos = new GerenciadorGraficos()
 let dadosProcessados = null
@@ -39,16 +39,15 @@ let categoriaCorrelacao = "geral"
 let categoriaHeatmap = "geral"
 let anoHeatmap = ""
 let anoHeatmapAtivo = false
-let layoutDashboard = obterLayoutSalvo()
 
 inicializarAplicacao()
 
 function inicializarAplicacao() {
   configurarTema()
-  configurarLayoutDashboard()
+  configurarLayoutAb({ aoAlternar: atualizarResumoFiltrosLayoutB })
+  configurarPainelHipotese()
   configurarEventos()
   configurarAlternadores()
-  renderizarTesteHipoteseMelhoria()
   carregarCSVPadrao()
 }
 
@@ -60,7 +59,6 @@ function configurarEventos() {
   document.getElementById("alternadorCorrelacao").addEventListener("click", alternarCategoriaCorrelacao)
   document.getElementById("alternadorHeatmap").addEventListener("click", alternarCategoriaHeatmap)
   document.getElementById("anoHeatmap").addEventListener("change", alternarAnoHeatmap)
-  document.getElementById("alternadorLayoutDashboard").addEventListener("click", alternarLayoutDashboard)
   document.getElementById("filtroRegiaoLayoutB").addEventListener("change", atualizarResumoFiltrosLayoutB)
   document.getElementById("filtroCategoriaLayoutB").addEventListener("change", alternarCategoriaLayoutB)
   document.getElementById("filtroProdutoLayoutB").addEventListener("change", atualizarResumoFiltrosLayoutB)
@@ -125,51 +123,6 @@ function processarCSV(textoCSV) {
   renderizarGraficos()
   renderizarRankingRegioes(resultado.regioes)
   atualizarResumoFiltrosLayoutB()
-}
-
-function obterLayoutSalvo() {
-  return localStorage.getItem(CHAVE_LAYOUT_DASHBOARD) === "B" ? "B" : "A"
-}
-
-function configurarLayoutDashboard() {
-  aplicarLayoutDashboard(layoutDashboard)
-}
-
-function alternarLayoutDashboard(evento) {
-  const botao = evento.target.closest("button")
-
-  if (!botao) {
-    return
-  }
-
-  layoutDashboard = botao.dataset.layout === "B" ? "B" : "A"
-  localStorage.setItem(CHAVE_LAYOUT_DASHBOARD, layoutDashboard)
-  aplicarLayoutDashboard(layoutDashboard)
-}
-
-function aplicarLayoutDashboard(layout) {
-  const layoutB = layout === "B"
-  const controlesPeriodo = document.querySelector(".controlesPeriodo")
-  const destinoLayoutB = document.getElementById("filtrosLayoutBPeriodo")
-  const cabecalhoPeriodo = document.querySelector(".graficoPeriodo .cabecalhoGrafico")
-
-  document.body.dataset.layoutDashboard = layoutB ? "B" : "A"
-
-  document.querySelectorAll("#alternadorLayoutDashboard button").forEach((botao) => {
-    const ativo = botao.dataset.layout === (layoutB ? "B" : "A")
-    botao.classList.toggle("ativo", ativo)
-    botao.setAttribute("aria-pressed", String(ativo))
-  })
-
-  if (!controlesPeriodo || !destinoLayoutB || !cabecalhoPeriodo) {
-    return
-  }
-
-  if (layoutB) {
-    destinoLayoutB.appendChild(controlesPeriodo)
-  } else {
-    cabecalhoPeriodo.appendChild(controlesPeriodo)
-  }
 }
 
 function configurarFiltrosLayoutB() {
