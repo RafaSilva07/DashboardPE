@@ -17,12 +17,14 @@
           <span class="iconeTema iconeLua">&#9790;</span>
         </button>
         <div class="alternadorLayout" id="alternadorLayoutDashboard" role="group" aria-label="Escolha a versao visual do dashboard">
-          <button type="button" class="ativo" data-layout="A">Layout A</button>
-          <button type="button" data-layout="B">Layout B</button>
+          <button type="button" data-layout="A">Layout A</button>
+          <button type="button" class="ativo" data-layout="B">Layout B</button>
         </div>
+        <button class="botaoNavegacaoAnalise" id="abrirAnaliseClientes" type="button">Ver analise de clientes</button>
       </div>
     </header>
 
+    <div id="dashboardView">
     <div class="upload">
       <label class="botaoUpload">
         Importar base CSV
@@ -491,6 +493,135 @@
             </div>
           </div>
         </details>
+      </section>
+    </main>
+    </div>
+
+    <main class="dashboardShell analiseClientesView" id="analiseClientesView" hidden>
+      <section class="secaoDashboard">
+        <div class="cabecalhoAnaliseClientes">
+          <div class="secaoCabecalho">
+            <span>Dataset de clientes</span>
+            <h2>Analise de Clientes</h2>
+            <p>Analise academica do arquivo ecommerce_customer_data_large.csv, com indicadores, graficos e interpretacoes simples para apresentar em sala.</p>
+          </div>
+          <button class="botaoNavegacaoAnalise botaoVoltarDashboard" id="voltarDashboard" type="button">Voltar ao dashboard</button>
+        </div>
+        <p class="statusAnaliseClientes" id="statusAnaliseClientes">Clique para carregar a analise do dataset de clientes.</p>
+      </section>
+
+      <section class="secaoDashboard">
+        <div class="secaoCabecalho">
+          <span>Resumo executivo</span>
+          <h2>Indicadores principais</h2>
+          <p>Os cards mostram totais, medias e taxas calculadas diretamente a partir do CSV de clientes.</p>
+        </div>
+
+        <div class="cards cardsAnaliseClientes">
+          <div class="card"><h3>Total de registros</h3><p id="clientesTotalRegistros">0</p></div>
+          <div class="card"><h3>Clientes unicos</h3><p id="clientesUnicos">0</p></div>
+          <div class="card"><h3>Receita total</h3><p id="clientesReceitaTotal">0</p></div>
+          <div class="card"><h3>Ticket medio</h3><p id="clientesTicketMedio">0</p></div>
+          <div class="card"><h3>Qtd. vendida</h3><p id="clientesQuantidadeTotal">0</p></div>
+          <div class="card"><h3>Taxa de churn</h3><p id="clientesTaxaChurn">0</p></div>
+          <div class="card"><h3>Taxa de devolucao</h3><p id="clientesTaxaDevolucao">0</p></div>
+        </div>
+      </section>
+
+      <section class="secaoDashboard">
+        <div class="grid gridTextosAnalise">
+          <article class="cardHipotese">
+            <h3>Qual dataset foi usado</h3>
+            <p>Foi utilizado um dataset de clientes e compras de um e-commerce. O arquivo possui informacoes sobre data da compra, categoria do produto, preco, quantidade, valor total, metodo de pagamento, idade, genero, devolucoes e churn.</p>
+          </article>
+          <article class="cardHipotese">
+            <h3>De onde vieram os dados</h3>
+            <p>Os dados vieram de um arquivo CSV usado como base para analise academica. O arquivo representa registros de compras de clientes em uma loja virtual.</p>
+          </article>
+          <article class="cardHipotese">
+            <h3>Principais informacoes</h3>
+            <p>O arquivo permite analisar comportamento de compra, categorias mais vendidas, metodos de pagamento, valor das compras, devolucoes e perda de clientes.</p>
+          </article>
+          <article class="cardHipotese">
+            <h3>Variaveis analisadas</h3>
+            <p>Foram analisadas categoria, preco, quantidade, valor total, metodo de pagamento, idade, genero, devolucao e churn. As colunas Age e Customer Age repetem a idade, por isso a analise usa Age quando disponivel.</p>
+          </article>
+          <article class="cardHipotese">
+            <h3>Ferramentas usadas</h3>
+            <p>A analise foi feita no proprio dashboard, usando JavaScript para leitura e tratamento do CSV, PapaParse para processar o arquivo e Chart.js para gerar os graficos.</p>
+          </article>
+          <article class="cardHipotese">
+            <h3>Analises feitas</h3>
+            <p>Foram calculados totais, medias, porcentagens, agrupamentos por categoria, formas de pagamento, taxa de devolucao, taxa de churn, faixas etarias e evolucao das compras no tempo.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="secaoDashboard">
+        <div class="secaoCabecalho">
+          <span>Graficos principais</span>
+          <h2>Visualizacoes do dataset</h2>
+          <p>Os graficos resumem as informacoes mais importantes do arquivo de clientes.</p>
+        </div>
+
+        <div class="grid">
+          <article class="grafico">
+            <h3>Compras por categoria</h3>
+            <canvas id="graficoClientesComprasCategoria"></canvas>
+            <p class="textoGraficoAnalise">Este grafico mostra quais categorias de produtos tiveram mais compras no dataset.</p>
+          </article>
+          <article class="grafico">
+            <h3>Receita por categoria</h3>
+            <canvas id="graficoClientesReceitaCategoria"></canvas>
+            <p class="textoGraficoAnalise">Este grafico mostra o valor total gerado por cada categoria.</p>
+          </article>
+          <article class="grafico">
+            <h3>Metodos de pagamento</h3>
+            <canvas id="graficoClientesPagamentos"></canvas>
+            <p class="textoGraficoAnalise">Esta analise mostra quais formas de pagamento sao mais usadas pelos clientes.</p>
+          </article>
+          <article class="grafico">
+            <h3>Churn dos clientes</h3>
+            <canvas id="graficoClientesChurn"></canvas>
+            <p class="textoGraficoAnalise">O churn indica clientes que deixaram de comprar ou abandonaram a relacao com o e-commerce.</p>
+          </article>
+          <article class="grafico">
+            <h3>Devolucoes por categoria</h3>
+            <canvas id="graficoClientesDevolucoesCategoria"></canvas>
+            <p class="textoGraficoAnalise">Valores vazios em Returns foram tratados como 0 para evitar erro nos calculos.</p>
+          </article>
+          <article class="grafico">
+            <h3>Compras por faixa etaria</h3>
+            <canvas id="graficoClientesFaixaEtaria"></canvas>
+            <p class="textoGraficoAnalise">Este grafico agrupa os clientes por idade para facilitar a leitura do perfil de compra.</p>
+          </article>
+          <article class="grafico graficoAnaliseLargo">
+            <h3>Evolucao de compras ao longo do tempo</h3>
+            <canvas id="graficoClientesTempo"></canvas>
+            <p class="textoGraficoAnalise">Este grafico mostra como as compras evoluiram ao longo do tempo, agrupadas por mes.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="secaoDashboard">
+        <div class="grid gridTextosAnalise">
+          <article class="cardHipotese">
+            <h3>O que a equipe aprendeu</h3>
+            <p>A equipe aprendeu que os dados ajudam a entender melhor o comportamento dos clientes, categorias importantes, metodos de pagamento mais usados e pontos relacionados a devolucoes ou churn.</p>
+          </article>
+          <article class="cardHipotese">
+            <h3>Aplicacao no sistema</h3>
+            <p id="aplicacaoAnaliseClientes">As analises podem apoiar decisoes sobre vendas, estoque, marketing, atendimento e retencao de clientes.</p>
+          </article>
+          <article class="cardHipotese">
+            <h3>Conclusao</h3>
+            <p id="conclusaoAnaliseClientes">A analise resume os principais resultados do CSV e mostra como eles podem melhorar o dashboard.</p>
+          </article>
+          <article class="cardHipotese cardResultadoAnalise">
+            <h3>Principais resultados</h3>
+            <p id="resultadoAnaliseClientes">Carregando resultados calculados do CSV.</p>
+          </article>
+        </div>
       </section>
     </main>
 

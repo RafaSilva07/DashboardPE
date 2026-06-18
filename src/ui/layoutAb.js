@@ -1,4 +1,5 @@
 const CHAVE_LAYOUT_DASHBOARD = "dashboard-layout-version"
+const CHAVE_LAYOUT_PADRAO = "dashboard-layout-default-b"
 const IDS_CARDS_SECUNDARIOS = [
   "mediaVendas",
   "medianaVendas",
@@ -33,7 +34,14 @@ export function obterLayoutAtual() {
 }
 
 function obterLayoutSalvo() {
-  return localStorage.getItem(CHAVE_LAYOUT_DASHBOARD) === "B" ? "B" : "A"
+  if (localStorage.getItem(CHAVE_LAYOUT_PADRAO) !== "1") {
+    localStorage.setItem(CHAVE_LAYOUT_DASHBOARD, "B")
+    localStorage.setItem(CHAVE_LAYOUT_PADRAO, "1")
+    return "B"
+  }
+
+  const layoutSalvo = localStorage.getItem(CHAVE_LAYOUT_DASHBOARD)
+  return layoutSalvo === "A" ? "A" : "B"
 }
 
 function aplicarLayoutDashboard(layout) {

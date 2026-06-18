@@ -540,6 +540,90 @@ body[data-layout-dashboard="B"] .secaoCabecalho p {
   transform: translateY(-1px);
 }
 
+.botaoNavegacaoAnalise {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid #1d4ed8;
+  border-radius: 8px;
+  background: #2c7be5;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: var(--sombraSuave);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.botaoNavegacaoAnalise:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+body[data-pagina="analise"] #abrirAnaliseClientes {
+  display: none;
+}
+
+.botaoVoltarDashboard {
+  flex-shrink: 0;
+}
+
+.analiseClientesView[hidden],
+#dashboardView[hidden] {
+  display: none;
+}
+
+.cabecalhoAnaliseClientes {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.statusAnaliseClientes {
+  margin: 12px 0 0;
+  padding: 12px 14px;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  background: #eef6ff;
+  color: #1e3a8a;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+body[data-tema="escuro"] .statusAnaliseClientes {
+  background: rgba(59, 130, 246, 0.14);
+  border-color: rgba(96, 165, 250, 0.38);
+  color: #bfdbfe;
+}
+
+.cardsAnaliseClientes {
+  justify-content: flex-start;
+}
+
+.gridTextosAnalise {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+}
+
+.textoGraficoAnalise {
+  margin: 12px 0 0;
+  color: var(--textoSecundario);
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.graficoAnaliseLargo {
+  grid-column: 1 / -1;
+}
+
+.cardResultadoAnalise {
+  border-left: 4px solid #2c7be5;
+}
+
 .cards {
   display: flex;
   justify-content: center;
@@ -1544,6 +1628,15 @@ body[data-layout-dashboard="B"] .ranking li {
     position: static;
     transform: none;
     justify-items: center;
+  }
+
+  .cabecalhoAnaliseClientes {
+    display: grid;
+  }
+
+  .botaoVoltarDashboard,
+  .botaoNavegacaoAnalise {
+    width: 100%;
   }
 
   .alternadorLayout {

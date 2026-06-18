@@ -27,6 +27,7 @@ import {
 } from "./ui/dashboardUi.js"
 import { configurarLayoutAb } from "./ui/layoutAb.js"
 import { configurarPainelHipotese } from "./ui/hypothesisPanel.js"
+import { configurarAnaliseClientes } from "./ui/customerAnalysisPage.js"
 import { configurarTema } from "./ui/theme.js"
 import { calcularDiferencaDias, formatadorMoeda, formatarDataBR, formatarMesAno } from "./utils/formatters.js"
 
@@ -46,6 +47,7 @@ function inicializarAplicacao() {
   configurarTema()
   configurarLayoutAb({ aoAlternar: atualizarResumoFiltrosLayoutB })
   configurarPainelHipotese()
+  configurarAnaliseClientes(graficos)
   configurarEventos()
   configurarAlternadores()
   carregarCSVPadrao()
